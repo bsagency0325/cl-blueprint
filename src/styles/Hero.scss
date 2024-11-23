@@ -1,0 +1,38 @@
+.hero {
+    &--img {
+        position: relative;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+
+    //overlays
+    &__overlay {
+        background-color: rgba(black, 0.5);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+
+        &--white {
+            background-color: rgba($color-white, 1);
+        }
+    }
+
+    //hero contenidos
+    &__content {
+        display: flex;
+        @include media('md') {
+            align-items: center;
+        }
+        &__header {
+            position: relative;   
+            text-align: center;
+            padding: 4rem 0 6rem;
+            max-width: 750px;
+            margin: 0 auto;
+            @include media('md') {
+                padding: 6rem 0 8rem;
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+.products {
+    padding: 0 0 8rem;
+    &__header {
+        padding: 2rem 1rem;
+        background-color: $color-secondary;
+        text-align: center;
+        &__content {
+            max-width: 850px;
+            margin: 0 auto;;
+        }
+    }
+    &__buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+        margin-top: 4rem;
+        &__item {
+            margin: 2rem 1rem 0;
+            padding: 0.5rem 5rem;
+            border: 1px solid transparent;
+            border-radius: 10px;
+        }
+    }
+    &__list {
+        @include reset-list;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    &__item {
+        width: 100%;
+        margin-bottom: 1rem;
+        @include media('md') {
+            flex: 0 0 calc(49.5%);
+        }
+        @include media('xl') {
+            flex: 0 0 calc(24.5%);
+        }
+    }
+}

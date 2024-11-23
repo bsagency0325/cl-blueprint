@@ -1,0 +1,30 @@
+.services {
+    margin-bottom: 4rem;
+    &__header {
+        padding: 2rem 0;
+        background-color: $color-primary;
+        margin-bottom: 2rem;
+    }
+    &__list {
+        @include reset-list;
+        margin: 2rem 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    &__item {
+        width: 100%;
+        margin-bottom: 2rem;
+        @include media ('xl') {
+            width: 100%;
+        }
+    }
+    &__footer {
+        padding: 2rem 1rem 1rem;
+        text-align: center;
+        border-radius: 10px;
+        background-color: $color-white;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    }
+}
