@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import imgBackground from '../images/img-01.jpg';
-import logo from '../images/logo.png';
+// import logo from '../images/logo.png';
 
 import { Zoom } from 'react-awesome-reveal';
 import { useParallax } from 'react-scroll-parallax';
