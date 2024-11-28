@@ -14,7 +14,7 @@
         position: absolute;
 
         &--white {
-            background-color: rgba($color-white, 1);
+            background-color: rgba($color-white, 0.2);
         }
     }
 
@@ -28,7 +28,7 @@
             position: relative;   
             text-align: center;
             padding: 4rem 0 6rem;
-            max-width: 750px;
+            max-width: 850px;
             margin: 0 auto;
             @include media('md') {
                 padding: 6rem 0 8rem;

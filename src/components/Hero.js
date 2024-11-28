@@ -13,19 +13,18 @@ const Hero = () => {
     const { ref } = useParallax({ speed: 10 });
     return (
         <section className="hero--img" style={{backgroundImage: `${backgroundImage}`}}>
-            <div className="hero__overlay hero__overlay--white"></div>
+            <div className="hero__overlay hero__overlay--black"></div>
             <Container>
                 <Row>
                     <Col>
                         <div ref={ref} className="hero__content">
                             <div className='hero__content__header'>
                                 <Zoom triggerOnce cascade>
-                                    {/* <img className="image__logo" alt="logo" src={logo}/> */}
-                                    <p className='text--small text--primary'>Blueprint</p>
-                                    <h1 className="text--title">Blueprint Strategies</h1>
-                                    {/* <h2 className="text--subtitle text--primary">¡Conéctate con la mejor señal en <span className='    '><br />Tuxtla Gutiérrez!</span></h2>
-                                    <p className='text--body'>Megacable en Tuxtla Gutiérrez ofrece servicios de Internet de alta velocidad, televisión digital y telefonía con tecnología avanzada para hogares y negocios en México, garantizando calidad y satisfacción a sus clientes.</p>
-                                    <a className="btn btn--primary" target="__blank" href="https://wa.me/5219617044610/?text=Podría%20darme%20más%20información%20sobre%20los%20paquetes%20de%20megacable%20internet">Cotiza tu Paquete de Megacable</a> */}
+                                    <p className='text--lead text--white'>Effortless Business Growth</p>
+                                    <h1 className="text--title text--white">We Generate <span className="lighted">Quote-Ready</span> Home Improvement <span className="lighted">Leads for You</span>
+                                    </h1>
+                                    <h2 className="text--lead text--white">No Heavy Lifting Required!<span className='lighted'><br />Based in Nevada</span></h2>
+                                    <a className="btn btn--primary" target="__blank" href="https://wa.me/5219617044610/?text=Podría%20darme%20más%20información%20sobre%20los%20paquetes%20de%20megacable%20internet">Get More Leads</a> */
                                 </Zoom>
                             </div>
                         </div>

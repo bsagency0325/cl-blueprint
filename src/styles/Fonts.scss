@@ -53,10 +53,8 @@ a {
 
 span {
     &.lighted {
-        background-color: $color-primary;
-        display: inline-block;
-        padding: 0 0.75rem;
-        color: $color-white;
+        color: $color-primary;
+        font-weight: $fw-6;
 
         &--secondary {
             background-color: $color-secondary;
@@ -70,13 +68,13 @@ span {
         font-size: $fs-md;
         text-transform: uppercase;
         letter-spacing: 0.25rem;
-        margin-bottom: 0;
+        margin-bottom: 1rem;
         font-weight: $fw-6;
         @include media('xs') {
             font-size: $fs-xl;
         }
         @include media('md') {
-            font-size: $fs-xb;
+            font-size: $fs-xl;
         }
     }
 

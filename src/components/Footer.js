@@ -8,7 +8,7 @@ const Footer = () => {
     return (
         <div className="footer__copy">
             <p className="footer__copy__text">
-                #bluesprintstrategies {year} - Impulsado por Creative Lab Development
+                #bluesprintstrategies {year}
             </p>
         </div>
     )
