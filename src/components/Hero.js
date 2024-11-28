@@ -31,9 +31,6 @@ const Hero = () => {
                     </Col>
                 </Row>
             </Container>
-            <div className='polygon'>
-                <div className='polygon__top--left'></div>
-            </div>
         </section>
     )
 }
