@@ -1,5 +1,5 @@
 .navBar {
-    background-color: $color-white;
+    background-color: $color-primary;
     padding: 0.5rem 0;
     &__container {
         width: 100%;
@@ -45,10 +45,10 @@
         letter-spacing: .2rem;
         font-weight: $fw-5;
         @include link() {
-            color: $color-black;
+            color: $color-white;
         } 
         @include hover() {
-            color: darken($color-primary, 15%);
+            color: darken($color-secondary, 1);
         }
     }
     &__nav {
@@ -80,14 +80,14 @@
             a {
                 @include link {
                     font-size: 1rem;
-                    color: $color-black;
+                    color: $color-white;
                     text-decoration: none;
                     text-transform: uppercase;
                     letter-spacing: 0.1rem;
                     font-weight: $fw-5;
                 }
                 @include hover {
-                    color: darken($color-primary, 15%);
+                    color: darken($color-secondary, 1);
                 }
             }
         }

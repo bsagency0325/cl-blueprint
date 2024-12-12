@@ -21,10 +21,10 @@ const Hero = () => {
                             <div className='hero__content__header'>
                                 <Zoom triggerOnce cascade>
                                     <p className='text--lead text--white'>Effortless Business Growth</p>
-                                    <h1 className="text--title text--white">We Generate <span className="lighted">Quote-Ready</span> Home Improvement <span className="lighted">Leads for You</span>
+                                    <h1 className="text--title text--white">We Generate <span className="lighted lighted--secondary">Quote-Ready</span> Home Improvement <span className="lighted lighted--secondary">Leads for You</span>
                                     </h1>
-                                    <h2 className="text--lead text--white">No Heavy Lifting Required!<span className='lighted'><br />Based in Nevada</span></h2>
-                                    <a className="btn btn--primary" target="__blank" href="https://wa.me/5219617044610/?text=Podría%20darme%20más%20información%20sobre%20los%20paquetes%20de%20megacable%20internet">Get More Leads</a> */
+                                    <h2 className="text--lead text--white">No Heavy Lifting Required!<span className='lighted lighted--secondary'><br />Based in Nevada</span></h2>
+                                    <a className="btn btn--secondary" target="__blank" href="https://wa.me/5219617044610/?text=Podría%20darme%20más%20información%20sobre%20los%20paquetes%20de%20megacable%20internet">Get More Leads</a> */
                                 </Zoom>
                             </div>
                         </div>
