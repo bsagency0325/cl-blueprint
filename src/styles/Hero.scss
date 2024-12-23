@@ -14,7 +14,7 @@
         position: absolute;
 
         &--white {
-            background-color: rgba($color-white, 0.2);
+            background-color: rgba($color-white, 1);
         }
     }
 
@@ -31,8 +31,14 @@
             max-width: 850px;
             margin: 0 auto;
             @include media('md') {
-                padding: 12rem 0 12rem;
+                padding: 10rem 0 10rem;
             }
+        }
+        &__subheader {
+            text-align: center;
+            padding: 2rem 0 2rem;
+            max-width: 850px;
+            margin: 0 auto;
         }
     }
 }

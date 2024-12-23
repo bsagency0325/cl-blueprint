@@ -24,7 +24,7 @@ export default function Products() {
             <Col>
               <Slide triggerOnce cascade>
               <div className="about__header__content">
-                <h2 className="text--subtitle text-center text--white">PROMOCIONES</h2>
+                <h2 className="text--subtitle text-center text--white">PRODUCTOS  </h2>
               </div>
               <div className="about__header__content">
                 <p className='text--body text-center text--white'>

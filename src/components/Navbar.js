@@ -31,8 +31,9 @@ const Navbar = () => {
                             <div className="navBar__col">
                                 <ul className={`navBar__nav ${visible ? 'visible' : ''}`}>
                                     <li className="navBar__nav__item"><Link href="#" to="hero" smooth={true} duration={500}  activeClassName="active">Inicio</Link></li>
-                                    <li className="navBar__nav__item"><Link href="#" to="about" smooth={true} duration={500}>Servicios</Link></li>
-                                    <li className="navBar__nav__item"><Link href="#" to="products" smooth={true} duration={500}>Propuesta Valor</Link></li>
+                                    <li className="navBar__nav__item"><Link href="#" to="products" smooth={true} duration={500}>Services</Link></li>
+                                    <li className="navBar__nav__item"><Link href="#" to="benefits" smooth={true} duration={500}>Benefits</Link></li>
+                                    <li className="navBar__nav__item"><Link href="#" to="about" smooth={true} duration={500}>About</Link></li>
                                     <li className="navBar__nav__item"><Link href="#" to="contact" smooth={true} duration={500}>Contacto</Link></li>
                                 </ul>
                             </div>
