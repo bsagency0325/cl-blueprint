@@ -53,6 +53,15 @@ export default function About() {
                   <h3 className="text--subtitle text-center text-uppercase"><em>What Makes Us <span className="lighted lighted--secondary">Different</span></em></h3>
                 </div>
                 <div className="about__content">
+                  <ul className="boxes">
+                    <li className="boxes__item">
+                      <div className="boxes__item__icon">
+                        <i className="fas fa-chart-line"></i>
+                      </div>
+                      <h4 className="text--subtitle">Data-Driven Strategy</h4>
+                      <p className='text--body'>We use data to drive our decisions and deliver results.</p>
+                    </li>
+                  </ul>
                   <p className='text--body text-center'>
                     <strong>AI-Driven Precision:</strong> Automated processes for faster, more accurate results.<br />
                     <strong>Custom Solutions:</strong> Every campaign is tailored to your specific goals.<br />
