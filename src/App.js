@@ -1,7 +1,7 @@
 import './App.scss';
 import Header from './components/Header';
 import Footer from './components/Footer';
-// import About from './components/About';
+import About from './components/About';
 import Hero from './components/Hero';
 // import Services from './components/Services';
 // import Products from './components/Products';
@@ -20,9 +20,9 @@ function App() {
       <Element name="hero">
         <Hero />
       </Element>
-      {/* <Element name="about">
+      <Element name="about">
         <About />
-      </Element> */}
+      </Element>
       {/* <Element name="products">
         <Services />
       </Element> */}
