@@ -1,0 +1,16 @@
+.footer {
+
+    &__copy {
+        background-color: $color-primary;
+        padding: .5rem;
+    
+        &__text {
+            margin-bottom: 0;
+            text-align: center;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+            font-size: $fs-mn;
+            color: $color-white;
+        }
+    }
+}

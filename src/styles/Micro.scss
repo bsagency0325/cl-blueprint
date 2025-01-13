@@ -1,0 +1,47 @@
+.micro {
+    background-color: $color-gallery;
+    padding: 0rem 0 4rem;
+
+    &__header {
+        margin-bottom: 4rem;
+        padding: 2rem 0;
+        background-color: $color-primary;
+        text-align: center
+    }
+
+    &__content {
+        &__gallery {
+            @include reset-list;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 4rem;
+        }  
+        &__item {
+            width: 33%;
+        }
+        &__img {
+            width: 100%;
+            margin-bottom: .5rem;
+        }
+    }
+
+    &__lead {
+        margin-bottom: 4rem;
+    }
+
+    &__grid {
+        @include reset-list;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        
+        &__item {
+            width: 24%;
+        }
+
+        &__img {
+            width: 100%;
+        }
+    } 
+}

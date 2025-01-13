@@ -1,0 +1,29 @@
+.btn {
+    &--primary {
+        @include link {
+            color: $color-white;
+            background-color: $color-primary;
+            text-transform: uppercase;
+            letter-spacing: 0.075rem;
+            font-weight: $fw-5;
+        }
+        @include hover {
+            color: $color-white !important;
+            background-color: darken($color-tertiary, 10%) !important;
+        }
+    }
+
+    &--secondary {
+        @include link {
+            color: $color-white;
+            background-color: $color-secondary;
+            text-transform: uppercase;
+            letter-spacing: 0.075rem;
+            font-weight: $fw-5;
+        }
+        @include hover {
+            color: $color-white !important;
+            background-color: darken($color-secondary, 10%) !important;
+        }
+    }
+}

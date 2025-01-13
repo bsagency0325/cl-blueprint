@@ -1,0 +1,38 @@
+.polygon {
+    position: relative;
+    &__bottom--right {
+        clip-path: polygon(0 0, 0 100%, 100% 0);
+        background-color: $color-secondary;
+        width: 100%;
+        height: 100px;
+        position: absolute;
+        top: -2px;
+        left: -1px;
+    }
+    &__top--left {
+        clip-path: polygon(100% 0, 0 100%, 100% 100%);
+        background-color: $color-secondary;
+        width: 100%;
+        height: 100px;
+        position: absolute;
+        top: -99px;
+    }
+    &__top--left--gray {
+        clip-path: polygon(0 0, 0 100%, 100% 100%);
+        background-color: $color-gallery;
+        width: 100%;
+        height: 150px;
+        position: absolute;
+        top: -150px;
+        z-index: -1;
+    }
+    &__top--left--primary {
+        clip-path: polygon(0 0, 0 100%, 100% 100%);
+        background-color: $color-primary;
+        width: 100%;
+        height: 150px;
+        position: absolute;
+        top: -150px;
+        z-index: 0;
+    }
+}

@@ -1,0 +1,37 @@
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    border-radius: 10px;
+    overflow: hidden;
+    
+    &__img {
+        width: 100%;
+        height: 200px;
+        @include media('lg') {
+            width: 30%;    
+        }
+    }
+
+    &__content {
+        padding: 0;
+        width: 100%;
+        @include media('lg') {
+            width: 70%;
+        }
+    }
+
+    &__title {
+        display: block;
+        text-align: center;
+        padding: 0.5rem 1rem;
+        margin-bottom: .5rem;
+        background-color: $color-primary;
+        color: $color-white;
+    }
+
+    &__description {
+        display: block;
+        padding: 0.5rem 1rem 1rem;
+    }
+}

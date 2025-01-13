@@ -1,0 +1,24 @@
+.about {
+    margin-bottom: 2rem;
+    &__header {
+        padding: 2rem 0;
+        text-align: center;
+        &__content {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+    }
+
+    &__content {
+        margin: 0 auto 1rem;
+        @include media('md') {
+            margin-bottom: 1.5rem;
+        }
+        &__left {
+            text-align: left;
+        }
+        &__right {
+            text-align: right;
+        }
+    }
+}

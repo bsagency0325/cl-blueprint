@@ -1,0 +1,20 @@
+.headercontent {
+    &__header {
+        padding: 2rem 0;
+        text-align: center;
+        max-width: 750px;
+        margin: 0 auto;
+        &__content {
+            margin-bottom: 1rem;
+        }
+    }
+    
+    &__container {
+        margin-bottom: 2rem;
+    }
+    
+    &__content {
+    
+    }
+}
+

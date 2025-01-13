@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap');
+
+$ff-p: 'Ubuntu Sans', sans-serif;
+
+//sizes 
+$fs-mn: 14px;
+$fs-xs: 16px;
+$fs-sm: 18px;
+$fs-md: 24px;
+$fs-lg: 32px;
+$fs-xl: 40px;
+$fs-bg: 48px;
+$fs-xb: 56px;
+
+//weights
+$fw-3: 300;
+$fw-4: 400;
+$fw-5: 500;
+$fw-6: 600;
+$fw-7: 700;
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+a {
+    font-family: $ff-p;
+    color: $color-font;
+}
+
+a {
+    @include link {
+        color: $color-primary;
+    }
+    @include hover {
+        color: darken($color-primary, 10%)
+    }
+
+    &.link-white {
+        @include link {
+            color: $color-white;
+        }
+        @include hover {
+            color: darken($color-white, 10%)
+        }
+    }
+}
+
+span {
+    &.lighted {
+        color: $color-primary;
+        font-weight: $fw-6;
+
+        &--secondary {
+            color: $color-secondary;
+        }
+    }
+}
+
+//text
+.text {
+    &--title {
+        font-size: $fs-md;
+        text-transform: uppercase;
+        letter-spacing: 0.25rem;
+        margin-bottom: 1rem;
+        font-weight: $fw-6;
+        @include media('xs') {
+            font-size: $fs-xl;
+        }
+        @include media('md') {
+            font-size: $fs-xl;
+        }
+    }
+
+    &--slogan {
+        font-size: $fs-sm;
+        letter-spacing: .02rem;
+        line-height: 1.3;
+        font-weight: $fw-5;
+        @include media ('xs') {
+            font-size: $fs-md;
+        }
+        @include media('md') {
+            font-size: $fs-md;
+        }
+    }
+
+    &--subtitle {
+        font-size: $fs-lg;
+        line-height: 1.3;
+        letter-spacing: 0.05rem;
+        font-weight: $fw-5;
+        margin-bottom: 1rem;
+        @include media('xs') {
+            font-size: $fs-lg;
+        }
+        @include media('md') {
+            font-size: $fs-xl;
+        }  
+        @include media('xl') {
+            font-size: $fs-xl;
+        }
+    }
+
+    &--lead {
+        font-size: $fs-md;
+        letter-spacing: .02rem;
+        line-height: 1.6;
+        font-weight: $fw-5;
+        margin-bottom: 1rem;
+        @include media('md') {
+            font-size: $fs-md;
+        }
+    }
+
+    &--body {
+        font-size: $fs-sm;
+        margin-bottom: 1rem;
+        letter-spacing: 0.02rem;
+        line-height: 1.6;
+        font-weight: $fw-4;
+        @include media('md') {
+            font-size: $fs-sm;
+        }
+    }
+
+    &--small {
+        font-size: $fs-xs;
+        font-weight: $fw-5;
+        letter-spacing: 0.1rem;
+        margin-bottom: 0;
+    }
+
+    &--white {
+        color: $color-white;
+    }
+
+    &--tertiary {
+        color: $color-tertiary;
+    }
+
+    &--secondary {
+        color: $color-secondary;
+    }
+
+    &--primary {
+        color: $color-primary;
+    } 
+}
+
+.hr {
+    &--basic {
+        width: 30%; 
+        border-top: 5px solid $color-black;
+        margin: 0 auto;
+        &--white {
+            border-color: $color-white;
+        }
+    }
+}
