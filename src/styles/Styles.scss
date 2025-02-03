@@ -26,4 +26,31 @@
 @import 'Micro';
 @import 'Banner';
 @import 'Services';
+@import 'Contact';//setup
+@import 'Mixins';
+@import 'Colors';
+@import 'Fonts';
+@import 'Image';
+
+//components
+@import 'Gridimg';
+@import 'Cards';
+@import 'CardTeam';
+@import 'CardPack';
+@import 'Polygon';
+@import 'HeaderContent';
+@import 'CardContact';
+@import 'Navbar';
+@import 'Buttons';
+
+
+//seccions
+@import 'Hero';
+@import 'About';
+@import 'Products';
+@import 'Team';
+@import 'Footer';
+@import 'Micro';
+@import 'Banner';
+@import 'Services';
 @import 'Contact';
