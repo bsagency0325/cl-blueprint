@@ -1,0 +1,26 @@
+.boxes {
+    @include reset-list;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    &__item {
+        box-shadow: 0 0 10px rgba($color-black, 0.1);
+        border-radius: 15px;
+        flex: 1 1 30%;
+        padding: 20px;
+    }
+    &__icon {
+        svg {
+            color: $color-secondary;       
+        }
+    }
+    &__title {
+        color: $color-primary;
+        font-size: $fs-md;
+        font-weight: $fw-5;
+        margin-bottom: 1rem;
+        @include media('md') {
+            font-size: $fs-md;
+        }
+    }
+}

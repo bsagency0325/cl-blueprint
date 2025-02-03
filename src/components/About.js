@@ -2,10 +2,10 @@ import React from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
 import Gridimg from './Gridimg';
-
 import { Fade } from 'react-awesome-reveal';
+import { FaChartLine, FaCogs, FaChartBar } from 'react-icons/fa';
+
 
 const imagePaths = [  
   require('../images/img-02.jpg'),
@@ -55,18 +55,27 @@ export default function About() {
                 <div className="about__content">
                   <ul className="boxes">
                     <li className="boxes__item">
-                      <div className="boxes__item__icon">
-                        <i className="fas fa-chart-line"></i>
+                      <div className="boxes__icon">
+                        <FaChartLine size={100}/>
                       </div>
-                      <h4 className="text--subtitle">Data-Driven Strategy</h4>
-                      <p className='text--body'>We use data to drive our decisions and deliver results.</p>
+                      <h4 className="text--lead boxes__title">1. AI-Driven Precision:</h4>
+                      <p className='text--body'>Automated processes for faster, more accurate results.</p>
+                    </li>
+                    <li className="boxes__item">
+                      <div className="boxes__icon">
+                        <FaCogs size={100}/>
+                      </div>
+                      <h4 className="text--lead boxes__title">2. Custom Solutions:</h4>
+                      <p className='text--body'>Every campaign is tailored to your specific goals.</p>
+                    </li>
+                    <li className="boxes__item">
+                      <div className="boxes__icon">
+                        <FaChartBar size={100}/>
+                      </div>
+                      <h4 className="text--lead boxes__title">3. Measurable Success:</h4>
+                      <p className='text--body'>Transparent reporting to track your ROI.</p>
                     </li>
                   </ul>
-                  <p className='text--body text-center'>
-                    <strong>AI-Driven Precision:</strong> Automated processes for faster, more accurate results.<br />
-                    <strong>Custom Solutions:</strong> Every campaign is tailored to your specific goals.<br />
-                    <strong>Measurable Success:</strong> Transparent reporting to track your ROI.<br />
-                  </p>
                 </div>
                 <div className="about__content text-center">
                   <a className="btn btn--secondary" target="__blank" href="https://wa.me/5219617044610/?text=Podría%20darme%20más%20información%20sobre%20los%20paquetes%20de%20megacable%20internet">Let's work togueter</a>
