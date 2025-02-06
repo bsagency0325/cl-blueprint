@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Gridimg from './Gridimg';
 import { Fade } from 'react-awesome-reveal';
-import { FaChartLine, FaCogs, FaChartBar } from 'react-icons/fa';
+import { FaRocket, FaBullseye, FaChartLine } from 'react-icons/fa';
 
 
 const imagePaths = [  
@@ -49,28 +49,28 @@ export default function About() {
         <Row>
           <Col>
               <Fade triggerOnce>
-                <div className='about__header__content'>
+                <div className='headercontent__content'>
                   <h3 className="text--subtitle text-center text-uppercase"><em>What Makes Us <span className="lighted lighted--secondary">Different</span></em></h3>
                 </div>
                 <div className="about__content">
                   <ul className="boxes">
                     <li className="boxes__item">
                       <div className="boxes__icon">
-                        <FaChartLine size={100}/>
+                        <FaRocket size={75}/>
                       </div>
                       <h4 className="text--lead boxes__title">1. AI-Driven Precision:</h4>
                       <p className='text--body'>Automated processes for faster, more accurate results.</p>
                     </li>
                     <li className="boxes__item">
                       <div className="boxes__icon">
-                        <FaCogs size={100}/>
+                        <FaBullseye size={75}/>
                       </div>
                       <h4 className="text--lead boxes__title">2. Custom Solutions:</h4>
                       <p className='text--body'>Every campaign is tailored to your specific goals.</p>
                     </li>
                     <li className="boxes__item">
                       <div className="boxes__icon">
-                        <FaChartBar size={100}/>
+                        <FaChartLine size={75}/>
                       </div>
                       <h4 className="text--lead boxes__title">3. Measurable Success:</h4>
                       <p className='text--body'>Transparent reporting to track your ROI.</p>

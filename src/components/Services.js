@@ -10,18 +10,18 @@ import imgBanner from '../images/img-07.jpg';
 import image01 from '../images/img-08.jpg';
 import image02 from '../images/img-09.jpg';
 import image03 from '../images/img-10.jpg';
-import image04 from '../images/img-11.jpg';
-import image05 from '../images/img-06.jpg';
 
 import { Fade } from 'react-awesome-reveal';
+
+import { FaBullhorn, FaFilter, FaTrophy } from 'react-icons/fa';
 
 export default function Services() {
   return (
     <div className="services">
       <Banner 
         imgBanner={imgBanner}
-        title = "PROPUESTAS"
-        subtitle = "Hola, Chiapas! Soy Justo Tomás Hernández y estoy emocionado de presentarles mi plataforma para un Chiapas más próspero y equitativo. Juntos, podemos construir un futuro brillante para nuestra comunidad."
+        title = {<span>Our <span className='text--secondary'>Services</span></span>}
+        subtitle = {<span>We provide cutting-edge <span className="text--secondary">solutions to help your business</span> excel in today's competitive landscape.</span>}
       />
       <Container>
         <Row>
@@ -33,45 +33,67 @@ export default function Services() {
                     <li className="services__item">
                       <Card 
                         image = {image01}
-                        name = "1. Educación para Todos"
-                        description = "Garantizaremos acceso universal a una educación de calidad, invirtiendo en infraestructura escolar y programas de capacitación para maestros. Ningún niño chiapaneco se quedará atrás en su búsqueda de conocimiento."
+                        name = "1. Lead Generation with AI"
+                        description={
+                          <span>
+                            <strong className='text--primary'>Drive a steady stream of high-quality leads</strong> to your business with our AI-powered lead generation platform. Our technology uses machine learning algorithms to identify and target potential customers who are most likely to convert.
+                          </span>
+                        }
                       />
                     </li>
                     <li className="services__item">
                       <Card 
                         image = {image02}
-                        name = "2. Desarrollo Económico Sostenible"
-                        description = "Impulsaremos el crecimiento económico mediante el apoyo a pequeñas empresas locales y la promoción de industrias sostenibles. Crearemos oportunidades de empleo para todos, especialmente en las zonas rurales."
+                        name = "2. Quote-Ready Leads"
+                        description = {
+                          <span>
+                            <strong className="text--primary">AI qualifies and delivers leads that are ready</strong> for action. Our platform identifies prospects who are actively seeking your products or services, so you can focus on closing deals instead of chasing down leads.
+                          </span>
+                        }
                       />
                     </li>
                     <li className="services__item">
                       <Card 
                         image = {image03}
-                        name = "3. Salud y Bienestar"
-                        description = "Mejoraremos el acceso a servicios de salud de calidad en toda la región, construyendo nuevos centros de salud y fortaleciendo los programas de atención primaria. La salud de nuestros ciudadanos es nuestra prioridad."
-                      />
-                    </li>
-                    <li className="services__item">
-                      <Card 
-                        image = {image04}
-                        name = "4. Preservación del Medio Ambiente"
-                        description = "Protegeremos nuestros recursos naturales mediante la implementación de políticas de conservación y la promoción de energías renovables. Salvaguardar el medio ambiente es crucial para las generaciones futuras."
-                      />
-                    </li>
-                    <li className="services__item">
-                      <Card 
-                        image = {image05}
-                        name = "5. Justicia y Seguridad"
-                        description = "Fortaleceremos las instituciones de justicia y seguridad para combatir la delincuencia y garantizar la protección de nuestros ciudadanos. Trabajaremos en colaboración con la comunidad para construir un Chiapas más seguro y pacífico."
+                        name = "3. Include a small CTA like"
+                        description = {
+                          <span>
+                            <strong className='text--primary'>Learn more about how we can help you</strong> grow your business with our AI-powered lead generation platform and start generating more leads today with a free trial of our software solution.
+                          </span>
+                        }
                       />
                     </li>
                   </ul>
                 </Fade>
-              </div>
-              <div className='services__footer'>
-                <p className='text--body'>
-                  Chiapas, nuestro potencial es ilimitado cuando trabajamos juntos. ¡Únete a nosotros en este viaje hacia un futuro más brillante para nuestra tierra y vota por Justo Tomás Hernández como tu próximo líder!
-                </p>
+                <div className='headercontent__content'>
+                  <h3 className="text--subtitle text-center text-uppercase"><em>Our <span className="lighted lighted--secondary">Process</span></em></h3>
+                </div>
+                <ul className="boxes">
+                  <li className="boxes__item">
+                    <div className="boxes__icon">
+                      <FaBullhorn size={75}/>
+                    </div>
+                    <h4 className="text--lead boxes__title">1. We Launch Targeted Ads:</h4>
+                    <p className='text--body'>AI-optimized campaigns deliver a steady flow of leads.</p>
+                  </li>
+                  <li className="boxes__item">
+                    <div className="boxes__icon">
+                      <FaFilter size={75}/>
+                    </div>
+                    <h4 className="text--lead boxes__title">2. AI Qualifies Leads:</h4>
+                    <p className='text--body'>Our system quickly engages and qualifies leads, ensuring they’re ready for your sales team.</p>
+                  </li>
+                  <li className="boxes__item">
+                    <div className="boxes__icon">
+                      <FaTrophy size={75}/>
+                    </div>
+                    <h4 className="text--lead boxes__title">3. You Close Deals:</h4>
+                    <p className='text--body'>Get opportunities that are ready for action, saving you time and maximizing results.</p>
+                  </li>
+                </ul>
+                <div className="about__content text-center">
+                  <a className="btn btn--secondary" target="__blank" href="https://wa.me/5219617044610/?text=Podría%20darme%20más%20información%20sobre%20los%20paquetes%20de%20megacable%20internet">Let's work togueter</a>
+                </div>
               </div>
             </div>
           </Col>

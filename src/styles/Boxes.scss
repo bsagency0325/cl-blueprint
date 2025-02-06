@@ -3,6 +3,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-bottom: 3rem;
     &__item {
         box-shadow: 0 0 10px rgba($color-black, 0.1);
         border-radius: 15px;
@@ -10,6 +11,7 @@
         padding: 20px;
     }
     &__icon {
+        margin-bottom: 2rem;
         svg {
             color: $color-secondary;       
         }

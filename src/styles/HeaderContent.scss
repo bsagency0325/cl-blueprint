@@ -2,19 +2,10 @@
     &__header {
         padding: 2rem 0;
         text-align: center;
-        max-width: 750px;
-        margin: 0 auto;
-        &__content {
-            margin-bottom: 1rem;
-        }
     }
-    
-    &__container {
-        margin-bottom: 2rem;
-    }
-    
     &__content {
-    
+        max-width: 850px;
+        margin: 0 auto 2rem;
     }
 }
 
