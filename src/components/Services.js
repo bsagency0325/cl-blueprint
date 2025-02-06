@@ -6,10 +6,10 @@ import Col from 'react-bootstrap/Col';
 import Card from './Cards';
 import Banner from './Banner';
 
-import imgBanner from '../images/img-07.jpg';
-import image01 from '../images/img-08.jpg';
-import image02 from '../images/img-09.jpg';
-import image03 from '../images/img-10.jpg';
+import imgBanner from '../images/img-15.jpg';
+import image01 from '../images/img-12.jpg';
+import image02 from '../images/img-13.jpg';
+import image03 from '../images/img-14.jpg';
 
 import { Fade } from 'react-awesome-reveal';
 
