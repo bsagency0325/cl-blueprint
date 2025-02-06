@@ -8,9 +8,9 @@
         justify-content: space-between;
     }
     &__item {
-        flex: 0 0 calc(32.5%); /* Tamaño de las imágenes (33.33% con espacio entre ellas) */
+        flex: 0 0 calc(49%); /* Tamaño de las imágenes (33.33% con espacio entre ellas) */
         position: relative;
-        padding-top: calc(21.6666%); /* Para hacer las imágenes cuadradas */
+        padding-top: calc(32.6666%); /* Para hacer las imágenes cuadradas */
         overflow: hidden;
         margin-bottom: 1%;
         border-radius: 1rem;
