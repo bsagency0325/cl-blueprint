@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import imgBackground from '../images/img-01.jpg';
-import logo from '../images/logo.png';
+import logo from '../images/logo-icono.png';
 
 import { Zoom } from 'react-awesome-reveal';
 import { useParallax } from 'react-scroll-parallax';
@@ -12,18 +12,6 @@ const Hero = () => {
     const backgroundImage = `url(${imgBackground})`;
     const { ref } = useParallax({ speed: 10 });
     return (
-        <>
-        <section className="hero__content__subheader">
-            <Container>
-                <Row>
-                    <Col>
-                        <Zoom triggerOnce cascade>
-                            <img className="image__logo" src={logo} alt="blueprint logo" />
-                        </Zoom>
-                    </Col>
-                </Row>
-            </Container>
-        </section>
         <section className="hero--img" style={{backgroundImage: `${backgroundImage}`}}>
             <div className="hero__overlay hero__overlay--black"></div>
             <Container>
@@ -32,6 +20,7 @@ const Hero = () => {
                         <div ref={ref} className="hero__content">
                             <div className='hero__content__header'>
                                 <Zoom triggerOnce cascade>
+                                    <img className="image__logo" src={logo} alt="blueprint-logo"/>     
                                     <p className='text--lead text--white'>Helping your business grow faster and smarter</p>
                                     <h1 className="text--title text--white">Turn Clicks Into <span className="lighted lighted--secondary">Quote-Ready</span> Leads With <span className="lighted lighted--secondary">AI-Powered Precision</span>
                                     </h1>
@@ -44,7 +33,6 @@ const Hero = () => {
                 </Row>
             </Container>
         </section>
-        </>
     )
 }
 

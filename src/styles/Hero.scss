@@ -27,18 +27,12 @@
         &__header {
             position: relative;   
             text-align: center;
-            padding: 8rem 0 6rem;
+            padding: 6rem 0;
             max-width: 850px;
             margin: 0 auto;
             @include media('md') {
                 padding: 10rem 0 10rem;
             }
-        }
-        &__subheader {
-            text-align: center;
-            padding: 2rem 0 2rem;
-            max-width: 850px;
-            margin: 0 auto;
         }
     }
 }
