@@ -31,12 +31,7 @@
             }
         }
     }
-    &__logo {
-        width: 120px;
-        @include media('lg') {
-            width: 240px;
-        }
-    }
+    
     &__brand {
         text-transform: uppercase;
         text-decoration: none;

@@ -20,7 +20,7 @@ const Hero = () => {
                         <div ref={ref} className="hero__content">
                             <div className='hero__content__header'>
                                 <Zoom triggerOnce cascade>
-                                    <img className="image__logo" src={logo} alt="blueprint-logo"/>     
+                                    <img className="image__logo-icono" src={logo} alt="blueprint-logo"/>     
                                     <p className='text--lead text--white'>Helping your business grow faster and smarter</p>
                                     <h1 className="text--title text--white">Turn Clicks Into <span className="lighted lighted--secondary">Quote-Ready</span> Leads With <span className="lighted lighted--secondary">AI-Powered Precision</span>
                                     </h1>

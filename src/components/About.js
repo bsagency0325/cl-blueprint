@@ -6,6 +6,7 @@ import Gridimg from './Gridimg';
 import { Fade } from 'react-awesome-reveal';
 import { FaRocket, FaBullseye, FaChartLine } from 'react-icons/fa';
 
+import logoAbout from '../images/logo.png';
 
 const imagePaths = [  
   require('../images/img-02.jpg'),
@@ -30,6 +31,7 @@ export default function About() {
             <Col>
               <Fade cascade triggerOnce direction="left">
                 <div className='about__header__content'>
+                  <img className="image__logo" src={logoAbout} alt="blueprint-logo"/>
                   <h3 className="text--subtitle text-center text-uppercase"><em>Who Are <span className="lighted lighted--secondary">We?</span></em></h3>
                 </div>  
                 <div className="about__header__content">

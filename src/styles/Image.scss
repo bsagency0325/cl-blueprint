@@ -19,7 +19,23 @@
     }
 
     &__logo {
-        max-width: 240px;
+        width: 420px;
+        max-width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    &__logo-icono {
+        width: 240px;
+        max-width: 100%;
         margin-bottom: 2.5rem;
     }
+
+    &__logo-navbar {
+        width: 240px;
+        @include media('lg') {
+            width: 240px;
+        }
+    }
+
+    
 }

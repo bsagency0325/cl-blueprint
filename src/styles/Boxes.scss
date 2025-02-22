@@ -12,11 +12,22 @@
         width: 100%;
         padding: 20px;
         text-align: center;
+        &:hover {
+            transition: background-color 0.3s, transform 0.3s;
+            background-color: lighten($color-primary, 60%);
+            transform: translateY(-10px);
+            .boxes__icon svg {
+                transition: color 0.3s;
+                color: $color-primary;
+            }
+            // .boxes__title {
+            //     transition: color 1s;
+            //     color: $color-secondary;
+            // }
+        }
         @include media('lg') {
-            
             flex: 1 1 30%;
         }
-
     }
     &__icon {
         margin-bottom: 2rem;
