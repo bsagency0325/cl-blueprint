@@ -12,44 +12,39 @@ const imagePaths = [
   require('../images/img-02.jpg'),
   require('../images/img-03.jpg'),
   require('../images/img-04.jpg'),
-  require('../images/img-05.jpg'),
-  require('../images/img-06.jpg'),
-  require('../images/img-07.jpg'),
-  require('../images/img-08.jpg'),
-  require('../images/img-09.jpg'),
-  require('../images/img-10.jpg'),
-  require('../images/img-11.jpg'),
-
 ];
 
 export default function About() {
   return (
     <section className="about">
-      <div className="about__header">
-        <Container>
-          <Row>
-            <Col>
-              <Fade cascade triggerOnce direction="left">
-                <div className='about__header__content'>
-                  <img className="image__logo" src={logoAbout} alt="blueprint-logo"/>
-                  <h3 className="text--subtitle text-center text-uppercase"><em>Who Are <span className="lighted lighted--secondary">We?</span></em></h3>
-                </div>  
-                <div className="about__header__content">
-                  <p className='text--body text-center'>
+      
+      <Container>
+        <Row>
+          <Col>
+            <Fade cascade triggerOnce direction="left">
+            <div className="about__header">
+              
+              <div className="about__header__content">
+                <h3 className="text--subtitle text-center text-uppercase"><em>Who Are <span className="lighted lighted--secondary">We?</span></em></h3>
+                <p className='text--body text-center'>
                   <strong>Blueprint Strategies</strong> is a forward-thinking agency leveraging AI to help businesses grow faster and smarter. Our mission is to provide not just leads but <strong>real opportunities for success.</strong>
-                  </p>
-                </div>
-              </Fade>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+                </p>
+              </div>
+            </div>
+            </Fade>
+          </Col>
+        </Row>
+      </Container>
+    
       <Gridimg 
           imagePaths = {imagePaths}
       />
       <Container>
         <Row>
           <Col>
+          <div className='about__header__content text-center'>
+                <img className="image__logo" src={logoAbout} alt="blueprint-logo"/>
+              </div>  
               <Fade triggerOnce>
                 <div className='headercontent__content'>
                   <h3 className="text--subtitle text-center text-uppercase"><em>What Makes Us <span className="lighted lighted--secondary">Different</span></em></h3>
