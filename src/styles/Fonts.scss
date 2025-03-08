@@ -162,6 +162,10 @@ span {
     &--dark-primary {
         color: $dark-text-primary;
     }
+    
+    &--dark-secondary {
+        color: $dark-text-secondary;
+    }
 }
 
 .hr {

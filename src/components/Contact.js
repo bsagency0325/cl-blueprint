@@ -4,7 +4,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Fade } from 'react-awesome-reveal';
 
-import logomegavida from '../images/logo-megavida.webp'
 const Contact = () => {
     return(
         <section className='contact'>
@@ -15,15 +14,17 @@ const Contact = () => {
                             <div className="headercontent__header">
                                 <Fade cascade triggerOnce direction="up"> 
                                 <div className='headercontent__header__content'>
-                                    <h3 className="text--subtitle text--secondary">Contáctanos</h3>
+                                    <h3 className="text--subtitle text--dark-primary">Let’s Connect and <span className="lighted lighted--secondary">Grow Your Business Together</span></h3>
                                 </div>  
                                 <div className="headercontent__content">
-                                    <p className="text--lead text-uppercase text--secondary">
-                                        Ponte en contacto y comienza a disfrutar de <br />Megacable Tuxtla
+                                    <p className="text--lead text--dark-secondary">
+                                        Contact us to learn how Blueprint Strategies can deliver results for your business.
                                     </p>    
                                 </div>
-                                <a className="btn btn--primary" target="__blank" href="https://wa.me/5219617044610/?text=Podría%20darme%20más%20información%20sobre%20los%20paquetes%20de%20megacable%20internet">Inicia tu contrato de Megacable</a>
-                                <img src={logomegavida} alt="contrata internet en tuxtla" className='contact__img--logomegavida' />
+                                <ul className="contact__buttons">
+                                    <li className='contact__buttons__item'><a className="btn btn--secondary" target="__blank" href="https://wa.me/5219617044610/?text=Blue%Print%Strategies">E-Mail</a></li>
+                                    <li className="contact__buttons__item"><a className="btn btn--whats" target="__blank" href="https://wa.me/5219617044610/?text=Blue%Print%Strategies">Phone</a></li>
+                                </ul>
                                 </Fade>
                             </div>
                         </div>
