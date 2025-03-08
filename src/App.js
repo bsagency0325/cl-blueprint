@@ -4,9 +4,10 @@ import Footer from './components/Footer';
 import About from './components/About';
 import Hero from './components/Hero';
 import Services from './components/Services';
+import Contact from './components/Contact';
 
 
-import { Element } from 'react-scroll';
+// import { Element } from 'react-scroll';
 import { ParallaxProvider } from 'react-scroll-parallax';
 
 function App() {
@@ -14,15 +15,10 @@ function App() {
     <ParallaxProvider>
     <>
       <Header />
-      <Element name="hero">
-        <Hero />
-      </Element>
-      <Element name="about">
-        <About />
-      </Element>
-      <Element name="products">
-        <Services />
-      </Element>      
+      <Hero />
+      <About />
+      <Services />
+      <Contact />
       <Footer />
     </>
     </ParallaxProvider>
