@@ -11,25 +11,25 @@
     //items 1 logo, 2 toggle, 3 navbar
     &__col {
         &:first-child {
-            text-align: left;
-            width: 80%;
-            @include media('lg') {
-                width: 50%;
-            }
+            text-align: center;
+            width: 100%;
+            // @include media('lg') {
+            //     width: 100%;
+            // }
         }
-        &:nth-child(2) {
-            @include media('lg') {
-                display: none;
-            }
-        }
-        &:last-child {
-            width: 50%;
-            position: relative;
-            @include media('lg') {  
-                position: relative;
-                margin: 0.5rem 0;
-            }
-        }
+        // &:nth-child(2) {
+        //     @include media('lg') {
+        //         display: none;
+        //     }
+        // }
+        // &:last-child {
+        //     width: 50%;
+        //     position: relative;
+        //     @include media('lg') {  
+        //         position: relative;
+        //         margin: 0.25rem 0;
+        //     }
+        // }
     }
     
     &__brand {
@@ -65,7 +65,6 @@
             margin-top: 0;
         }
         &__item {
-            margin-bottom: 0.5rem;
             &:last-child {
                 margin-right: 0;
             }
