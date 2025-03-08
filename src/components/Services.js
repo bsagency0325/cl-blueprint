@@ -11,9 +11,13 @@ import image01 from '../images/img-12.jpg';
 import image02 from '../images/img-13.jpg';
 import image03 from '../images/img-14.jpg';
 
+import icon01 from '../images/icon-01.png';
+import icon02 from '../images/icon-02.png';
+import icon03 from '../images/icon-03.png';
+
 import { Fade } from 'react-awesome-reveal';
 
-import { FaBullhorn, FaFilter, FaTrophy } from 'react-icons/fa';
+// import { FaBullhorn, FaFilter, FaTrophy } from 'react-icons/fa';
 
 export default function Services() {
   return (
@@ -36,7 +40,7 @@ export default function Services() {
                         name = "1. Lead Generation with AI"
                         description={
                           <span>
-                            <strong className='text--primary'>Drive a steady stream of high-quality leads</strong> to your business with our AI-powered lead generation platform. Our technology uses machine learning algorithms to identify and target potential customers who are most likely to convert.
+                            <strong className='text--secondary'>Drive a steady stream of high-quality leads</strong> to your business with our AI-powered lead generation platform. Our technology uses machine learning algorithms to identify and target potential customers who are most likely to convert.
                           </span>
                         }
                       />
@@ -47,7 +51,7 @@ export default function Services() {
                         name = "2. Quote-Ready Leads"
                         description = {
                           <span>
-                            <strong className="text--primary">AI qualifies and delivers leads that are ready</strong> for action. Our platform identifies prospects who are actively seeking your products or services, so you can focus on closing deals instead of chasing down leads.
+                            <strong className="text--secondary">AI qualifies and delivers leads that are ready</strong> for action. Our platform identifies prospects who are actively seeking your products or services, so you can focus on closing deals instead of chasing down leads.
                           </span>
                         }
                       />
@@ -58,7 +62,7 @@ export default function Services() {
                         name = "3. Include a small CTA like"
                         description = {
                           <span>
-                            <strong className='text--primary'>Learn more about how we can help you</strong> grow your business with our AI-powered lead generation platform and start generating more leads today with a free trial of our software solution.
+                            <strong className='text--secondary'>Learn more about how we can help you</strong> grow your business with our AI-powered lead generation platform and start generating more leads today with a free trial of our software solution.
                           </span>
                         }
                       />
@@ -71,21 +75,24 @@ export default function Services() {
                 <ul className="boxes">
                   <li className="boxes__item">
                     <div className="boxes__icon">
-                      <FaBullhorn size={75}/>
+                      <img src={icon01} alt="icon-01" className="boxes__img"/>
+                      {/* <FaBullhorn size={75}/> */}
                     </div>
                     <h4 className="text--lead boxes__title">1. We Launch Targeted Ads:</h4>
                     <p className='text--body'>AI-optimized campaigns deliver a steady flow of leads.</p>
                   </li>
                   <li className="boxes__item">
                     <div className="boxes__icon">
-                      <FaFilter size={75}/>
+                      <img src={icon02} alt="icon-01" className="boxes__img"/>
+                      {/* <FaFilter size={75}/> */}
                     </div>
                     <h4 className="text--lead boxes__title">2. AI Qualifies Leads:</h4>
                     <p className='text--body'>Our system quickly engages and qualifies leads, ensuring they’re ready for your sales team.</p>
                   </li>
                   <li className="boxes__item">
                     <div className="boxes__icon">
-                      <FaTrophy size={75}/>
+                      <img src={icon03} alt="icon-01" className="boxes__img"/>
+                      {/* <FaTrophy size={75}/> */}
                     </div>
                     <h4 className="text--lead boxes__title">3. You Close Deals:</h4>
                     <p className='text--body'>Get opportunities that are ready for action, saving you time and maximizing results.</p>
