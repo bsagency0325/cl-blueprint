@@ -26,4 +26,30 @@
             background-color: darken($color-secondary, 10%) !important;
         }
     }
+    &--face {
+        @include link {
+            color: $color-white;
+            background-color: $color-facebook;
+            text-transform: uppercase;
+            letter-spacing: 0.075rem;
+            font-weight: $fw-5;
+        }
+        @include hover {
+            color: $color-white !important;
+            background-color: darken($color-facebook, 10%) !important;
+        }
+    }
+    &--whats {
+        @include link {
+            color: $color-white;
+            background-color: $color-whatsapp;
+            text-transform: uppercase;
+            letter-spacing: 0.075rem;
+            font-weight: $fw-5;
+        }
+        @include hover {
+            color: $color-white !important;
+            background-color: darken($color-whatsapp, 10%) !important;
+        }
+    }
 }
