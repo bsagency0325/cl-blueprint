@@ -30,6 +30,13 @@
         margin-bottom: 2.5rem;
     }
 
+    &__logo-about {
+        width: 540px;
+        max-width: 100%;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+    }
+
     &__logo-navbar {
         width: 240px;
         @include media('lg') {

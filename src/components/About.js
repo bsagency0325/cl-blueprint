@@ -6,26 +6,24 @@ import Gridimg from './Gridimg';
 import { Fade } from 'react-awesome-reveal';
 import { FaRocket, FaBullseye, FaChartLine } from 'react-icons/fa';
 
-import logoAbout from '../images/logo.png';
+import logoLinealIcon from '../images/logo-lineal-icon.png';
 
 const imagePaths = [  
-  require('../images/img-02.jpg'),
-  require('../images/img-03.jpg'),
-  require('../images/img-04.jpg'),
+  require('../images/img-11.jpg'),
+  require('../images/img-07.jpg'),
 ];
 
 export default function About() {
   return (
     <section className="about">
-      
       <Container>
         <Row>
           <Col>
             <Fade cascade triggerOnce direction="left">
             <div className="about__header">
-              
               <div className="about__header__content">
-                <h3 className="text--subtitle text-center text-uppercase"><em>Who Are <span className="lighted lighted--secondary">We?</span></em></h3>
+                {/* <h3 className="text--subtitle text-center text-uppercase"><em>Who Are <span className="lighted lighted--secondary">We?</span></em></h3> */}
+                <img src={logoLinealIcon} alt="Blueprint Strategies" className="image__logo-about"/>
                 <p className='text--body text-center'>
                   <strong>Blueprint Strategies</strong> is a forward-thinking agency leveraging AI to help businesses grow faster and smarter. Our mission is to provide not just leads but <strong>real opportunities for success.</strong>
                 </p>
@@ -42,9 +40,6 @@ export default function About() {
       <Container>
         <Row>
           <Col>
-          <div className='about__header__content text-center'>
-                <img className="image__logo" src={logoAbout} alt="blueprint-logo"/>
-              </div>  
               <Fade triggerOnce>
                 <div className='headercontent__content'>
                   <h3 className="text--subtitle text-center text-uppercase"><em>What Makes Us <span className="lighted lighted--secondary">Different</span></em></h3>
