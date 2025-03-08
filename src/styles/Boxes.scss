@@ -10,20 +10,24 @@
         border-radius: 15px;
         overflow: hidden;
         width: 100%;
-        padding: 20px;
+        padding: 2rem 1rem 1rem;
         text-align: center;
         &:hover {
-            transition: background-color 0.3s, transform 0.3s;
-            background-color: lighten($color-primary, 60%);
-            transform: translateY(-10px);
+            transition: background-color 0.35s, transform 0.35s;
+            background-color: $color-primary;
+            transform: translateY(-0.5rem);
             .boxes__icon svg {
-                transition: color 0.3s;
-                color: $color-primary;
+                transition: color 0.35s;
+                color: $color-secondary;
             }
-            // .boxes__title {
-            //     transition: color 1s;
-            //     color: $color-secondary;
-            // }
+            .boxes__title {
+                transition: color 0.35s;
+                color: $color-tertiary;
+            }
+            .boxes__content {
+                transition: color 0.35s;
+                color: $color-tertiary;
+            }
         }
         @include media('lg') {
             flex: 1 1 30%;
@@ -34,6 +38,12 @@
         svg {
             color: $color-secondary;       
         }
+    }
+    &__img {
+        width: 40%;
+        height: auto;
+        border-radius: 15px;
+        
     }
     &__title {
         color: $color-primary;

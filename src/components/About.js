@@ -50,22 +50,22 @@ export default function About() {
                       <div className="boxes__icon">
                         <FaRocket size={75}/>
                       </div>
-                      <h4 className="text--lead boxes__title">1. AI-Driven Precision:</h4>
-                      <p className='text--body'>Automated processes for faster, more accurate results.</p>
+                      <h4 className="text--lead boxes__title">1. AI-Driven Precision</h4>
+                      <p className='text--body boxes__content'>Automated processes for faster, more accurate results.</p>
                     </li>
                     <li className="boxes__item">
                       <div className="boxes__icon">
                         <FaBullseye size={75}/>
                       </div>
-                      <h4 className="text--lead boxes__title">2. Custom Solutions:</h4>
-                      <p className='text--body'>Every campaign is tailored to your specific goals.</p>
+                      <h4 className="text--lead boxes__title">2. Custom Solutions</h4>
+                      <p className='text--body boxes__content'>Every campaign is tailored to your specific goals.</p>
                     </li>
                     <li className="boxes__item">
                       <div className="boxes__icon">
                         <FaChartLine size={75}/>
                       </div>
-                      <h4 className="text--lead boxes__title">3. Measurable Success:</h4>
-                      <p className='text--body'>Transparent reporting to track your ROI.</p>
+                      <h4 className="text--lead boxes__title">3. Measurable Success</h4>
+                      <p className='text--body boxes__content'>Transparent reporting to track your ROI.</p>
                     </li>
                   </ul>
                 </div>
