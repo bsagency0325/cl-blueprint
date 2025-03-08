@@ -99,7 +99,7 @@ export default function Services() {
                   </li>
                 </ul>
                 <div className="about__content text-center">
-                  <a className="btn btn--secondary" target="__blank" href="https://wa.me/5219617044610/?text=Podría%20darme%20más%20información%20sobre%20los%20paquetes%20de%20megacable%20internet">Schedule a Call</a>
+                  <a className="btn btn--secondary" target="__blank" href="tel:+17025780098">Schedule a Call</a>
                 </div>
               </div>
             </div>

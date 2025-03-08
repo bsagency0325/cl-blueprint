@@ -25,7 +25,7 @@ const Hero = () => {
                                     <h1 className="text--title text--white">Turn Clicks Into <span className="lighted lighted--secondary">Quote-Ready</span> Leads With <span className="lighted lighted--secondary">AI-Powered Precision</span>
                                     </h1>
                                     <h2 className="text--lead text--white">Blueprint Strategies uses advanced AI to generate and qualify<br /><span className='lighted lighted--secondary'>high-quality leads</span></h2>
-                                    <a className="btn btn--secondary" target="__blank" href="https://wa.me/5219617044610/?text=Podría%20darme%20más%20información%20sobre%20los%20paquetes%20de%20megacable%20internet">Get Started Today</a>
+                                    <a className="btn btn--secondary" target="__blank" href="https://wa.me/+17025780098?text=Blueprint%20Strategies%2C%20I%27m%20interested%20in%20growing%20my%20business">Get Started Today</a>
                                 </Zoom>
                             </div>
                         </div>

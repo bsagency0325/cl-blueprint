@@ -22,8 +22,8 @@ const Contact = () => {
                                     </p>    
                                 </div>
                                 <ul className="contact__buttons">
-                                    <li className='contact__buttons__item'><a className="btn btn--secondary" target="__blank" href="https://wa.me/5219617044610/?text=Blue%Print%Strategies">E-Mail</a></li>
-                                    <li className="contact__buttons__item"><a className="btn btn--whats" target="__blank" href="https://wa.me/5219617044610/?text=Blue%Print%Strategies">Phone</a></li>
+                                    <li className='contact__buttons__item'><a className="btn btn--secondary" target="__blank" href="mailto:blueprintstrategiesagency@gmail.com">E-Mail</a></li>
+                                    <li className="contact__buttons__item"><a className="btn btn--whats" target="__blank" href="https://wa.me/+17025780098?text=Blueprint%20Strategies%2C%20I%27m%20interested%20in%20growing%20my%20business">WhatsApp</a></li>
                                 </ul>
                                 </Fade>
                             </div>
