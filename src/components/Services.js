@@ -40,7 +40,7 @@ export default function Services() {
                         name = "1. Lead Generation with AI"
                         description={
                           <span>
-                            <strong className='text--secondary'>Drive a steady stream of high-quality leads</strong> to your business with our AI-powered lead generation platform. Our technology uses machine learning algorithms to identify and target potential customers who are most likely to convert.
+                            <strong className='text--dark-primary'>Drive a steady stream of high-quality leads</strong> to your business with our AI-powered lead generation platform. Our technology uses machine learning algorithms to identify and target potential customers who are most likely to convert.
                           </span>
                         }
                       />
@@ -51,7 +51,7 @@ export default function Services() {
                         name = "2. Quote-Ready Leads"
                         description = {
                           <span>
-                            <strong className="text--secondary">AI qualifies and delivers leads that are ready</strong> for action. Our platform identifies prospects who are actively seeking your products or services, so you can focus on closing deals instead of chasing down leads.
+                            <strong className="text--dark-primary">AI qualifies and delivers leads that are ready</strong> for action. Our platform identifies prospects who are actively seeking your products or services, so you can focus on closing deals instead of chasing down leads.
                           </span>
                         }
                       />
@@ -62,7 +62,7 @@ export default function Services() {
                         name = "3. Include a small CTA like"
                         description = {
                           <span>
-                            <strong className='text--secondary'>Learn more about how we can help you</strong> grow your business with our AI-powered lead generation platform and start generating more leads today with a free trial of our software solution.
+                            <strong className='text--dark-primary'>Learn more about how we can help you</strong> grow your business with our AI-powered lead generation platform and start generating more leads today with a free trial of our software solution.
                           </span>
                         }
                       />
@@ -79,7 +79,7 @@ export default function Services() {
                       {/* <FaBullhorn size={75}/> */}
                     </div>
                     <h4 className="text--lead boxes__title">1. We Launch Targeted Ads:</h4>
-                    <p className='text--body'>AI-optimized campaigns deliver a steady flow of leads.</p>
+                    <p className='text--body boxes__content'>AI-optimized campaigns deliver a steady flow of leads.</p>
                   </li>
                   <li className="boxes__item">
                     <div className="boxes__icon">
@@ -87,7 +87,7 @@ export default function Services() {
                       {/* <FaFilter size={75}/> */}
                     </div>
                     <h4 className="text--lead boxes__title">2. AI Qualifies Leads:</h4>
-                    <p className='text--body'>Our system quickly engages and qualifies leads, ensuring they’re ready for your sales team.</p>
+                    <p className='text--body boxes__content'>Our system quickly engages and qualifies leads, ensuring they’re ready for your sales team.</p>
                   </li>
                   <li className="boxes__item">
                     <div className="boxes__icon">
@@ -95,7 +95,7 @@ export default function Services() {
                       {/* <FaTrophy size={75}/> */}
                     </div>
                     <h4 className="text--lead boxes__title">3. You Close Deals:</h4>
-                    <p className='text--body'>Get opportunities that are ready for action, saving you time and maximizing results.</p>
+                    <p className='text--body boxes__content'>Get opportunities that are ready for action, saving you time and maximizing results.</p>
                   </li>
                 </ul>
                 <div className="about__content text-center">

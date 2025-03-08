@@ -158,6 +158,10 @@ span {
     &--tertiary {
         color: $color-tertiary;
     }
+
+    &--dark-primary {
+        color: $dark-text-primary;
+    }
 }
 
 .hr {

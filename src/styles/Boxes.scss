@@ -22,11 +22,11 @@
             }
             .boxes__title {
                 transition: color 0.35s;
-                color: $color-tertiary;
+                color: $dark-text-primary;
             }
             .boxes__content {
                 transition: color 0.35s;
-                color: $color-tertiary;
+                color: $dark-text-secondary;
             }
         }
         @include media('lg') {
