@@ -5,7 +5,7 @@ import Row from "react-bootstrap/esm/Row"
 // import { useState } from "react";
 import {Link} from 'react-scroll';
 
-import logoNavbar from '../images/logo-lineal-white-icon.png';
+import logo from '../images/logo.png';
 
 const Navbar = () => {
 
@@ -21,7 +21,7 @@ const Navbar = () => {
                     <Col>
                         <div className="navBar__container">
                             <div className="navBar__col">
-                                <Link href="#" to="hero" smooth={true} duration={500} className="navBar__brand"><img className="image__logo-navbar" alt="logo-blueprint" src={logoNavbar}/></Link>
+                                <Link href="#" to="hero" smooth={true} duration={500} className="navBar__brand"><img className="image__logo" alt="logo-blueprint" src={logo}/></Link>
                             </div>
                             {/* <div className="navBar__col">
                                 <button className="navBar__toggle" onClick={toggleNavbar}>
