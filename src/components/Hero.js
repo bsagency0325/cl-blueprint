@@ -21,7 +21,7 @@ const Hero = () => {
                                     <p className='text--lead text--white'>Effortless Business Growth</p>
                                     <h1 className="text--title text--white">We Generate <span className="lighted lighted--secondary">Quote-Ready</span> Home Improvement <span className="lighted lighted--secondary">Leads for You</span>
                                     </h1>
-                                    <h2 className="text--lead text--white">No Heavy Lifting Required!</h2>
+                                    <h2 className="text--lead text--white mb-5">No Heavy Lifting Required!</h2>
                                     <a className="btn btn--secondary" target="__blank" href="https://wa.me/+17025780098?text=Blueprint%20Strategies%2C%20I%27m%20interested%20in%20growing%20my%20business">Get more leads</a>
                                 </Zoom>
                             </div>
