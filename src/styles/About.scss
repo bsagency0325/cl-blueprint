@@ -1,6 +1,6 @@
 .about {
-    background-color: $dark-text-primary;
-    padding-bottom: 2rem;
+    padding: 2rem 0 4rem;
+    background-color: $dark-bg-primary;
     &__header {
         padding: 2rem 0;
         text-align: center;
@@ -20,6 +20,31 @@
         }
         &__right {
             text-align: right;
+        }
+    }
+
+    &__partners {
+        background-color: $dark-surface;
+        @include reset-list; 
+        border-radius: 1rem;
+        margin: 0 auto 4rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        max-width: 80%;
+        &__item {
+            width: 80%;
+            @include media('md') {
+                width: 20%;
+            }
+            img {
+                width: 100%;
+                margin: 0 auto;
+                @include media('md') {
+                    width: 80%;
+                }
+            }
         }
     }
 }

@@ -6,15 +6,19 @@
     margin-bottom: 3rem;
     gap: 1rem;
     &__item {
+        background-color: $dark-disabled;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
         border-radius: 15px;
+        border: 1px solid $dark-divider;
         overflow: hidden;
         width: 100%;
         padding: 2rem 1rem 1rem;
         text-align: center;
+        
+        
         &:hover {
             transition: background-color 0.35s, transform 0.35s;
-            background-color: $color-primary;
+            background-color: $dark-bg-secondary;
             transform: translateY(-0.5rem);
             .boxes__icon svg {
                 transition: color 0.35s;
@@ -46,12 +50,15 @@
         
     }
     &__title {
-        color: $color-primary;
+        color: $dark-text-secondary;
         font-size: $fs-md;
         font-weight: $fw-5;
         margin-bottom: 1rem;
         @include media('md') {
             font-size: $fs-md;
         }
+    }
+    &__content {
+        color: $dark-text-secondary;
     }
 }
