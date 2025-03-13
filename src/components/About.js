@@ -97,7 +97,7 @@ export default function About() {
                   </ul>
                 </div>
                 <div className="about__content text-center">
-                  <a className="btn btn--secondary" target="__blank" href="mailto:blueprintstrategiesagency@gmail.com">Let's work togueter</a>
+                  <a className="btn btn--secondary" target="__blank" href="mailto:blueprintstrategiesagency@gmail.com">Learn More</a>
                 </div>
               </Fade>
           </Col>
