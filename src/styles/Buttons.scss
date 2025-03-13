@@ -18,8 +18,10 @@
             color: $color-white;
             background-color: $color-secondary;
             text-transform: uppercase;
-            letter-spacing: 0.075rem;
-            font-weight: $fw-5;
+            letter-spacing: 0.1rem;
+            font-weight: $fw-7;
+            border-radius: 1.2rem;
+            padding: 0.5rem 2.4rem;
         }
         @include hover {
             color: $color-white !important;

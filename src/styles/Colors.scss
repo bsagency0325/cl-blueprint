@@ -9,17 +9,17 @@ $color-mazarine-blue: #273c75;
 $color-skirret-green: #44bd32;
 $color-nanohanacha-gold: #e1b12c;
 $color-double-dragon: #ff9f43;
-$color-blueprint-blue: #001738;
+$color-blueprint-blue: #001841;
 $color-blueprint-orange: #FF5722;
-$color-blueprint-gray: #BCBCBC;
+$color-blueprint-gray: #828181;
 
 // Dark mode adaptations
-$dark-bg-primary: #001738;       // Blue original como fondo principal
+$dark-bg-primary: $color-blueprint-blue;       // Blue original como fondo principal
 $dark-bg-secondary: lighten($color-blueprint-blue, 8%); // #0A1F40
 $dark-surface: #2D2D2D;          // Superficies y componentes
 $dark-text-primary: #E0E0E0;     // Texto principal
 $dark-text-secondary: #9E9E9E;   // Texto secundario
-$dark-accent: #FF5722;           // Naranja original (buen contraste en oscuro)
+$dark-accent: $color-blueprint-orange;           // Naranja original (buen contraste en oscuro)
 $dark-accent-hover: #FF8A65;     // Variante más clara para hover
 $dark-divider: #424242;          // Líneas divisorias
 $dark-disabled: #616161;         // Elementos deshabilitados
