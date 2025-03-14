@@ -28,7 +28,7 @@ export default function Services() {
                   <div className='headercontent__content'>
                     <h3 className="text--subtitle text-center text-uppercase text-white"><em>Our <span className="lighted lighted--secondary">Services</span></em></h3>
                   </div>
-                  <ul className="boxes">
+                  <ul className="boxes mb-5 pb-5">
                     <li className="boxes__item">
                       <h4 className="text--lead boxes__title">Lead Generation with AI:</h4>
                       <p className='text--body boxes__content'>Drive a steady stream of high-quality leads using advanced AI technology and strategic ad campaigns.</p>
