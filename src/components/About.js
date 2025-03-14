@@ -101,6 +101,7 @@ export default function About() {
                 <div className="about__content text-center">
                   <a className="btn btn--secondary" target="__blank" href="mailto:blueprintstrategiesagency@gmail.com">Learn More</a>
                 </div>
+                
               </Fade>
           </Col>
         </Row>
