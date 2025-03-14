@@ -1,13 +1,44 @@
 .footer {
     &__copy {
         background-color: $dark-bg-secondary;
-        padding: .5rem;
+        padding: 2rem 0 1rem;
     
         &__text {
             margin-bottom: 0;
             text-align: center;
             letter-spacing: 0.1rem;
             text-transform: uppercase;
+            font-size: $fs-mn;
+            color: $dark-text-secondary;
+        }
+    }
+    &__list {
+        @include reset-list;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 850px;
+        max-width: 100%;
+        margin: 0 auto 2rem;
+        gap: 1rem;
+        @include media('md') {
+            gap: 2rem;
+        }
+        &__item {
+            width: 30%;
+            text-align: center;
+            @include media('md') {
+                
+                width: 15%;
+            }
+        }
+        &__icon {
+            width: 70%;
+            margin: 0 auto 1rem;
+        }
+        &__text {
+            display: block;
+            text-align: center;
             font-size: $fs-mn;
             color: $dark-text-secondary;
         }
