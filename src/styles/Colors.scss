@@ -14,15 +14,15 @@ $color-blueprint-orange: #FF5722;
 $color-blueprint-gray: #828181;
 
 // Dark mode adaptations
-$dark-bg-primary: $color-blueprint-blue;       // Blue original como fondo principal
-$dark-bg-secondary: lighten($color-blueprint-blue, 8%); // #0A1F40
-$dark-surface: #2D2D2D;          // Superficies y componentes
-$dark-text-primary: #E0E0E0;     // Texto principal
-$dark-text-secondary: #9E9E9E;   // Texto secundario
-$dark-accent: $color-blueprint-orange;           // Naranja original (buen contraste en oscuro)
-$dark-accent-hover: #FF8A65;     // Variante más clara para hover
-$dark-divider: #424242;          // Líneas divisorias
-$dark-disabled: #616161;         // Elementos deshabilitados
+$dark-bg-primary: $color-blueprint-blue;               // Azul original como fondo principal
+$dark-bg-secondary: lighten($color-blueprint-blue, 10%); // #00285A (variante más clara del azul)
+$dark-surface: #1E1E1E;                  // Superficies y componentes
+$dark-text-primary: #F5F5F5;             // Texto principal (blanco ligeramente apagado)
+$dark-text-secondary: #B0B0B0;           // Texto secundario (gris claro)
+$dark-accent: $color-blueprint-orange;                   // Naranja original (buen contraste en oscuro)
+$dark-accent-hover: #FF8A65;             // Variante más clara para hover
+$dark-divider: #424242;                  // Líneas divisorias
+$dark-disabled: #616161;                 // Elementos deshabilitados
 
 //redes
 $color-facebook: #3b5998;

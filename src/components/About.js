@@ -44,8 +44,10 @@ export default function About() {
           <Col>
             <Fade cascade triggerOnce direction="right">
               <div className="about__content">
-                <h3 className="text--subtitle text-center text-uppercase text--dark-primary"><em>Our <span className="lighted lighted--secondary">Partners</span></em></h3>
                 <ul className='about__partners'>
+                  <li>
+                    <h4 className="text--lead text-center text-uppercase text--dark-primary"><em>Our<br /><span className="lighted lighted--secondary">Partners</span></em></h4>
+                  </li>
                   <li className='about__partners__item'>
                     <img src={partners02} alt="MetaAds"/>
                   </li>

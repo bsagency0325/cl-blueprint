@@ -32,7 +32,7 @@
         flex-wrap: wrap;
         justify-content: space-around;
         align-items: center;
-        max-width: 80%;
+        max-width: 100%;
         &__item {
             width: 80%;
             @include media('md') {
