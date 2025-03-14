@@ -6,10 +6,11 @@
         &__text {
             margin-bottom: 0;
             text-align: center;
-            letter-spacing: 0.1rem;
+            letter-spacing: 0.125rem;
             text-transform: uppercase;
             font-size: $fs-mn;
             color: $dark-text-secondary;
+            font-weight: $fw-6;
         }
     }
     &__list {

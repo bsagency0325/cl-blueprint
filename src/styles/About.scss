@@ -26,7 +26,6 @@
     &__partners {
         background-color: $dark-bg-secondary;
         @include reset-list; 
-        padding: 2rem 0 1rem;
         border-radius: 1rem;
         margin: 0 auto 4rem;
         display: flex;
@@ -36,15 +35,17 @@
         max-width: 100%;
         &__item {
             width: 40%;
-            margin-bottom: 1rem;
             text-align: center;
             @include media('md') {
-                width: 20%;
+                width: 25%;
+            }
+            &:nth-child(2) {
+                border-left: 2px solid $dark-accent;
             }
             img {
-                width: 80%;
+                width: 60%;
                 @include media('md') {
-                    width: 40%;
+                    width: 75%;
                 }
             }
         }

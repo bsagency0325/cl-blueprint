@@ -7,6 +7,8 @@ import { Fade } from 'react-awesome-reveal';
 // import { FaRocket, FaBullseye, FaChartLine } from 'react-icons/fa';
 
 import partners01 from '../images/partners-01.png';
+import partners02 from '../images/partners-02.png';
+import partners03 from '../images/partners-03.png';
 import icon04 from '../images/icon-04.png';
 import icon05 from '../images/icon-05.png';
 import icon06 from '../images/icon-06.png';
@@ -46,16 +48,16 @@ export default function About() {
               <div className="about__content">
                 <ul className='about__partners'>
                   <li className='about__partners__item'>
-                    <h4 className="text--lead text-center text-uppercase text--dark-secondary"><em>Our<br />Partners</em></h4>
+                    <h4 className="text--subtitle text-center text-uppercase text--dark-secondary"><em>Our<br />Partners</em></h4>
                   </li>
                   <li className='about__partners__item'>
                     <img src={partners01} alt="MetaAds"/>
                   </li>
                   <li className='about__partners__item'>
-                    <img src={partners01} alt="GoHighLevel"/>
+                    <img src={partners02} alt="GoHighLevel"/>
                   </li>
                   <li className='about__partners__item'>
-                    <img src={partners01} alt="Appointwise"/>
+                    <img src={partners03} alt="Appointwise"/>
                   </li>
                 </ul>
               </div>

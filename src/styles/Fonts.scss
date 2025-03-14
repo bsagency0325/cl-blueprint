@@ -100,7 +100,7 @@ span {
     &--subtitle {
         font-size: $fs-lg;
         line-height: 1.3;
-        letter-spacing: 0.05rem;
+        letter-spacing: 0.075rem;
         font-weight: $fw-5;
         margin-bottom: 1rem;
         @include media('xs') {
@@ -116,7 +116,7 @@ span {
 
     &--lead {
         font-size: $fs-md;
-        letter-spacing: .02rem;
+        letter-spacing: .05rem;
         line-height: 1.6;
         font-weight: $fw-5;
         margin-bottom: 1rem;
@@ -128,8 +128,8 @@ span {
     &--body {
         font-size: $fs-sm;
         margin-bottom: 1rem;
-        letter-spacing: 0.02rem;
-        line-height: 1.6;
+        letter-spacing: 0.025rem;
+        line-height: 1.8;
         font-weight: $fw-4;
         @include media('md') {
             font-size: $fs-sm;
