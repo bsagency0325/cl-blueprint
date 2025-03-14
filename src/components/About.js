@@ -45,7 +45,7 @@ export default function About() {
             <Fade cascade triggerOnce direction="right">
               <div className="about__content">
                 <ul className='about__partners'>
-                  <li>
+                  <li className='about__partners__item'>
                     <h4 className="text--lead text-center text-uppercase text--dark-primary"><em>Our<br /><span className="lighted lighted--secondary">Partners</span></em></h4>
                   </li>
                   <li className='about__partners__item'>
