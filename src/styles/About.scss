@@ -42,7 +42,7 @@
             &:nth-child(2) {
                 border-left: 2px solid transparent;
                 @include media('md') {
-                    border-left: 2px solid $dark-accent;
+                    border-left: 2px solid $color-primary;
                 }
             }
             img {

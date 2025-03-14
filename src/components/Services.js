@@ -2,18 +2,12 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Gridimg from './Gridimg';
 
 import icon01 from '../images/icon-01.png';
 import icon02 from '../images/icon-02.png';
 import icon03 from '../images/icon-03.png';
 
 import { Fade } from 'react-awesome-reveal';
-
-const imagePaths = [  
-  require('../images/img-04.jpg'),
-  require('../images/img-05.jpg'),
-];
 
 // import { FaBullhorn, FaFilter, FaTrophy } from 'react-icons/fa';
 
@@ -48,9 +42,6 @@ export default function Services() {
                       <p className='text--body boxes__content'>We manage every step from lead generation to appointment setting, integrating everything into your CRM with GoHighLevel.</p>
                     </li>
                   </ul>
-                  <Gridimg 
-                    imagePaths = {imagePaths}
-                  />
                 </Fade>
                 <div className='headercontent__content'>
                   <h3 className="text--subtitle text-center text-uppercase text-white"><em>How We Deliver <span className="lighted lighted--secondary">High-Quality Leads</span></em></h3>
