@@ -6,7 +6,7 @@ import Gridimg from './Gridimg';
 import { Fade } from 'react-awesome-reveal';
 // import { FaRocket, FaBullseye, FaChartLine } from 'react-icons/fa';
 
-import partners02 from '../images/partners-02.png';
+import partners01 from '../images/partners-01.png';
 import icon04 from '../images/icon-04.png';
 import icon05 from '../images/icon-05.png';
 import icon06 from '../images/icon-06.png';
@@ -49,13 +49,13 @@ export default function About() {
                     <h4 className="text--lead text-center text-uppercase text--dark-primary"><em>Our<br /><span className="lighted lighted--secondary">Partners</span></em></h4>
                   </li>
                   <li className='about__partners__item'>
-                    <img src={partners02} alt="MetaAds"/>
+                    <img src={partners01} alt="MetaAds"/>
                   </li>
                   <li className='about__partners__item'>
-                    <img src={partners02} alt="GoHighLevel"/>
+                    <img src={partners01} alt="GoHighLevel"/>
                   </li>
                   <li className='about__partners__item'>
-                    <img src={partners02} alt="Appointwise"/>
+                    <img src={partners01} alt="Appointwise"/>
                   </li>
                 </ul>
               </div>
@@ -75,7 +75,7 @@ export default function About() {
                     <li className="boxes__item">
                       <div className="boxes__icon">
                         {/* <FaRocket size={75}/> */}
-                        <img src={icon04} alt="icon-01" className="boxes__img"/>
+                        <img src={icon04} alt="icon-blueprint" className="boxes__img"/>
                       </div>
                       <h4 className="text--lead boxes__title">AI-Driven Precision</h4>
                       <p className='text--body boxes__content'>Our automated processes deliver faster, more accurate results by engaging and qualifying leads instantly.</p>
@@ -83,7 +83,7 @@ export default function About() {
                     <li className="boxes__item">
                       <div className="boxes__icon">
                         {/* <FaBullseye size={75}/> */}
-                        <img src={icon05} alt="icon-01" className="boxes__img"/>
+                        <img src={icon05} alt="icon-blueprint" className="boxes__img"/>
                       </div>
                       <h4 className="text--lead boxes__title">Custom Solutions</h4>
                       <p className='text--body boxes__content'>Every campaign is tailored to your specific business goals, ensuring you only speak with quote-ready prospects.</p>
@@ -91,7 +91,7 @@ export default function About() {
                     <li className="boxes__item">
                       <div className="boxes__icon">
                         {/* <FaChartLine size={75}/> */}
-                        <img src={icon06} alt="icon-01" className="boxes__img"/>
+                        <img src={icon06} alt="icon-blueprint" className="boxes__img"/>
                       </div>
                       <h4 className="text--lead boxes__title">Measurable Success</h4>
                       <p className='text--body boxes__content'>Our transparent reporting tools track your ROI and provide clear insights into your lead pipeline.</p>

@@ -26,6 +26,7 @@
     &__partners {
         background-color: $dark-surface;
         @include reset-list; 
+        padding: 2rem 0 1rem;
         border-radius: 1rem;
         margin: 0 auto 4rem;
         display: flex;
@@ -34,15 +35,16 @@
         align-items: center;
         max-width: 100%;
         &__item {
-            width: 80%;
+            width: 40%;
+            margin-bottom: 1rem;
             @include media('md') {
                 width: 20%;
             }
             img {
-                width: 100%;
+                width: 80%;
                 margin: 0 auto;
                 @include media('md') {
-                    width: 80%;
+                    width: 40%;
                 }
             }
         }
