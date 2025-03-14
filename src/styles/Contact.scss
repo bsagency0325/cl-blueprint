@@ -1,5 +1,5 @@
 .contact {
-    padding: 4rem 0 4rem;
+    padding: 2rem 0 4rem;
     background-color: $color-primary;
     // &__list {
     //     @include reset-list;
@@ -27,18 +27,25 @@
         @include reset-list;
         display: flex;
         justify-content: center;
-        gap: 1rem;
         margin-top: 2rem;
         &__item {
-            
+            width: 50%;
+            @include media('md') {
+                width: 12%;;
+            }
         }
-    }
-
-    &__img {
-        &--logomegavida {
-            max-width: 100%;
-            width: 350px;
-            margin-top: 4rem;
+        &__btn {
+            display: inline-block;
+            border-radius: 1rem;
+            background-color: $color-primary;
+            padding: 1rem;
+            &:hover{
+                background-color: $dark-bg-secondary;
+            }
+        }
+        &__icon {
+            width: 70%;
+            color: $color-white;
         }
     }
 }
