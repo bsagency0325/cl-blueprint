@@ -46,7 +46,7 @@ export default function About() {
               <div className="about__content">
                 <ul className='about__partners'>
                   <li className='about__partners__item'>
-                    <h4 className="text--lead text-center text-uppercase text--dark-primary"><em>Our<br /><span className="lighted lighted--secondary">Partners</span></em></h4>
+                    <h4 className="text--lead text-center text-uppercase text--dark-secondary"><em>Our<br />Partners</em></h4>
                   </li>
                   <li className='about__partners__item'>
                     <img src={partners01} alt="MetaAds"/>
