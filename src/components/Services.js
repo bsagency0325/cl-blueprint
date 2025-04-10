@@ -52,7 +52,7 @@ export default function Services() {
                       <img src={icon01} alt="icon-01" className="boxes__img"/>
                       {/* <FaBullhorn size={75}/> */}
                     </div>
-                    <h4 className="text--lead boxes__title">We Launch Targeted Ads:</h4>
+                    <h4 className="text--lead boxes__title">We Launch Targeted Ads</h4>
                     <p className='text--body boxes__content'>Our AI-optimized campaigns ensure your business is seen by homeowners actively seeking your services.</p>
                   </li>
                   <li className="boxes__item">
@@ -60,7 +60,7 @@ export default function Services() {
                       <img src={icon02} alt="icon-01" className="boxes__img"/>
                       {/* <FaFilter size={75}/> */}
                     </div>
-                    <h4 className="text--lead boxes__title">AI Qualifies Leads:</h4>
+                    <h4 className="text--lead boxes__title">AI Qualifies Leads</h4>
                     <p className='text--body boxes__content'>Our system engages, nurtures, and qualifies leads via automated text, email, and soon, AI-powered phone calls.</p>
                   </li>
                   <li className="boxes__item">
@@ -68,7 +68,7 @@ export default function Services() {
                       <img src={icon03} alt="icon-01" className="boxes__img"/>
                       {/* <FaTrophy size={75}/> */}
                     </div>
-                    <h4 className="text--lead boxes__title">You Close Deals:</h4>
+                    <h4 className="text--lead boxes__title">You Close Deals</h4>
                     <p className='text--body boxes__content'>We handle everything up to setting appointments, leaving you to focus on what you do best—closing deals and growing your business.</p>
                   </li>
                 </ul>
