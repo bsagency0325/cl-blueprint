@@ -17,7 +17,7 @@ const Contact = () => {
                             <div className="headercontent__header">
                                 <Fade cascade triggerOnce direction="up"> 
                                 <div className='headercontent__header__content'>
-                                    <h3 className="text--subtitle text--dark-primary">Get 5 New <span className="lighted lighted--secondary">Quote-Ready Leads</span></h3>
+                                    <h3 className="text--subtitle text--dark-primary">Get 10 New <span className="lighted lighted--secondary">Quote-Ready Leads</span></h3>
                                 </div>  
                                 <div className="headercontent__content">
                                     <p className="text--lead text--dark-secondary">
