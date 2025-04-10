@@ -30,15 +30,15 @@ export default function Services() {
                   </div>
                   <ul className="boxes mb-5 pb-5">
                     <li className="boxes__item">
-                      <h4 className="text--lead boxes__title">Lead Generation with AI:</h4>
+                      <h4 className="text--lead boxes__title">Lead Generation with AI</h4>
                       <p className='text--body boxes__content'>Drive a steady stream of high-quality leads using advanced AI technology and strategic ad campaigns.</p>
                     </li>
                     <li className="boxes__item">
-                      <h4 className="text--lead boxes__title">Quote-Ready Leads:</h4>
+                      <h4 className="text--lead boxes__title">Quote-Ready Leads</h4>
                       <p className='text--body boxes__content'>Our AI system qualifies leads and ensures they are ready to take action, saving you time and effort.</p>
                     </li>
                     <li className="boxes__item">
-                      <h4 className="text--lead boxes__title">Done-For-You Sales Pipeline:</h4>
+                      <h4 className="text--lead boxes__title">Done-For-You Sales Pipeline</h4>
                       <p className='text--body boxes__content'>We manage every step from lead generation to appointment setting, integrating everything into your CRM with GoHighLevel.</p>
                     </li>
                   </ul>
