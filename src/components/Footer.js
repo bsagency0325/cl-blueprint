@@ -25,8 +25,16 @@ const Footer = () => {
                     <span className="footer__list__text">Qualified Leads</span>
                 </li>
             </ul>
+            
+            {/* Existing copyright */}
             <p className="footer__copy__text">
                 #blueprintstrategies {year}
+            </p>
+
+            {/* New policy links */}
+            <p className="footer__copy__text" style={{ marginTop: '8px', fontSize: '14px' }}>
+                <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> |{" "}
+                <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>
             </p>
         </div>
     )
