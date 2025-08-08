@@ -32,10 +32,28 @@ const Footer = () => {
             </p>
 
             {/* New policy links */}
-            <p className="footer__copy__text" style={{ marginTop: '8px', fontSize: '14px' }}>
-                <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> |{" "}
-                <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>
-            </p>
+            <p 
+                className="footer__copy__text" 
+  style={{ marginTop: '8px', fontSize: '14px', color: '#001841' }}
+>
+  <a 
+    href="/privacy-policy" 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    style={{ color: '#001841', textDecoration: 'none' }}
+  >
+    Privacy Policy
+  </a> 
+  <span style={{ color: '#001841', margin: '0 6px' }}>|</span>
+  <a 
+    href="/terms" 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    style={{ color: '#001841', textDecoration: 'none' }}
+  >
+    Terms of Service
+  </a>
+</p>
         </div>
     )
 }
