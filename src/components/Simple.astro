@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from './Nav.astro';
+import Footer from './Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: 'en' | 'es';
+  noindex?: boolean;
+}
+const { title, description, lang = 'en', noindex = false } = Astro.props;
+---
+<Base title={title} description={description} lang={lang} noindex={noindex}>
+  <Nav lang={lang} />
+  <main class="simple">
+    <div class="wrap simple-wrap">
+      <slot />
+    </div>
+  </main>
+  <Footer lang={lang} />
+</Base>
+
+<style>
+  .simple { padding: 80px 0 112px; }
+  .simple-wrap { max-width: 760px; }
+  .simple-wrap :global(h1) { font-size: clamp(36px, 5vw, 52px); margin-bottom: 12px; }
+  .simple-wrap :global(h2) { font-size: 24px; margin: 40px 0 12px; }
+  .simple-wrap :global(p), .simple-wrap :global(li) { color: var(--body); }
+  .simple-wrap :global(p) { margin-bottom: 16px; }
+  .simple-wrap :global(ul) { padding-left: 22px; margin: 0 0 16px; }
+  .simple-wrap :global(li) { margin-bottom: 6px; }
+  .simple-wrap :global(.meta) { font-family: var(--font-mono); font-size: 13px; color: var(--steel); }
+</style>

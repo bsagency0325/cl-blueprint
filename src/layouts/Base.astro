@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: 'en' | 'es';
+  alternate?: { en: string; es: string };
+  noindex?: boolean;
+}
+
+const { title, description, lang = 'en', alternate, noindex = false } = Astro.props;
+const site = Astro.site ?? new URL('https://blueprintstrategies.us');
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImage = new URL('/brand/og-image.png', site).href;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Blueprint Strategies',
+  url: site.href,
+  logo: new URL('/brand/icon.svg', site).href,
+  image: ogImage,
+  description:
+    'AI-powered growth agency for home service businesses: AI search visibility, speed-to-lead, reputation, paid ads, lead scoring and close-rate systems.',
+  areaServed: 'US',
+  address: { '@type': 'PostalAddress', addressLocality: 'Las Vegas', addressRegion: 'NV', addressCountry: 'US' },
+  knowsLanguage: ['en', 'es'],
+};
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {alternate && (
+      <>
+        <link rel="alternate" hreflang="en" href={new URL(alternate.en, site).href} />
+        <link rel="alternate" hreflang="es" href={new URL(alternate.es, site).href} />
+        <link rel="alternate" hreflang="x-default" href={new URL(alternate.en, site).href} />
+      </>
+    )}
+    <meta name="theme-color" content="#060F19" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Blueprint Strategies" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_US' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

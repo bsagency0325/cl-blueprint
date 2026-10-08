@@ -1,0 +1,14 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Home from '../../components/Home.astro';
+import Footer from '../../components/Footer.astro';
+import { content } from '../../i18n/home';
+
+const t = content.es;
+---
+<Base title={t.meta.title} description={t.meta.description} lang="es" alternate={{ en: '/', es: '/es/' }}>
+  <Nav lang="es" />
+  <Home lang="es" />
+  <Footer lang="es" />
+</Base>

@@ -1,0 +1,60 @@
+---
+interface Props { lang?: 'en' | 'es' }
+const { lang = 'en' } = Astro.props;
+const es = lang === 'es';
+const home = es ? '/es/' : '/';
+const links = es
+  ? [
+      { href: '/es/#sistema', label: 'El sistema' },
+      { href: '/es/#como-funciona', label: 'Cómo funciona' },
+      { href: '/es/#garantia', label: 'Garantía' },
+      { href: '/es/#precios', label: 'Precios' },
+    ]
+  : [
+      { href: '/#system', label: 'The system' },
+      { href: '/#how-it-works', label: 'How it works' },
+      { href: '/#guarantee', label: 'Guarantee' },
+      { href: '/#pricing', label: 'Pricing' },
+    ];
+---
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href={home} class="brand" aria-label="Blueprint Strategies home">
+      <img src="/brand/logo-horizontal.svg" alt="Blueprint Strategies" width="145" height="60" />
+    </a>
+    <nav aria-label={es ? 'Principal' : 'Main'} class="links">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+    <div class="actions">
+      <a class="lang mono" href={es ? '/' : '/es/'} hreflang={es ? 'en' : 'es'} lang={es ? 'en' : 'es'}>
+        {es ? 'EN' : 'ES'}
+      </a>
+      <a class="btn btn-primary cta" href={es ? '/es/#score' : '/#score'}>
+        {es ? 'Tu Score gratis' : 'Free Score'}
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(6, 15, 25, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 76px; }
+  .brand img { height: 40px; width: auto; }
+  .links { display: flex; gap: 32px; }
+  .links a { color: var(--body); text-decoration: none; font-size: 16px; }
+  .links a:hover { color: var(--chalk); }
+  .actions { display: flex; align-items: center; gap: 16px; }
+  .lang {
+    color: var(--steel); text-decoration: none; font-size: 14px;
+    min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center;
+  }
+  .lang:hover { color: var(--chalk); }
+  .cta { min-height: 44px; padding: 0 18px; font-size: 15px; }
+  @media (max-width: 900px) { .links { display: none; } }
+  @media (max-width: 420px) { .brand img { height: 32px; } .cta { padding: 0 14px; } }
+</style>

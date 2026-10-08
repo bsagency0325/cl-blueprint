@@ -1,0 +1,48 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Old .html URLs keep working (SMS carriers and A2P reviewers may have them on file)
+[[redirects]]
+  from = "/optin-blueprintstrategies.html"
+  to = "/optin-blueprintstrategies"
+  status = 301
+
+[[redirects]]
+  from = "/privacy-policy.html"
+  to = "/privacy-policy"
+  status = 301
+
+[[redirects]]
+  from = "/terms.html"
+  to = "/terms"
+  status = 301
+
+# Former client opt-in pages were retired (kept in the archive/developer-2025 branch)
+[[redirects]]
+  from = "/optin-aydevelopment*"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/optin-atreyucustom*"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/optin-cesarstileandbath*"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/optin-willyremodeling*"
+  to = "/"
+  status = 301
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
