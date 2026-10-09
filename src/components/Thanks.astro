@@ -1,0 +1,31 @@
+---
+import Simple from './Simple.astro';
+import { content, type Lang } from '../i18n/home';
+import { site } from '../config';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang].thanks;
+const steps = site.calendarUrl ? [...t.steps, t.reviewStep] : t.steps;
+---
+<Simple title={t.metaTitle} description={t.metaDescription} lang={lang} noindex>
+  <p class="meta">{t.eyebrow.toUpperCase()}</p>
+  <h1>{t.title}</h1>
+  <h2>{t.nextTitle}</h2>
+  <ol>
+    {steps.map((s) => <li>{s}</li>)}
+  </ol>
+  {site.calendarUrl && (
+    <div class="calendar">
+      <h2>{t.calendarTitle}</h2>
+      <iframe src={site.calendarUrl} title={t.calendarTitle} loading="lazy"></iframe>
+    </div>
+  )}
+  <p><a class="btn btn-ghost" href={lang === 'es' ? '/es/' : '/'}>{t.back}</a></p>
+</Simple>
+
+<style>
+  ol { padding-left: 22px; margin: 0 0 32px; }
+  .calendar { margin-bottom: 32px; }
+  iframe { width: 100%; min-height: 680px; border: 1px solid var(--line); border-radius: 14px; background: var(--chalk); }
+</style>
