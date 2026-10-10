@@ -6,6 +6,7 @@ import ScoreForm from './ScoreForm.astro';
 import answerImg from '../assets/illustrations/answer.jpg';
 import foundImg from '../assets/illustrations/found.jpg';
 import bookedImg from '../assets/illustrations/booked.jpg';
+import pieroImg from '../assets/piero.jpg';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -13,7 +14,6 @@ const t = content[lang];
 const ids = t.ids;
 const scoreValues = [52, 18, 35, 60];
 const scoreTotal = 41;
-const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.items] : t.guarantee.items;
 
 const images = { found: foundImg, booked: bookedImg } as const;
 const imgWidths = [480, 720, 1024];
@@ -102,9 +102,6 @@ const leakIcons = [
           <figure class="illo">
             <Image src={answerImg} alt={t.system.foundation.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
           </figure>
-          <ol class="legend mono">
-            {t.system.foundation.legend.map((l, i) => <li><span>0{i + 1}</span>{l}</li>)}
-          </ol>
         </div>
         <div class="foundation-copy">
           <span class="mono tag">{t.system.foundation.label}</span>
@@ -124,30 +121,54 @@ const leakIcons = [
         </div>
       </div>
 
-      <!-- Get Found + Get Booked -->
-      <div class="paths">
-        {illustrated.map((p) => (
-          <div class="path card">
-            <div class="illo-block" data-reveal>
-              <figure class="illo">
-                <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
-              </figure>
-              <ol class="legend mono">
-                {p.legend.map((l, i) => <li><span>0{i + 1}</span>{l}</li>)}
-              </ol>
-            </div>
-            <div class="path-copy">
-              <span class="mono tag">{p.tag}</span>
-              <h3>{p.name}</h3>
-              <p class="for">{p.for}</p>
-              <ul class="ticks">
-                {p.items.map((it) => <li>{it}</li>)}
-              </ul>
-              <p class="promise"><span class="mono">{t.system.promiseLabel}</span>{p.promise}</p>
-            </div>
+      <!-- Get Found + Get Booked: same layout as the foundation, each with its own example screen -->
+      {illustrated.map((p, n) => (
+        <div class={`path card${n % 2 ? ' flip' : ''}`}>
+          <figure class="illo" data-reveal>
+            <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+          </figure>
+          <div class="path-copy">
+            <span class="mono tag">{p.tag}</span>
+            <h3>{p.name}</h3>
+            <p class="for">{p.for}</p>
+            <ul class="ticks">
+              {p.items.map((it) => <li>{it}</li>)}
+            </ul>
+            {p.demo?.kind === 'maps' && (
+              <div class="demo" data-demo>
+                <p class="mono demo-label">{p.demo.label}</p>
+                <div class="msg search mono"><span aria-hidden="true">⌕</span>{p.demo.search}</div>
+                <ol class="results">
+                  {p.demo.results.map((r, i) => (
+                    <li class={`msg result${i === 0 ? ' top' : ''}`}>
+                      <span class="pin" aria-hidden="true"></span>
+                      <span class="r-name">{r.name}</span>
+                      <span class="stars" aria-label={`${r.stars}/5`}>{'★'.repeat(r.stars)}<span class="off">{'★'.repeat(5 - r.stars)}</span></span>
+                      {r.tag && <span class="mono r-tag">{r.tag}</span>}
+                    </li>
+                  ))}
+                </ol>
+                <div class="msg ask">{p.demo.ask}</div>
+                <div class="msg answer">{p.demo.answer}</div>
+              </div>
+            )}
+            {p.demo?.kind === 'booked' && (
+              <div class="demo" data-demo>
+                <p class="mono demo-label">{p.demo.label}</p>
+                <div class="msg ad">
+                  <span class="mono ad-tag">{p.demo.adTag}</span>
+                  <p>{p.demo.ad}</p>
+                  <span class="ad-btn">{p.demo.adButton}</span>
+                </div>
+                <div class="msg msg-note">↓</div>
+                <div class="msg lead-msg mono">{p.demo.lead}</div>
+                <div class="msg msg-note">↓</div>
+                <div class="msg msg-booked">{p.demo.booked}</div>
+              </div>
+            )}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
 
       <!-- Full Blueprint -->
       <div class="full card" data-reveal>
@@ -157,7 +178,6 @@ const leakIcons = [
           <p class="for">{fullPath.for}</p>
         </div>
         <p class="path-body">{fullPath.body}</p>
-        <p class="promise"><span class="mono">{t.system.promiseLabel}</span>{fullPath.promise}</p>
       </div>
 
       <div class="system-close" data-reveal>
@@ -191,17 +211,21 @@ const leakIcons = [
     <div class="wrap">
       <div class="section-head" data-reveal>
         <p class="eyebrow">{t.guarantee.eyebrow}</p>
-        <h2>{t.guarantee.title}</h2>
       </div>
-      <div class={`g-tiles n${guarantees.length}`} data-reveal>
-        {guarantees.map((g) => (
-          <div class="g-tile">
-            <span class="mono g-label">{g.label}</span>
-            <p>{g.body}</p>
-          </div>
-        ))}
+      <div class="g-wrap" data-reveal>
+        <div class="g-main">
+          <h3>{t.guarantee.title}</h3>
+          <p>{t.guarantee.body}</p>
+        </div>
+        <div class="g-tiles">
+          {t.guarantee.items.map((g) => (
+            <div class="g-tile">
+              <span class="mono g-label">{g.label}</span>
+              <p>{g.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
-      <p class="note" data-reveal>{t.guarantee.note}</p>
     </div>
   </section>
 
@@ -209,9 +233,7 @@ const leakIcons = [
   <section class="section">
     <div class="wrap founder" data-reveal>
       <div class="photo">
-        {site.founderPhoto
-          ? <img src={site.founderPhoto} alt={t.founder.photoAlt} width="480" height="560" loading="lazy" />
-          : <img class="mark" src="/brand/icon.svg" alt="" width="60" height="120" />}
+        <Image src={pieroImg} alt={t.founder.photoAlt} widths={[400, 640, 900]} sizes="(max-width: 1000px) 360px, 400px" format="webp" quality={80} loading="lazy" />
       </div>
       <div class="founder-copy">
         <p class="eyebrow">{t.founder.eyebrow}</p>
@@ -388,21 +410,17 @@ const leakIcons = [
   .leak h3 { font-size: 22px; }
   .leak p { color: var(--body); font-size: 16px; }
 
-  /* Illustrations: framed image with a numbered legend underneath (no text on the drawing) */
-  .illo-block { display: flex; flex-direction: column; gap: 14px; }
+  /* Illustrations: framed, no text on the drawing */
   .illo { margin: 0; background: #071520; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
   .illo :global(img) { width: 100%; height: auto; }
-  .legend { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; font-size: 13px; color: #d5dde4; }
-  .legend li { display: flex; gap: 10px; align-items: baseline; }
-  .legend span { color: var(--lime); }
 
   /* System */
   .foundation { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; border-color: var(--lime); margin-bottom: 16px; align-items: center; }
   .foundation-copy { display: flex; flex-direction: column; gap: 14px; }
   .foundation h3 { font-size: clamp(28px, 3.4vw, 38px); }
   .foundation-body { color: var(--chalk); font-size: 19px; }
-  .demo { margin-top: 10px; background: var(--navy); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
-  .demo-label { color: var(--steel); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+  .demo { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; background: var(--navy); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+  .demo-label { color: var(--steel); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
   .thread { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
   .msg { max-width: 85%; padding: 9px 13px; border-radius: 14px; font-size: 15px; line-height: 1.4; }
   .msg-note { align-self: center; max-width: none; padding: 2px 0 6px; font: 500 12px var(--font-mono); color: var(--steel); }
@@ -412,20 +430,37 @@ const leakIcons = [
   :global(.fx) [data-demo] .msg { opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease; }
   :global(.fx) [data-demo] .msg.shown { opacity: 1; transform: none; }
 
-  .paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-  .path { padding: 24px; display: flex; flex-direction: column; gap: 24px; }
-  .path-copy { display: flex; flex-direction: column; gap: 14px; flex: 1; padding: 0 8px 8px; }
-  .path h3, .full h3 { font-size: 30px; }
+  .path { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; margin-bottom: 16px; }
+  .path.flip .illo { order: 2; }
+  .path-copy { display: flex; flex-direction: column; gap: 14px; }
+
+  /* Path example screens */
+  .search { max-width: none; align-self: stretch; display: flex; gap: 10px; align-items: center; background: var(--chalk); color: var(--navy); border-radius: 999px; font-size: 13px; padding: 9px 16px; }
+  .search span { font-size: 16px; line-height: 1; }
+  .results { list-style: none; margin: 4px 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .result { max-width: none; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; border: 1px solid var(--line); border-radius: 10px; color: #d5dde4; }
+  .result .pin { width: 10px; height: 10px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--steel); }
+  .result.top { border-color: var(--lime); color: var(--chalk); }
+  .result.top .pin { background: var(--lime); }
+  .stars { color: var(--lime); letter-spacing: 1px; font-size: 13px; }
+  .stars .off { color: var(--line); }
+  .r-tag { grid-column: 2 / -1; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); }
+  .ask { align-self: flex-end; background: var(--line); color: var(--chalk); border-bottom-right-radius: 4px; }
+  .answer { align-self: flex-start; background: var(--panel); border: 1px solid var(--lime); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .ad { max-width: none; align-self: stretch; background: var(--chalk); color: var(--navy); border-radius: 12px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .ad p { font-weight: 500; }
+  .ad-tag { font-size: 11px; color: #4f5d6b; letter-spacing: 0.08em; text-transform: uppercase; }
+  .ad-btn { background: var(--lime); color: var(--navy); font-weight: 500; font-size: 14px; padding: 6px 14px; border-radius: 6px; }
+  .lead-msg { max-width: none; align-self: stretch; text-align: center; background: var(--line); color: var(--chalk); font-size: 13px; border-radius: 8px; }
+  .path h3 { font-size: clamp(28px, 3.4vw, 38px); }
+  .full h3 { font-size: 30px; }
   .for { color: var(--chalk); }
   .path-body { color: var(--body); }
   .ticks { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; flex: 1; }
   .ticks li { padding-left: 22px; position: relative; color: #d5dde4; font-size: 16px; }
   .ticks li::before { content: ''; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; background: var(--lime); }
-  .promise { border-top: 1px solid var(--line); padding-top: 16px; color: var(--chalk); font-size: 15px; display: flex; flex-direction: column; gap: 6px; }
-  .promise .mono { color: var(--lime); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
-  .full { margin-top: 16px; padding: 32px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+  .full { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
   .full > div { display: flex; flex-direction: column; gap: 10px; }
-  .full .promise { border-top: 0; padding-top: 0; border-left: 1px solid var(--line); padding-left: 32px; }
   .system-close { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 40px; }
   .system-close .closing { margin-top: 0; }
 
@@ -445,18 +480,19 @@ const leakIcons = [
   .light { background: var(--chalk); color: var(--navy); border-top: 0; }
   .light .eyebrow { color: var(--lime-ink); }
   .light .section-head h2 { color: var(--navy); }
-  .g-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .g-tiles.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .g-tile { background: #fff; border: 1px solid #dcdad6; border-top: 4px solid var(--lime); border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .g-wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; align-items: stretch; }
+  .g-main { background: var(--navy); color: var(--chalk); border-radius: 14px; padding: 36px; display: flex; flex-direction: column; justify-content: center; gap: 16px; border-top: 4px solid var(--lime); }
+  .g-main h3 { font-size: clamp(30px, 3.6vw, 42px); color: var(--chalk); }
+  .g-main p { color: var(--body); font-size: 18px; }
+  .g-tiles { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .g-tile { background: #fff; border: 1px solid #dcdad6; border-radius: 12px; padding: 22px 26px; display: flex; flex-direction: column; gap: 8px; }
   .g-label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime-ink); }
-  .g-tile p { font-family: var(--font-display); font-weight: 500; font-size: 21px; line-height: 1.3; color: var(--navy); }
-  .note { color: #4f5d6b; font-size: 14px; margin-top: 24px; }
+  .g-tile p { font-size: 17px; line-height: 1.45; color: #22303d; }
 
   /* Founder */
   .founder { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 56px; align-items: center; }
   .photo { aspect-ratio: 6 / 7; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .photo img { width: 100%; height: 100%; object-fit: cover; }
-  .photo img.mark { width: auto; height: 120px; object-fit: contain; }
+  .photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
   .founder-copy { display: flex; flex-direction: column; gap: 20px; }
   .founder-copy h2 { font-size: clamp(34px, 5vw, 52px); }
   .details { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
@@ -486,18 +522,16 @@ const leakIcons = [
   .contact { display: flex; gap: 16px; flex-wrap: wrap; font-size: 15px; }
 
   @media (max-width: 1000px) {
-    .hero-grid, .founder, .foundation, .paths, .final-grid, .full { grid-template-columns: minmax(0, 1fr); }
+    .hero-grid, .founder, .foundation, .path, .final-grid, .full, .g-wrap { grid-template-columns: minmax(0, 1fr); }
     .score-card { justify-self: start; }
     .photo { max-width: 360px; }
-    .leaks, .timeline, .g-tiles, .g-tiles.n3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .leaks, .timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .timeline::before { display: none; }
-    .full .promise { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 16px; }
   }
   @media (max-width: 640px) {
     .hero { padding: 56px 0 72px; }
-    .leaks, .timeline, .g-tiles, .g-tiles.n3, .legend { grid-template-columns: minmax(0, 1fr); }
-    .leak, .foundation, .full, .final-book, .g-tile { padding: 22px; }
-    .path { padding: 14px; }
+    .leaks, .timeline { grid-template-columns: minmax(0, 1fr); }
+    .leak, .foundation, .path, .full, .final-book, .g-main { padding: 22px; }
     .score-value { font-size: 64px; }
   }
 </style>

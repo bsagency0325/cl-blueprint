@@ -6,10 +6,6 @@ export const site = {
   phone: '',
   // WhatsApp number in international format without "+", e.g. '17025550123'.
   whatsapp: '',
-  // GHL booking calendar URL for the 15-minute Score Review (thank-you pages).
+  // GHL booking calendar URL for the 15-minute Score Review (home page and thank-you pages).
   calendarUrl: '',
-  // Founder photo path under public/, e.g. '/brand/piero.jpg'.
-  founderPhoto: '',
-  // "Every lead answered in under 60 seconds, 24/7, or that month is free." (pending decision)
-  showSpeedGuarantee: true,
 };

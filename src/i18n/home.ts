@@ -2,6 +2,11 @@ export type Lang = 'en' | 'es';
 
 type Item = { title: string; body: string };
 type Msg = { from: 'note' | 'in' | 'out' | 'booked'; text: string };
+// Example screens shown next to each path's illustration. Placeholder names only, never real businesses.
+type PathDemo =
+  | { kind: 'maps'; label: string; search: string; results: { name: string; stars: number; tag: string }[]; ask: string; answer: string }
+  | { kind: 'booked'; label: string; adTag: string; ad: string; adButton: string; lead: string; booked: string }
+  | null;
 
 const en = {
   meta: {
@@ -68,12 +73,6 @@ const en = {
         'Website chats get a reply in seconds',
         'Appointments land straight on your calendar',
       ],
-      legend: [
-        'You stay on the job',
-        'AI answers 24/7, EN/ES',
-        'Missed call? Instant text back',
-        'Booked on your calendar',
-      ] as string[],
       imageAlt: 'Blueprint drawing of a contractor working on an AC unit while the phone on his toolbox rings',
       demoLabel: 'Example · what your customer sees',
       demo: [
@@ -85,7 +84,6 @@ const en = {
         { from: 'booked', text: 'Booked · AC repair · Tomorrow 9:00 AM' },
       ] as Msg[],
     },
-    promiseLabel: 'Promise',
     paths: [
       {
         tag: 'Path 1',
@@ -100,15 +98,20 @@ const en = {
           'Old quotes followed up until they close',
         ],
         body: '',
-        promise: 'Your Blueprint Score improves in 90 days, or next month is free.',
         image: 'found',
         imageAlt: 'Blueprint map of local service businesses with one lime pin standing out as the top result',
-        legend: [
-          'Top of Google Maps',
-          'Recommended by AI',
-          'Five-star reviews',
-          'Listed everywhere',
-        ] as string[],
+        demo: {
+          kind: 'maps',
+          label: 'Example · what your customer sees',
+          search: 'AC repair near me',
+          results: [
+            { name: 'Your business', stars: 5, tag: 'Top result' },
+            { name: 'Another company', stars: 4, tag: '' },
+            { name: 'Another company', stars: 3, tag: '' },
+          ],
+          ask: 'Who should I call for AC repair near me?',
+          answer: 'Your business is a top pick: great reviews, and they answer fast.',
+        } as PathDemo,
       },
       {
         tag: 'Path 2',
@@ -123,15 +126,17 @@ const en = {
           'Reviews that make every ad work harder',
         ],
         body: '',
-        promise: '10+ booked appointments in your first 30 days after ads go live, or we keep working free.',
         image: 'booked',
         imageAlt: 'Blueprint flow: an ad on a phone, then a chat reply, then a booked day on a calendar',
-        legend: [
-          'Facebook + Instagram ads',
-          'Google Local Services Ads',
-          'Answered in seconds',
-          'Booked',
-        ] as string[],
+        demo: {
+          kind: 'booked',
+          label: 'Example · from ad to booked job',
+          adTag: 'Sponsored',
+          ad: 'AC not cooling? Same-week repair. Book in 30 seconds.',
+          adButton: 'Book now',
+          lead: 'New lead · AC repair · answered in seconds',
+          booked: 'Booked · Thursday 10:00 AM · on your calendar',
+        } as PathDemo,
       },
       {
         tag: 'Path 3',
@@ -139,10 +144,9 @@ const en = {
         for: 'For owners ready to grow on every front.',
         items: [] as string[],
         body: 'Everything in Get Found and Get Booked, working together on one system.',
-        promise: 'Both promises included.',
         image: '',
         imageAlt: '',
-        legend: [] as string[],
+        demo: null as PathDemo,
       },
     ],
     closing: 'Not sure which path fits? That’s exactly what your free Score tells you.',
@@ -160,20 +164,19 @@ const en = {
   },
   guarantee: {
     eyebrow: 'Our guarantee',
-    title: 'Every path comes with a guarantee.',
-    speed: { label: 'All paths', body: 'Every lead answered in under 60 seconds, 24/7, or that month is free.' },
+    title: 'Every lead answered in under 60 seconds.',
+    body: 'Day or night, in English or Spanish. If we miss it, that month is free.',
     items: [
-      { label: 'Get Found', body: 'Your Blueprint Score improves in 90 days, or next month is free.' },
-      { label: 'Get Booked', body: '10+ booked appointments in 30 days after ads go live, or we keep working free.' },
-      { label: 'Full Blueprint', body: 'Both.' },
+      { label: 'No long contracts', body: 'Month-to-month. We earn the next month with results you can see every week.' },
+      { label: 'Your ads, your money', body: 'Ad spend goes straight to Facebook or Google, in your name. You see every dollar.' },
+      { label: 'Results in writing', body: 'Get Found and Get Booked come with results guarantees, set in writing on your Score call.' },
     ],
-    note: 'Conditions are agreed in writing before we start. Ad spend is paid directly to the ad platforms.',
   },
   founder: {
     eyebrow: 'Who’s behind Blueprint',
     title: 'Hi, I’m Piero.',
-    body: 'My background is sales and marketing. I’ve built the follow-up, ads and automation that turn interest into booked appointments, and I spent years in sales and finance watching the same thing happen every day: the business that responds first and follows up best wins. Most home service owners do great work but don’t have that marketing machine behind them. Blueprint builds it for you and runs it, so you can stay focused on the work.',
-    details: ['Sales and marketing', 'Ads, follow-up and automation', 'Based in Las Vegas', 'Working with home service businesses across the U.S.', 'English and Spanish'],
+    body: 'My background is sales and marketing, and a lot of it in your world. I worked as a sales engineer in HVAC and plumbing, sold to homeowners and to businesses, and spent time in finance. Along the way I built the ads, follow-up and automation that turn leads into booked jobs. The lesson was always the same: whoever answers first and follows up best gets the job. Blueprint builds that system for your business and runs it for you, so you can stay focused on the work.',
+    details: ['Sales engineer · HVAC and plumbing', 'Sales and marketing', 'Based in Las Vegas', 'English and Spanish'],
     photoAlt: 'Piero Quino, founder of Blueprint Strategies',
   },
   faq: {
@@ -284,12 +287,6 @@ const es: typeof en = {
         'Los chats de tu sitio web se contestan en segundos',
         'Las citas caen directo en tu calendario',
       ],
-      legend: [
-        'Tú sigues trabajando',
-        'La IA contesta 24/7',
-        '¿Llamada perdida? Mensaje al instante',
-        'Cita en tu calendario',
-      ],
       imageAlt: 'Dibujo tipo plano de un técnico trabajando en un aire acondicionado mientras suena el teléfono sobre su caja de herramientas',
       demoLabel: 'Ejemplo · lo que ve tu cliente',
       demo: [
@@ -301,7 +298,6 @@ const es: typeof en = {
         { from: 'booked', text: 'Agendado · Reparación de A/C · Mañana 9:00 AM' },
       ],
     },
-    promiseLabel: 'Promesa',
     paths: [
       {
         tag: 'Camino 1',
@@ -316,15 +312,20 @@ const es: typeof en = {
           'Seguimiento a cotizaciones hasta cerrarlas',
         ],
         body: '',
-        promise: 'Tu Blueprint Score mejora en 90 días, o el siguiente mes es gratis.',
         image: 'found',
         imageAlt: 'Mapa tipo plano de negocios de servicios con un pin verde destacado como el primer resultado',
-        legend: [
-          'Arriba en Google Maps',
-          'Recomendado por la IA',
-          'Reseñas de 5 estrellas',
-          'En todos los directorios',
-        ],
+        demo: {
+          kind: 'maps',
+          label: 'Ejemplo · lo que ve tu cliente',
+          search: 'reparación de aire acondicionado cerca de mí',
+          results: [
+            { name: 'Tu negocio', stars: 5, tag: 'Primer lugar' },
+            { name: 'Otra empresa', stars: 4, tag: '' },
+            { name: 'Otra empresa', stars: 3, tag: '' },
+          ],
+          ask: '¿A quién llamo para reparar mi aire acondicionado?',
+          answer: 'Tu negocio es una de las mejores opciones: buenas reseñas y contesta rápido.',
+        },
       },
       {
         tag: 'Camino 2',
@@ -339,15 +340,17 @@ const es: typeof en = {
           'Reseñas que hacen que cada anuncio rinda más',
         ],
         body: '',
-        promise: '10+ citas agendadas en tus primeros 30 días desde que salen los anuncios, o seguimos trabajando gratis.',
         image: 'booked',
         imageAlt: 'Flujo tipo plano: un anuncio en un celular, luego un mensaje, luego un día agendado en el calendario',
-        legend: [
-          'Anuncios en Facebook e Instagram',
-          'Google Local Services Ads',
-          'Contestado en segundos',
-          'Agendado',
-        ],
+        demo: {
+          kind: 'booked',
+          label: 'Ejemplo · del anuncio al trabajo agendado',
+          adTag: 'Patrocinado',
+          ad: '¿Tu aire no enfría? Reparación esta misma semana. Agenda en 30 segundos.',
+          adButton: 'Agendar',
+          lead: 'Nuevo cliente · Reparación de AC · contestado en segundos',
+          booked: 'Agendado · Jueves 10:00 AM · en tu calendario',
+        },
       },
       {
         tag: 'Camino 3',
@@ -355,10 +358,9 @@ const es: typeof en = {
         for: 'Para dueños listos para crecer en todo.',
         items: [],
         body: 'Los dos caminos trabajando juntos en un solo sistema.',
-        promise: 'Con las dos promesas.',
         image: '',
         imageAlt: '',
-        legend: [],
+        demo: null,
       },
     ],
     closing: '¿No sabes cuál es para ti? Para eso es tu Score gratis.',
@@ -376,20 +378,19 @@ const es: typeof en = {
   },
   guarantee: {
     eyebrow: 'Nuestra garantía',
-    title: 'Cada camino viene con su garantía.',
-    speed: { label: 'Todos los caminos', body: 'Cada cliente contestado en menos de 60 segundos, 24/7, o ese mes es gratis.' },
+    title: 'Cada cliente contestado en menos de 60 segundos.',
+    body: 'De día o de noche, en español o en inglés. Si no cumplimos, ese mes es gratis.',
     items: [
-      { label: 'Que te encuentren', body: 'Tu Blueprint Score mejora en 90 días, o el siguiente mes es gratis.' },
-      { label: 'Que te contraten', body: '10+ citas agendadas en 30 días desde que salen los anuncios, o seguimos trabajando gratis.' },
-      { label: 'Blueprint completo', body: 'Las dos.' },
+      { label: 'Sin contratos largos', body: 'Mes a mes. Nos ganamos el siguiente mes con resultados que ves cada semana.' },
+      { label: 'Tus anuncios, tu dinero', body: 'La inversión en anuncios va directo a Facebook o Google, a tu nombre. Ves cada dólar.' },
+      { label: 'Resultados por escrito', body: 'Que te encuentren y Que te contraten vienen con garantías de resultados, que acordamos por escrito en tu llamada del Score.' },
     ],
-    note: 'Las condiciones se acuerdan por escrito antes de empezar. La inversión en anuncios se paga directo a las plataformas.',
   },
   founder: {
     eyebrow: 'Quién está detrás',
     title: 'Hola, soy Piero.',
-    body: 'Soy peruano y vivo en Las Vegas. Mi experiencia es en ventas y marketing: he armado el seguimiento, los anuncios y la automatización que convierten interés en citas agendadas, y pasé años en ventas y finanzas viendo lo mismo todos los días: gana el que contesta primero y da mejor seguimiento. Muchos dueños de negocios hacen un trabajo excelente pero no tienen esa máquina de marketing detrás. Blueprint te la construye y la maneja, para que tú te enfoques en tu trabajo.',
-    details: ['Ventas y marketing', 'Anuncios, seguimiento y automatización', 'En Las Vegas', 'Trabajamos con negocios en todo EE. UU.', 'Inglés y español'],
+    body: 'Mi experiencia es en ventas y marketing, y buena parte en tu mismo mundo. Fui ingeniero de ventas en HVAC y plomería, le vendí a dueños de casa y a negocios, y trabajé en finanzas. En el camino armé los anuncios, el seguimiento y la automatización que convierten prospectos en trabajos agendados. La lección siempre fue la misma: se queda con el trabajo el que contesta primero y da mejor seguimiento. Blueprint construye ese sistema para tu negocio y lo maneja por ti, para que tú te enfoques en tu trabajo.',
+    details: ['Ingeniero de ventas · HVAC y plomería', 'Ventas y marketing', 'En Las Vegas', 'Español e inglés'],
     photoAlt: 'Piero Quino, fundador de Blueprint Strategies',
   },
   faq: {
