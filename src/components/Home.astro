@@ -1,18 +1,36 @@
 ---
+import { Image } from 'astro:assets';
 import { content, type Lang } from '../i18n/home';
 import { site } from '../config';
+import answerImg from '../assets/illustrations/answer.jpg';
+import foundImg from '../assets/illustrations/found.jpg';
+import bookedImg from '../assets/illustrations/booked.jpg';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = content[lang];
 const ids = t.ids;
 const scoreValues = [52, 18, 35, 60];
+const scoreTotal = 41;
 const thanks = lang === 'es' ? '/es/gracias/' : '/thanks/';
 const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.items] : t.guarantee.items;
+
+const images = { found: foundImg, booked: bookedImg } as const;
+const imgWidths = [480, 720, 1024];
+const imgSizes = '(max-width: 1000px) calc(100vw - 48px), 560px';
+const illustrated = t.system.paths.filter((p) => p.image);
+const fullPath = t.system.paths.find((p) => !p.image)!;
+
+// Leak calculator: missed calls a week × 4 weeks × job value × half would have booked.
+const calc = { missed: 5, value: 500, values: [250, 500, 1000, 2500], max: 50 };
+const money = (n: number) => '$' + n.toLocaleString('en-US');
+const monthly = (missed: number, value: number) => missed * 4 * value * 0.5;
+const formula = (missed: number, value: number) =>
+  t.calc.formula.replace('{n}', String(missed)).replace('{v}', money(value));
 ---
 <main>
   <!-- HERO + FORM -->
-  <section class="hero grid-bg">
+  <section class="hero grid-bg spot">
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">{t.hero.eyebrow}</p>
@@ -24,7 +42,7 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
           <input type="hidden" name="language" value={lang} />
           <p class="sr-only"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
 
-          <div class="step step1">
+          <div class="fstep step1">
             <div class="row">
               <label><span>{t.form.step1.business}</span><input name="business" autocomplete="organization" required /></label>
               <label><span>{t.form.step1.city}</span><input name="city" autocomplete="address-level2" required /></label>
@@ -33,7 +51,7 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
             <p class="form-note">{t.form.step1.note}</p>
           </div>
 
-          <div class="step step2">
+          <div class="fstep step2">
             <h2 class="step2-title">{t.form.step2.heading}</h2>
             <div class="row three">
               <label><span>{t.form.step2.name}</span><input name="name" autocomplete="name" required /></label>
@@ -55,17 +73,17 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
         <p class="trust"><span class="dot" aria-hidden="true"></span>{t.hero.trust}</p>
       </div>
 
-      <div class="score-card card" aria-hidden="true">
+      <div class="score-card card" aria-hidden="true" data-score>
         <div class="score-top">
           <span class="mono label">{t.hero.card.label}</span>
           <img src="/brand/icon.svg" alt="" width="14" height="28" />
         </div>
-        <div class="score-value"><span>41</span><span class="out">/ 100</span></div>
+        <div class="score-value"><span data-count={scoreTotal}>{scoreTotal}</span><span class="out">/ 100</span></div>
         <div class="bars">
           {t.hero.card.metrics.map((m, i) => (
             <div class="bar">
-              <div class="bar-row"><span>{m}</span><span class="mono">{scoreValues[i]}</span></div>
-              <div class="track"><div class="fill" style={`width:${scoreValues[i]}%`}></div></div>
+              <div class="bar-row"><span>{m}</span><span class="mono" data-count={scoreValues[i]}>{scoreValues[i]}</span></div>
+              <div class="track"><div class="fill" style={`--w:${scoreValues[i]}%`}></div></div>
             </div>
           ))}
         </div>
@@ -77,17 +95,59 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
     </div>
   </section>
 
+  <!-- LEAK CALCULATOR -->
+  <section class="section calc-section">
+    <div class="wrap">
+      <div class="calc card" data-calc data-reveal data-formula={t.calc.formula}>
+        <div class="calc-copy">
+          <p class="eyebrow">{t.calc.eyebrow}</p>
+          <h2>{t.calc.title}</h2>
+        </div>
+
+        <div class="calc-inputs">
+          <div class="calc-field">
+            <span class="calc-label" id={`missed-${lang}`}>{t.calc.missedLabel}</span>
+            <div class="stepper" role="group" aria-labelledby={`missed-${lang}`}>
+              <button type="button" class="step-btn" data-step="-1" aria-label={t.calc.fewer}>−</button>
+              <output class="missed" data-missed aria-live="polite">{calc.missed}</output>
+              <button type="button" class="step-btn" data-step="1" aria-label={t.calc.more}>+</button>
+            </div>
+          </div>
+          <div class="calc-field">
+            <span class="calc-label" id={`value-${lang}`}>{t.calc.valueLabel}</span>
+            <div class="chips" role="group" aria-labelledby={`value-${lang}`}>
+              {calc.values.map((v, i) => (
+                <button type="button" class="chip" data-value={v} aria-pressed={v === calc.value ? 'true' : 'false'}>
+                  {money(v)}{i === calc.values.length - 1 ? '+' : ''}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-result">
+          <span class="calc-label">{t.calc.resultLabel}</span>
+          <p class="calc-total"><output data-total aria-live="polite">{money(monthly(calc.missed, calc.value))}</output></p>
+          <p class="calc-tail">{t.calc.resultTail}</p>
+          <p class="mono calc-formula" data-formula-out>{formula(calc.missed, calc.value)}</p>
+          <p class="calc-note">{t.calc.note}</p>
+          <a class="btn btn-primary" href={`#${ids.score}`} data-focus-form>{t.calc.cta}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- THE PROBLEM -->
   <section class="section">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.leaks.eyebrow}</p>
         <h2>{t.leaks.title}</h2>
         <p>{t.leaks.sub}</p>
       </div>
-      <div class="leaks">
+      <div class="leaks" data-reveal>
         {t.leaks.items.map((item, i) => (
-          <div class="leak card">
+          <div class="leak card lift">
             <span class="mono num">0{i + 1}</span>
             <h3>{item.title}</h3>
             <p>{item.body}</p>
@@ -100,11 +160,11 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   <!-- WHY IT HAPPENS -->
   <section class="section">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.why.eyebrow}</p>
         <h2>{t.why.title}</h2>
       </div>
-      <div class="cells two">
+      <div class="cells two" data-reveal>
         {t.why.items.map((item) => (
           <div class="cell">
             <h3>{item.title}</h3>
@@ -113,51 +173,88 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
         ))}
       </div>
       {t.why.bonus && (
-        <div class="bonus card">
+        <div class="bonus card" data-reveal>
           <span class="mono tag">{t.why.bonus.label}</span>
           <h3>{t.why.bonus.title}</h3>
           <p>{t.why.bonus.body}</p>
         </div>
       )}
-      <p class="closing">{t.why.closing}</p>
+      <p class="closing" data-reveal>{t.why.closing}</p>
     </div>
   </section>
 
   <!-- THE SYSTEM -->
-  <section class="section grid-bg" id={ids.system}>
+  <section class="section grid-bg spot" id={ids.system}>
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.system.eyebrow}</p>
         <h2>{t.system.title}</h2>
         <p>{t.system.sub}</p>
       </div>
 
+      <!-- Foundation: illustration + what's included + live text-back example -->
       <div class="foundation card">
-        <span class="mono tag">{t.system.foundation.label}</span>
-        <h3>{t.system.foundation.title}</h3>
-        <p>{t.system.foundation.body}</p>
+        <figure class="illo" data-reveal>
+          <Image src={answerImg} alt={t.system.foundation.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+          {t.system.foundation.callouts.map((c) => (
+            <span class="callout mono" aria-hidden="true" style={`left:${c.x}%;top:${c.y}%;max-width:${c.w ?? 100 - c.x - 1}%`}>{c.text}</span>
+          ))}
+        </figure>
+        <div class="foundation-copy">
+          <span class="mono tag">{t.system.foundation.label}</span>
+          <h3>{t.system.foundation.title}</h3>
+          <p class="foundation-body">{t.system.foundation.body}</p>
+          <ul class="ticks">
+            {t.system.foundation.items.map((it) => <li>{it}</li>)}
+          </ul>
+          <div class="demo" data-demo>
+            <p class="mono demo-label">{t.system.foundation.demoLabel}</p>
+            <ol class="thread">
+              {t.system.foundation.demo.map((m) => (
+                <li class={`msg msg-${m.from}`}>{m.text}</li>
+              ))}
+            </ol>
+          </div>
+        </div>
       </div>
 
+      <!-- Get Found + Get Booked -->
       <div class="paths">
-        {t.system.paths.map((p) => (
+        {illustrated.map((p) => (
           <div class="path card">
-            <span class="mono tag">{p.tag}</span>
-            <h3>{p.name}</h3>
-            <p class="for">{p.for}</p>
-            {p.items.length > 0 && (
+            <figure class="illo" data-reveal>
+              <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes="(max-width: 1000px) calc(100vw - 48px), 560px" format="webp" quality={78} loading="lazy" />
+              {p.callouts.map((c) => (
+                <span class="callout mono" aria-hidden="true" style={`left:${c.x}%;top:${c.y}%;max-width:${c.w ?? 100 - c.x - 1}%`}>{c.text}</span>
+              ))}
+            </figure>
+            <div class="path-copy">
+              <span class="mono tag">{p.tag}</span>
+              <h3>{p.name}</h3>
+              <p class="for">{p.for}</p>
               <ul class="ticks">
                 {p.items.map((it) => <li>{it}</li>)}
               </ul>
-            )}
-            {p.body && <p class="path-body">{p.body}</p>}
-            <p class="promise"><span class="mono">{t.system.promiseLabel}</span>{p.promise}</p>
+              <p class="promise"><span class="mono">{t.system.promiseLabel}</span>{p.promise}</p>
+            </div>
           </div>
         ))}
       </div>
 
-      <div class="system-close">
+      <!-- Full Blueprint -->
+      <div class="full card" data-reveal>
+        <div>
+          <span class="mono tag">{fullPath.tag}</span>
+          <h3>{fullPath.name}</h3>
+          <p class="for">{fullPath.for}</p>
+        </div>
+        <p class="path-body">{fullPath.body}</p>
+        <p class="promise"><span class="mono">{t.system.promiseLabel}</span>{fullPath.promise}</p>
+      </div>
+
+      <div class="system-close" data-reveal>
         <p class="closing">{t.system.closing}</p>
-        <a class="btn btn-ghost" href={`#${ids.score}`}>{t.system.cta}</a>
+        <a class="btn btn-ghost" href={`#${ids.score}`} data-focus-form>{t.system.cta}</a>
       </div>
     </div>
   </section>
@@ -165,13 +262,13 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   <!-- HOW IT WORKS -->
   <section class="section" id={ids.how}>
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.how.eyebrow}</p>
         <h2>{t.how.title}</h2>
       </div>
-      <ol class="steps">
+      <ol class="steps" data-reveal>
         {t.how.steps.map((s, i) => (
-          <li class="step card">
+          <li class="howstep card lift">
             <span class="mono num">0{i + 1}</span>
             <h3>{s.title}</h3>
             <p>{s.body}</p>
@@ -179,7 +276,7 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
         ))}
       </ol>
 
-      <div class="expect">
+      <div class="expect" data-reveal>
         <h3>{t.how.expectTitle}</h3>
         <dl>
           {t.how.expect.map((e) => (
@@ -196,11 +293,11 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   <!-- WHY IT WORKS -->
   <section class="section">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.works.eyebrow}</p>
         <h2>{t.works.title}</h2>
       </div>
-      <div class="cells three">
+      <div class="cells three" data-reveal>
         {t.works.items.map((item) => (
           <div class="cell">
             <h3>{item.title}</h3>
@@ -208,18 +305,18 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
           </div>
         ))}
       </div>
-      <p class="closing">{t.works.closing}</p>
+      <p class="closing" data-reveal>{t.works.closing}</p>
     </div>
   </section>
 
   <!-- GUARANTEES -->
-  <section class="section grid-bg" id={ids.guarantee}>
+  <section class="section grid-bg spot" id={ids.guarantee}>
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.guarantee.eyebrow}</p>
         <h2>{t.guarantee.title}</h2>
       </div>
-      <div class="g-box card">
+      <div class="g-box card" data-reveal>
         <dl>
           {guarantees.map((g) => (
             <div class="g-row">
@@ -235,7 +332,7 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
 
   <!-- FOUNDER -->
   <section class="section">
-    <div class="wrap founder">
+    <div class="wrap founder" data-reveal>
       <div class="photo">
         {site.founderPhoto
           ? <img src={site.founderPhoto} alt={t.founder.photoAlt} width="480" height="560" loading="lazy" />
@@ -255,7 +352,7 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   <!-- FAQ -->
   <section class="section" id={ids.faq}>
     <div class="wrap faq-wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.faq.eyebrow}</p>
         <h2>{t.faq.title}</h2>
       </div>
@@ -270,17 +367,33 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
     </div>
   </section>
 
-  <!-- FINAL CTA + CONTACT -->
-  <section class="section grid-bg final" id={ids.contact}>
-    <div class="wrap final-inner">
-      <h2>{t.final.title}</h2>
-      <p class="lead">{t.final.sub}</p>
-      <a class="btn btn-primary big" href={`#${ids.score}`} data-focus-form>{t.final.button}</a>
-      <p class="secondary">{t.final.secondary}</p>
-      <div class="contact">
-        <a class="btn btn-ghost" href={`mailto:${site.email}`}>{t.final.email}<span class="mono addr">{site.email}</span></a>
-        {site.phone && <a class="btn btn-ghost" href={`sms:${site.phone}`}>{t.final.phone}</a>}
-        {site.whatsapp && <a class="btn btn-ghost" href={`https://wa.me/${site.whatsapp}`} rel="noopener">{t.final.whatsapp}</a>}
+  <!-- FINAL: SCORE + BOOK A CALL -->
+  <section class="section grid-bg spot final" id={ids.contact}>
+    <div class="wrap">
+      <div class="final-head" data-reveal>
+        <h2>{t.final.title}</h2>
+        <p class="lead">{t.final.sub}</p>
+      </div>
+      <div class={`final-grid${site.calendarUrl ? ' has-cal' : ''}`}>
+        <div class="final-card card primary-card" data-reveal>
+          <span class="mono tag">Blueprint Score</span>
+          <h3>{t.final.scoreTitle}</h3>
+          <p>{t.final.scoreBody}</p>
+          <a class="btn btn-primary big" href={`#${ids.score}`} data-focus-form>{t.final.button}</a>
+        </div>
+        <div class="final-card card" data-reveal>
+          <span class="mono tag">15 min</span>
+          <h3>{t.final.bookTitle}</h3>
+          <p>{t.final.bookBody}</p>
+          {site.calendarUrl
+            ? <iframe class="calendar" src={site.calendarUrl} title={t.final.bookTitle} loading="lazy"></iframe>
+            : <a class="btn btn-ghost" href={`mailto:${site.email}`}>{t.final.bookFallback}</a>}
+          <div class="contact">
+            {site.calendarUrl && <a href={`mailto:${site.email}`}>{t.final.email}<span class="mono addr"> · {site.email}</span></a>}
+            {site.phone && <a href={`sms:${site.phone}`}>{t.final.phone}</a>}
+            {site.whatsapp && <a href={`https://wa.me/${site.whatsapp}`} rel="noopener">{t.final.whatsapp}</a>}
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -309,6 +422,78 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
       setTimeout(() => document.querySelector<HTMLInputElement>('form[name="blueprint-score"] input[name="business"]')?.focus({ preventScroll: true }), 400);
     });
   }
+
+  // Leak calculator: missed calls a week × 4 weeks × job value × half would have booked.
+  for (const box of document.querySelectorAll<HTMLElement>('[data-calc]')) {
+    const money = (n: number) => '$' + n.toLocaleString('en-US');
+    const missedOut = box.querySelector<HTMLOutputElement>('[data-missed]')!;
+    const totalOut = box.querySelector<HTMLOutputElement>('[data-total]')!;
+    const formulaOut = box.querySelector<HTMLElement>('[data-formula-out]')!;
+    const chips = [...box.querySelectorAll<HTMLButtonElement>('[data-value]')];
+    let missed = Number(missedOut.textContent) || 5;
+    let value = Number(chips.find((c) => c.getAttribute('aria-pressed') === 'true')?.dataset.value) || 500;
+    const render = () => {
+      missedOut.textContent = String(missed);
+      totalOut.textContent = money(missed * 4 * value * 0.5);
+      formulaOut.textContent = (box.dataset.formula ?? '').replace('{n}', String(missed)).replace('{v}', money(value));
+      for (const c of chips) c.setAttribute('aria-pressed', String(Number(c.dataset.value) === value));
+    };
+    for (const b of box.querySelectorAll<HTMLButtonElement>('[data-step]')) {
+      b.addEventListener('click', () => { missed = Math.min(50, Math.max(0, missed + Number(b.dataset.step))); render(); });
+    }
+    for (const c of chips) c.addEventListener('click', () => { value = Number(c.dataset.value); render(); });
+  }
+
+  // Motion effects. Skipped entirely for visitors who prefer reduced motion,
+  // so everything is simply visible for them (and without JavaScript).
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!calm && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('fx');
+
+    const once = (els: Iterable<Element>, fn: (el: Element) => void, threshold = 0.2) => {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { fn(e.target); io.unobserve(e.target); }
+      }, { threshold, rootMargin: '0px 0px -40px 0px' });
+      for (const el of els) io.observe(el);
+    };
+
+    // Sections and illustration callouts fade in as they enter.
+    once(document.querySelectorAll('[data-reveal]'), (el) => el.classList.add('in'), 0.12);
+
+    // Score card counts up and its bars fill.
+    once(document.querySelectorAll('[data-score]'), (card) => {
+      card.classList.add('in');
+      for (const n of card.querySelectorAll<HTMLElement>('[data-count]')) {
+        const end = Number(n.dataset.count);
+        const t0 = performance.now();
+        const tick = (now: number) => {
+          const p = Math.min(1, (now - t0) / 1200);
+          n.textContent = String(Math.round(end * (1 - Math.pow(1 - p, 3))));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        n.textContent = '0';
+        requestAnimationFrame(tick);
+      }
+    }, 0.3);
+
+    // Text-back example: messages arrive one by one.
+    once(document.querySelectorAll('[data-demo]'), (demo) => {
+      demo.querySelectorAll('.msg').forEach((m, i) => setTimeout(() => m.classList.add('shown'), 300 + i * 850));
+    }, 0.4);
+
+    // Blueprint grid lights up around the cursor (mouse and trackpad only).
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      for (const sec of document.querySelectorAll<HTMLElement>('.spot')) {
+        sec.addEventListener('pointermove', (e) => {
+          const r = sec.getBoundingClientRect();
+          sec.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          sec.style.setProperty('--my', `${e.clientY - r.top}px`);
+          sec.classList.add('lit');
+        });
+        sec.addEventListener('pointerleave', () => sec.classList.remove('lit'));
+      }
+    }
+  }
 </script>
 
 <style>
@@ -316,6 +501,40 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   .tag { color: var(--lime); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
   .num { color: var(--lime); font-size: 13px; }
   .closing { margin-top: 40px; font-family: var(--font-display); font-weight: 500; font-size: 24px; color: var(--chalk); max-width: 760px; }
+
+  /* Effect 1: blueprint grid spotlight */
+  .spot { position: relative; }
+  .spot > .wrap { position: relative; z-index: 1; }
+  .spot::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+    background-image:
+      linear-gradient(rgba(156, 226, 74, 0.28) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(156, 226, 74, 0.28) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), #000, transparent 70%);
+    mask-image: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), #000, transparent 70%);
+    transition: opacity .35s ease;
+  }
+  .spot.lit::after { opacity: 1; }
+
+  /* Effect 2: hover cards lift and flip to Chalk (like the old site) */
+  .lift { transition: transform .2s ease, background-color .2s ease, border-color .2s ease; }
+  @media (hover: hover) {
+    .lift:hover { transform: translateY(-4px); background: var(--chalk); border-color: var(--chalk); }
+    .lift:hover h3 { color: var(--navy); }
+    .lift:hover p { color: #2b3a48; }
+    .lift:hover .num { color: var(--lime-ink); }
+  }
+
+  /* Effect 4: sections and callouts fade in (only when the script turns motion on) */
+  :global(.fx) [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  :global(.fx) [data-reveal].in { opacity: 1; transform: none; }
+  :global(.fx) .illo .callout { opacity: 0; transform: translateY(calc(-100% + 6px)); transition: opacity .5s ease, transform .5s ease; }
+  :global(.fx) .illo.in .callout { opacity: 1; transform: translateY(-100%); }
+  :global(.fx) .illo.in .callout:nth-of-type(2) { transition-delay: .15s; }
+  :global(.fx) .illo.in .callout:nth-of-type(3) { transition-delay: .3s; }
+  :global(.fx) .illo.in .callout:nth-of-type(4) { transition-delay: .45s; }
+  :global(.fx) .illo.in .callout:nth-of-type(5) { transition-delay: .6s; }
 
   /* Hero */
   .hero { padding: 88px 0 104px; }
@@ -329,19 +548,22 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   .score-top { display: flex; justify-content: space-between; align-items: center; }
   .score-top img { height: 28px; width: auto; }
   .label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--steel); }
-  .score-value { font-family: var(--font-display); font-weight: 700; font-size: 84px; line-height: 1; display: flex; align-items: baseline; gap: 10px; }
+  .score-value { font-family: var(--font-display); font-weight: 700; font-size: 84px; line-height: 1; display: flex; align-items: baseline; gap: 10px; font-variant-numeric: tabular-nums; }
   .out { font-size: 28px; font-weight: 500; color: var(--steel); }
   .bars { display: flex; flex-direction: column; gap: 14px; }
   .bar-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
   .bar-row .mono { color: var(--steel); }
-  .track { height: 8px; border-radius: 4px; background: var(--line); }
-  .fill { height: 8px; border-radius: 4px; background: var(--lime); }
+  .track { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+  .fill { height: 8px; border-radius: 4px; background: var(--lime); width: var(--w); }
+  /* Effect 3: bars fill when the Score card appears */
+  :global(.fx) [data-score] .fill { width: 0; transition: width 1.2s cubic-bezier(.2, .7, .2, 1); }
+  :global(.fx) [data-score].in .fill { width: var(--w); }
   .score-foot { border-top: 1px solid var(--line); padding-top: 18px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; color: var(--body); }
   .lost { font-family: var(--font-display); font-weight: 700; font-size: 28px; color: var(--lime); }
 
   /* Form */
   .form { padding: 24px; scroll-margin-top: 100px; }
-  .step { display: flex; flex-direction: column; gap: 16px; }
+  .fstep { display: flex; flex-direction: column; gap: 16px; }
   .step2 { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
   .form.js .step2 { display: none; }
   .form.js.on-step2 .step1 { display: none; }
@@ -364,6 +586,28 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   .next, .submit { align-self: flex-start; min-height: 56px; padding: 0 32px; font-size: 18px; }
   .form-note { color: var(--steel); font-size: 14px; }
 
+  /* Calculator */
+  .calc-section { padding: 72px 0; }
+  .calc { padding: 40px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 56px; border-color: #2a3b4c; }
+  .calc-copy { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 12px; }
+  .calc-copy h2 { font-size: clamp(30px, 4.2vw, 44px); }
+  .calc-inputs { display: flex; flex-direction: column; gap: 28px; }
+  .calc-field { display: flex; flex-direction: column; gap: 12px; }
+  .calc-label { color: #d5dde4; font-size: 15px; }
+  .stepper { display: inline-flex; align-items: center; border: 1px solid #2a3b4c; border-radius: 10px; overflow: hidden; align-self: flex-start; }
+  .step-btn { width: 56px; height: 56px; border: 0; background: var(--navy); color: var(--chalk); font-size: 26px; cursor: pointer; font-family: var(--font-mono); }
+  .step-btn:hover { background: var(--line); }
+  .missed { min-width: 80px; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 32px; font-variant-numeric: tabular-nums; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { min-height: 48px; padding: 0 18px; border-radius: 8px; border: 1px solid #2a3b4c; background: var(--navy); color: var(--chalk); font: 500 16px var(--font-mono); cursor: pointer; }
+  .chip:hover { border-color: var(--steel); }
+  .chip[aria-pressed='true'] { background: var(--lime); border-color: var(--lime); color: var(--navy); }
+  .calc-result { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; border-left: 1px solid var(--line); padding-left: 48px; }
+  .calc-total { font-family: var(--font-display); font-weight: 700; font-size: clamp(48px, 6vw, 72px); line-height: 1; color: var(--lime); font-variant-numeric: tabular-nums; }
+  .calc-tail { color: var(--chalk); font-size: 18px; }
+  .calc-formula { color: var(--steel); font-size: 13px; }
+  .calc-note { color: var(--steel); font-size: 14px; margin-bottom: 8px; }
+
   /* Leaks */
   .leaks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
   .leak { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
@@ -381,28 +625,53 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   .bonus h3 { font-size: 24px; }
   .bonus p { color: var(--body); }
 
+  /* Illustrations: shared frame + callout labels */
+  .illo { position: relative; margin: 0; background: #071520; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .illo :global(img) { width: 100%; height: auto; }
+  .callout {
+    position: absolute; transform: translateY(-100%); padding-bottom: 4px;
+    font-size: 12px; line-height: 1.3; letter-spacing: 0.04em; color: var(--chalk);
+    text-shadow: 0 0 6px #071520, 0 0 2px #071520;
+  }
+
   /* System */
-  .foundation { padding: 32px; display: flex; flex-direction: column; gap: 12px; border-color: var(--lime); margin-bottom: 16px; }
-  .foundation h3 { font-size: clamp(26px, 3.4vw, 34px); }
-  .foundation p { color: var(--body); max-width: 820px; }
-  .paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .path { padding: 32px; display: flex; flex-direction: column; gap: 14px; }
-  .path h3 { font-size: 28px; }
+  .foundation { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; border-color: var(--lime); margin-bottom: 16px; align-items: center; }
+  .foundation-copy { display: flex; flex-direction: column; gap: 14px; }
+  .foundation h3 { font-size: clamp(28px, 3.4vw, 38px); }
+  .foundation-body { color: var(--chalk); font-size: 19px; }
+  .demo { margin-top: 10px; background: var(--navy); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+  .demo-label { color: var(--steel); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+  .thread { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .msg { max-width: 85%; padding: 9px 13px; border-radius: 14px; font-size: 15px; line-height: 1.4; }
+  .msg-note { align-self: center; max-width: none; padding: 2px 0 6px; font: 500 12px var(--font-mono); color: var(--steel); }
+  .msg-in { align-self: flex-start; background: var(--line); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .msg-out { align-self: flex-end; background: var(--lime); color: var(--navy); border-bottom-right-radius: 4px; }
+  .msg-booked { align-self: stretch; max-width: none; text-align: center; border: 1px dashed var(--lime); color: var(--lime); font: 500 13px var(--font-mono); border-radius: 8px; margin-top: 4px; }
+  :global(.fx) [data-demo] .msg { opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease; }
+  :global(.fx) [data-demo] .msg.shown { opacity: 1; transform: none; }
+
+  .paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .path { padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+  .path-copy { display: flex; flex-direction: column; gap: 14px; flex: 1; padding: 0 8px 8px; }
+  .path h3, .full h3 { font-size: 30px; }
   .for { color: var(--chalk); }
-  .path-body { color: var(--body); flex: 1; }
+  .path-body { color: var(--body); }
   .ticks { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-  .ticks li { padding-left: 22px; position: relative; color: #d5dde4; font-size: 15px; }
+  .ticks li { padding-left: 22px; position: relative; color: #d5dde4; font-size: 16px; }
   .ticks li::before { content: ''; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; background: var(--lime); }
   .promise { border-top: 1px solid var(--line); padding-top: 16px; color: var(--chalk); font-size: 15px; display: flex; flex-direction: column; gap: 6px; }
   .promise .mono { color: var(--lime); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .full { margin-top: 16px; padding: 32px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+  .full > div { display: flex; flex-direction: column; gap: 10px; }
+  .full .promise { border-top: 0; padding-top: 0; border-left: 1px solid var(--line); padding-left: 32px; }
   .system-close { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 40px; }
   .system-close .closing { margin-top: 0; }
 
   /* Steps */
   .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .step.card { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
-  .step.card h3 { font-size: 22px; }
-  .step.card p { color: var(--body); font-size: 16px; }
+  .howstep { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .howstep h3 { font-size: 22px; }
+  .howstep p { color: var(--body); font-size: 16px; }
   .expect { margin-top: 56px; max-width: 880px; }
   .expect h3 { font-size: 24px; margin-bottom: 20px; }
   .expect dl, .g-box dl { margin: 0; border-top: 1px solid var(--line); }
@@ -439,25 +708,39 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   details p { color: var(--body); padding: 0 0 24px; max-width: 720px; }
 
   /* Final */
-  .final-inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; max-width: 820px; }
+  .final-head { display: flex; flex-direction: column; gap: 18px; text-align: center; align-items: center; max-width: 820px; margin: 0 auto 48px; }
   .final h2 { font-size: clamp(36px, 5.4vw, 60px); }
-  .big { min-height: 58px; padding: 0 34px; font-size: 18px; }
-  .secondary { color: var(--steel); margin-top: 16px; }
-  .contact { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .final-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 980px; margin: 0 auto; }
+  .final-grid.has-cal { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); max-width: none; }
+  .final-card { padding: 32px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .final-card h3 { font-size: 28px; }
+  .final-card p { color: var(--body); }
+  .primary-card { border-color: var(--lime); }
+  .big { min-height: 58px; padding: 0 34px; font-size: 18px; margin-top: auto; }
+  .calendar { width: 100%; min-height: 640px; border: 0; border-radius: 10px; background: var(--chalk); }
+  .contact { display: flex; gap: 16px; flex-wrap: wrap; margin-top: auto; padding-top: 8px; font-size: 15px; }
   .addr { color: var(--steel); font-size: 13px; }
 
   @media (max-width: 1000px) {
-    .hero-grid, .founder { grid-template-columns: minmax(0, 1fr); }
+    .hero-grid, .founder, .foundation, .paths, .final-grid, .final-grid.has-cal { grid-template-columns: minmax(0, 1fr); }
     .score-card { justify-self: start; }
     .photo { max-width: 360px; }
     .leaks, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .paths, .cells.three { grid-template-columns: minmax(0, 1fr); }
+    .cells.three, .full { grid-template-columns: minmax(0, 1fr); }
+    .full .promise { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 16px; }
     .row.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .calc { grid-template-columns: minmax(0, 1fr); }
+    .calc-result { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 28px; }
+  }
+  @media (max-width: 700px) {
+    /* Bullet lists already say everything the labels do; small labels would collide. */
+    .callout { display: none; }
   }
   @media (max-width: 640px) {
     .hero { padding: 56px 0 72px; }
     .leaks, .steps, .cells.two, .row, .row.three { grid-template-columns: minmax(0, 1fr); }
-    .leak, .cell, .step.card, .path, .foundation, .form, .g-box, .bonus { padding: 22px; }
+    .leak, .cell, .howstep, .foundation, .form, .g-box, .bonus, .calc, .full, .final-card { padding: 22px; }
+    .path { padding: 14px; }
     .expect-row, .g-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
     .score-value { font-size: 64px; }
     .next, .submit, .big { width: 100%; }
