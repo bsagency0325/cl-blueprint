@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { content, type Lang } from '../i18n/home';
 import { site } from '../config';
+import ScoreForm from './ScoreForm.astro';
 import answerImg from '../assets/illustrations/answer.jpg';
 import foundImg from '../assets/illustrations/found.jpg';
 import bookedImg from '../assets/illustrations/booked.jpg';
@@ -12,7 +13,6 @@ const t = content[lang];
 const ids = t.ids;
 const scoreValues = [52, 18, 35, 60];
 const scoreTotal = 41;
-const thanks = lang === 'es' ? '/es/gracias/' : '/thanks/';
 const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.items] : t.guarantee.items;
 
 const images = { found: foundImg, booked: bookedImg } as const;
@@ -21,55 +21,23 @@ const imgSizes = '(max-width: 1000px) calc(100vw - 48px), 560px';
 const illustrated = t.system.paths.filter((p) => p.image);
 const fullPath = t.system.paths.find((p) => !p.image)!;
 
-// Leak calculator: missed calls a week × 4 weeks × job value × half would have booked.
-const calc = { missed: 5, value: 500, values: [250, 500, 1000, 2500], max: 50 };
-const money = (n: number) => '$' + n.toLocaleString('en-US');
-const monthly = (missed: number, value: number) => missed * 4 * value * 0.5;
-const formula = (missed: number, value: number) =>
-  t.calc.formula.replace('{n}', String(missed)).replace('{v}', money(value));
+// Line icons for the four leaks, drawn on a 24×24 grid in the blueprint style.
+const leakIcons = [
+  '<path d="M12 21s-6-5.3-6-11a6 6 0 1 1 12 0c0 5.7-6 11-6 11z" stroke-dasharray="2.5 2"/><path d="M10 8.5a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6.9V12M12 14.2v.1"/>',
+  '<path d="M5 4h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.1 6.1l1.4-2.3L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16 16 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z"/><path d="M15 3.5l5.5 5.5M20.5 3.5L15 9"/>',
+  '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" stroke-dasharray="2.5 2"/>',
+  '<path d="M6 3h8l4 4v6"/><path d="M6 3v18h7"/><path d="M14 3v4h4M9 10h6M9 13.5h4"/><circle cx="17.5" cy="17.5" r="3.5"/><path d="M17.5 15.8v1.9l1.2.8"/>',
+];
 ---
 <main>
-  <!-- HERO + FORM -->
+  <!-- HERO: the free Score is the one goal of the page -->
   <section class="hero grid-bg spot">
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">{t.hero.eyebrow}</p>
         <h1>{t.hero.title}</h1>
         <p class="lead">{t.hero.sub}</p>
-
-        <form id={ids.score} class="form card" name="blueprint-score" method="POST" action={thanks} data-netlify="true" netlify-honeypot="company-website">
-          <input type="hidden" name="form-name" value="blueprint-score" />
-          <input type="hidden" name="language" value={lang} />
-          <p class="sr-only"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
-
-          <div class="fstep step1">
-            <div class="row">
-              <label><span>{t.form.step1.business}</span><input name="business" autocomplete="organization" required /></label>
-              <label><span>{t.form.step1.city}</span><input name="city" autocomplete="address-level2" required /></label>
-            </div>
-            <button class="btn btn-primary next" type="button">{t.form.step1.button}</button>
-            <p class="form-note">{t.form.step1.note}</p>
-          </div>
-
-          <div class="fstep step2">
-            <h2 class="step2-title">{t.form.step2.heading}</h2>
-            <div class="row three">
-              <label><span>{t.form.step2.name}</span><input name="name" autocomplete="name" required /></label>
-              <label><span>{t.form.step2.phone}</span><input name="phone" type="tel" autocomplete="tel" required aria-describedby={`phone-help-${lang}`} /><small id={`phone-help-${lang}`}>{t.form.step2.phoneHelp}</small></label>
-              <label><span>{t.form.step2.email}</span><input name="email" type="email" autocomplete="email" required /></label>
-            </div>
-            <label class="consent">
-              <input type="checkbox" name="sms_consent" value="yes" />
-              <span>
-                {t.form.step2.consent}{' '}
-                <a href="/privacy-policy">{t.form.step2.privacy}</a> · <a href="/terms">{t.form.step2.terms}</a>
-              </span>
-            </label>
-            <button class="btn btn-primary submit" type="submit">{t.form.step2.button}</button>
-            <p class="form-note">{t.form.step2.note}</p>
-          </div>
-        </form>
-
+        <ScoreForm lang={lang} id={ids.score} uid={`${lang}-top`} />
         <p class="trust"><span class="dot" aria-hidden="true"></span>{t.hero.trust}</p>
       </div>
 
@@ -95,48 +63,6 @@ const formula = (missed: number, value: number) =>
     </div>
   </section>
 
-  <!-- LEAK CALCULATOR -->
-  <section class="section calc-section">
-    <div class="wrap">
-      <div class="calc card" data-calc data-reveal data-formula={t.calc.formula}>
-        <div class="calc-copy">
-          <p class="eyebrow">{t.calc.eyebrow}</p>
-          <h2>{t.calc.title}</h2>
-        </div>
-
-        <div class="calc-inputs">
-          <div class="calc-field">
-            <span class="calc-label" id={`missed-${lang}`}>{t.calc.missedLabel}</span>
-            <div class="stepper" role="group" aria-labelledby={`missed-${lang}`}>
-              <button type="button" class="step-btn" data-step="-1" aria-label={t.calc.fewer}>−</button>
-              <output class="missed" data-missed aria-live="polite">{calc.missed}</output>
-              <button type="button" class="step-btn" data-step="1" aria-label={t.calc.more}>+</button>
-            </div>
-          </div>
-          <div class="calc-field">
-            <span class="calc-label" id={`value-${lang}`}>{t.calc.valueLabel}</span>
-            <div class="chips" role="group" aria-labelledby={`value-${lang}`}>
-              {calc.values.map((v, i) => (
-                <button type="button" class="chip" data-value={v} aria-pressed={v === calc.value ? 'true' : 'false'}>
-                  {money(v)}{i === calc.values.length - 1 ? '+' : ''}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div class="calc-result">
-          <span class="calc-label">{t.calc.resultLabel}</span>
-          <p class="calc-total"><output data-total aria-live="polite">{money(monthly(calc.missed, calc.value))}</output></p>
-          <p class="calc-tail">{t.calc.resultTail}</p>
-          <p class="mono calc-formula" data-formula-out>{formula(calc.missed, calc.value)}</p>
-          <p class="calc-note">{t.calc.note}</p>
-          <a class="btn btn-primary" href={`#${ids.score}`} data-focus-form>{t.calc.cta}</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- THE PROBLEM -->
   <section class="section">
     <div class="wrap">
@@ -148,38 +74,16 @@ const formula = (missed: number, value: number) =>
       <div class="leaks" data-reveal>
         {t.leaks.items.map((item, i) => (
           <div class="leak card lift">
-            <span class="mono num">0{i + 1}</span>
+            <div class="leak-top">
+              <svg class="icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={leakIcons[i]} />
+              <span class="mono num">0{i + 1}</span>
+            </div>
             <h3>{item.title}</h3>
             <p>{item.body}</p>
           </div>
         ))}
       </div>
-    </div>
-  </section>
-
-  <!-- WHY IT HAPPENS -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head" data-reveal>
-        <p class="eyebrow">{t.why.eyebrow}</p>
-        <h2>{t.why.title}</h2>
-      </div>
-      <div class="cells two" data-reveal>
-        {t.why.items.map((item) => (
-          <div class="cell">
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </div>
-        ))}
-      </div>
-      {t.why.bonus && (
-        <div class="bonus card" data-reveal>
-          <span class="mono tag">{t.why.bonus.label}</span>
-          <h3>{t.why.bonus.title}</h3>
-          <p>{t.why.bonus.body}</p>
-        </div>
-      )}
-      <p class="closing" data-reveal>{t.why.closing}</p>
+      <p class="closing" data-reveal>{t.leaks.closing}</p>
     </div>
   </section>
 
@@ -194,12 +98,14 @@ const formula = (missed: number, value: number) =>
 
       <!-- Foundation: illustration + what's included + live text-back example -->
       <div class="foundation card">
-        <figure class="illo" data-reveal>
-          <Image src={answerImg} alt={t.system.foundation.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
-          {t.system.foundation.callouts.map((c) => (
-            <span class="callout mono" aria-hidden="true" style={`left:${c.x}%;top:${c.y}%;max-width:${c.w ?? 100 - c.x - 1}%`}>{c.text}</span>
-          ))}
-        </figure>
+        <div class="illo-block" data-reveal>
+          <figure class="illo">
+            <Image src={answerImg} alt={t.system.foundation.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+          </figure>
+          <ol class="legend mono">
+            {t.system.foundation.legend.map((l, i) => <li><span>0{i + 1}</span>{l}</li>)}
+          </ol>
+        </div>
         <div class="foundation-copy">
           <span class="mono tag">{t.system.foundation.label}</span>
           <h3>{t.system.foundation.title}</h3>
@@ -222,12 +128,14 @@ const formula = (missed: number, value: number) =>
       <div class="paths">
         {illustrated.map((p) => (
           <div class="path card">
-            <figure class="illo" data-reveal>
-              <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes="(max-width: 1000px) calc(100vw - 48px), 560px" format="webp" quality={78} loading="lazy" />
-              {p.callouts.map((c) => (
-                <span class="callout mono" aria-hidden="true" style={`left:${c.x}%;top:${c.y}%;max-width:${c.w ?? 100 - c.x - 1}%`}>{c.text}</span>
-              ))}
-            </figure>
+            <div class="illo-block" data-reveal>
+              <figure class="illo">
+                <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+              </figure>
+              <ol class="legend mono">
+                {p.legend.map((l, i) => <li><span>0{i + 1}</span>{l}</li>)}
+              </ol>
+            </div>
             <div class="path-copy">
               <span class="mono tag">{p.tag}</span>
               <h3>{p.name}</h3>
@@ -254,79 +162,46 @@ const formula = (missed: number, value: number) =>
 
       <div class="system-close" data-reveal>
         <p class="closing">{t.system.closing}</p>
-        <a class="btn btn-ghost" href={`#${ids.score}`} data-focus-form>{t.system.cta}</a>
+        <a class="btn btn-primary" href={`#${ids.score}`} data-focus-form>{t.system.cta}</a>
       </div>
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
+  <!-- HOW IT WORKS: a 4-step timeline -->
   <section class="section" id={ids.how}>
     <div class="wrap">
       <div class="section-head" data-reveal>
         <p class="eyebrow">{t.how.eyebrow}</p>
         <h2>{t.how.title}</h2>
       </div>
-      <ol class="steps" data-reveal>
+      <ol class="timeline" data-reveal>
         {t.how.steps.map((s, i) => (
-          <li class="howstep card lift">
-            <span class="mono num">0{i + 1}</span>
+          <li>
+            <span class="node mono" aria-hidden="true">0{i + 1}</span>
             <h3>{s.title}</h3>
             <p>{s.body}</p>
           </li>
         ))}
       </ol>
-
-      <div class="expect" data-reveal>
-        <h3>{t.how.expectTitle}</h3>
-        <dl>
-          {t.how.expect.map((e) => (
-            <div class="expect-row">
-              <dt class="mono">{e.when}</dt>
-              <dd>{e.body}{e.path && <span class="mono path-tag">{e.path}</span>}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
     </div>
   </section>
 
-  <!-- WHY IT WORKS -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head" data-reveal>
-        <p class="eyebrow">{t.works.eyebrow}</p>
-        <h2>{t.works.title}</h2>
-      </div>
-      <div class="cells three" data-reveal>
-        {t.works.items.map((item) => (
-          <div class="cell">
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </div>
-        ))}
-      </div>
-      <p class="closing" data-reveal>{t.works.closing}</p>
-    </div>
-  </section>
-
-  <!-- GUARANTEES -->
-  <section class="section grid-bg spot" id={ids.guarantee}>
+  <!-- GUARANTEES: the one light section, so it stands out -->
+  <section class="section light" id={ids.guarantee}>
     <div class="wrap">
       <div class="section-head" data-reveal>
         <p class="eyebrow">{t.guarantee.eyebrow}</p>
         <h2>{t.guarantee.title}</h2>
       </div>
-      <div class="g-box card" data-reveal>
-        <dl>
-          {guarantees.map((g) => (
-            <div class="g-row">
-              <dt class="mono">{g.label}</dt>
-              <dd>{g.body}</dd>
-            </div>
-          ))}
-        </dl>
-        <p class="note">{t.guarantee.note}</p>
+      <div class={`g-tiles n${guarantees.length}`} data-reveal>
+        {guarantees.map((g) => (
+          <div class="g-tile">
+            <span class="mono g-label">{g.label}</span>
+            <p>{g.body}</p>
+          </div>
+        ))}
       </div>
+      <p class="note" data-reveal>{t.guarantee.note}</p>
     </div>
   </section>
 
@@ -367,83 +242,34 @@ const formula = (missed: number, value: number) =>
     </div>
   </section>
 
-  <!-- FINAL: SCORE + BOOK A CALL -->
+  <!-- FINAL: the Score form again, with Piero's calendar beside it -->
   <section class="section grid-bg spot final" id={ids.contact}>
-    <div class="wrap">
-      <div class="final-head" data-reveal>
+    <div class="wrap final-grid">
+      <div class="final-score" data-reveal>
+        <span class="mono tag">{t.final.scoreTitle}</span>
         <h2>{t.final.title}</h2>
-        <p class="lead">{t.final.sub}</p>
+        <p class="lead">{t.final.scoreBody}</p>
+        <ScoreForm lang={lang} uid={`${lang}-end`} />
       </div>
-      <div class={`final-grid${site.calendarUrl ? ' has-cal' : ''}`}>
-        <div class="final-card card primary-card" data-reveal>
-          <span class="mono tag">Blueprint Score</span>
-          <h3>{t.final.scoreTitle}</h3>
-          <p>{t.final.scoreBody}</p>
-          <a class="btn btn-primary big" href={`#${ids.score}`} data-focus-form>{t.final.button}</a>
-        </div>
-        <div class="final-card card" data-reveal>
-          <span class="mono tag">15 min</span>
-          <h3>{t.final.bookTitle}</h3>
-          <p>{t.final.bookBody}</p>
-          {site.calendarUrl
-            ? <iframe class="calendar" src={site.calendarUrl} title={t.final.bookTitle} loading="lazy"></iframe>
-            : <a class="btn btn-ghost" href={`mailto:${site.email}`}>{t.final.bookFallback}</a>}
+      <div class="final-book card" data-reveal>
+        <span class="mono tag">15 min</span>
+        <h3>{t.final.bookTitle}</h3>
+        <p>{t.final.bookBody}</p>
+        {site.calendarUrl
+          ? <iframe class="calendar" src={site.calendarUrl} title={t.final.bookTitle} loading="lazy"></iframe>
+          : <a class="btn btn-ghost" href={`mailto:${site.email}`}>{t.final.bookFallback}</a>}
+        {(site.phone || site.whatsapp) && (
           <div class="contact">
-            {site.calendarUrl && <a href={`mailto:${site.email}`}>{t.final.email}<span class="mono addr"> · {site.email}</span></a>}
             {site.phone && <a href={`sms:${site.phone}`}>{t.final.phone}</a>}
             {site.whatsapp && <a href={`https://wa.me/${site.whatsapp}`} rel="noopener">{t.final.whatsapp}</a>}
           </div>
-        </div>
+        )}
       </div>
     </div>
   </section>
 </main>
 
 <script>
-  // Two-step Score form: step 2 appears after business name + city are filled in.
-  // Without JavaScript both steps show at once and the form still submits.
-  for (const form of document.querySelectorAll<HTMLFormElement>('form[name="blueprint-score"]')) {
-    form.classList.add('js');
-    const step1 = form.querySelector<HTMLElement>('.step1')!;
-    const next = form.querySelector<HTMLButtonElement>('.next')!;
-    next.addEventListener('click', () => {
-      const fields = [...step1.querySelectorAll('input')];
-      const invalid = fields.find((f) => !f.checkValidity());
-      if (invalid) { invalid.reportValidity(); return; }
-      form.classList.add('on-step2');
-      form.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
-    });
-    step1.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && e.target instanceof HTMLInputElement) { e.preventDefault(); next.click(); }
-    });
-  }
-  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-focus-form]')) {
-    link.addEventListener('click', () => {
-      setTimeout(() => document.querySelector<HTMLInputElement>('form[name="blueprint-score"] input[name="business"]')?.focus({ preventScroll: true }), 400);
-    });
-  }
-
-  // Leak calculator: missed calls a week × 4 weeks × job value × half would have booked.
-  for (const box of document.querySelectorAll<HTMLElement>('[data-calc]')) {
-    const money = (n: number) => '$' + n.toLocaleString('en-US');
-    const missedOut = box.querySelector<HTMLOutputElement>('[data-missed]')!;
-    const totalOut = box.querySelector<HTMLOutputElement>('[data-total]')!;
-    const formulaOut = box.querySelector<HTMLElement>('[data-formula-out]')!;
-    const chips = [...box.querySelectorAll<HTMLButtonElement>('[data-value]')];
-    let missed = Number(missedOut.textContent) || 5;
-    let value = Number(chips.find((c) => c.getAttribute('aria-pressed') === 'true')?.dataset.value) || 500;
-    const render = () => {
-      missedOut.textContent = String(missed);
-      totalOut.textContent = money(missed * 4 * value * 0.5);
-      formulaOut.textContent = (box.dataset.formula ?? '').replace('{n}', String(missed)).replace('{v}', money(value));
-      for (const c of chips) c.setAttribute('aria-pressed', String(Number(c.dataset.value) === value));
-    };
-    for (const b of box.querySelectorAll<HTMLButtonElement>('[data-step]')) {
-      b.addEventListener('click', () => { missed = Math.min(50, Math.max(0, missed + Number(b.dataset.step))); render(); });
-    }
-    for (const c of chips) c.addEventListener('click', () => { value = Number(c.dataset.value); render(); });
-  }
-
   // Motion effects. Skipped entirely for visitors who prefer reduced motion,
   // so everything is simply visible for them (and without JavaScript).
   const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -457,7 +283,7 @@ const formula = (missed: number, value: number) =>
       for (const el of els) io.observe(el);
     };
 
-    // Sections and illustration callouts fade in as they enter.
+    // Sections fade in as they enter.
     once(document.querySelectorAll('[data-reveal]'), (el) => el.classList.add('in'), 0.12);
 
     // Score card counts up and its bars fill.
@@ -502,7 +328,7 @@ const formula = (missed: number, value: number) =>
   .num { color: var(--lime); font-size: 13px; }
   .closing { margin-top: 40px; font-family: var(--font-display); font-weight: 500; font-size: 24px; color: var(--chalk); max-width: 760px; }
 
-  /* Effect 1: blueprint grid spotlight */
+  /* Blueprint grid spotlight */
   .spot { position: relative; }
   .spot > .wrap { position: relative; z-index: 1; }
   .spot::after {
@@ -517,24 +343,18 @@ const formula = (missed: number, value: number) =>
   }
   .spot.lit::after { opacity: 1; }
 
-  /* Effect 2: hover cards lift and flip to Chalk (like the old site) */
+  /* Hover cards lift and flip to Chalk (like the old site) */
   .lift { transition: transform .2s ease, background-color .2s ease, border-color .2s ease; }
   @media (hover: hover) {
     .lift:hover { transform: translateY(-4px); background: var(--chalk); border-color: var(--chalk); }
     .lift:hover h3 { color: var(--navy); }
     .lift:hover p { color: #2b3a48; }
-    .lift:hover .num { color: var(--lime-ink); }
+    .lift:hover .num, .lift:hover .icon { color: var(--lime-ink); }
   }
 
-  /* Effect 4: sections and callouts fade in (only when the script turns motion on) */
+  /* Sections fade in (only when the script turns motion on) */
   :global(.fx) [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
   :global(.fx) [data-reveal].in { opacity: 1; transform: none; }
-  :global(.fx) .illo .callout { opacity: 0; transform: translateY(calc(-100% + 6px)); transition: opacity .5s ease, transform .5s ease; }
-  :global(.fx) .illo.in .callout { opacity: 1; transform: translateY(-100%); }
-  :global(.fx) .illo.in .callout:nth-of-type(2) { transition-delay: .15s; }
-  :global(.fx) .illo.in .callout:nth-of-type(3) { transition-delay: .3s; }
-  :global(.fx) .illo.in .callout:nth-of-type(4) { transition-delay: .45s; }
-  :global(.fx) .illo.in .callout:nth-of-type(5) { transition-delay: .6s; }
 
   /* Hero */
   .hero { padding: 88px 0 104px; }
@@ -555,84 +375,26 @@ const formula = (missed: number, value: number) =>
   .bar-row .mono { color: var(--steel); }
   .track { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
   .fill { height: 8px; border-radius: 4px; background: var(--lime); width: var(--w); }
-  /* Effect 3: bars fill when the Score card appears */
   :global(.fx) [data-score] .fill { width: 0; transition: width 1.2s cubic-bezier(.2, .7, .2, 1); }
   :global(.fx) [data-score].in .fill { width: var(--w); }
   .score-foot { border-top: 1px solid var(--line); padding-top: 18px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; color: var(--body); }
   .lost { font-family: var(--font-display); font-weight: 700; font-size: 28px; color: var(--lime); }
 
-  /* Form */
-  .form { padding: 24px; scroll-margin-top: 100px; }
-  .fstep { display: flex; flex-direction: column; gap: 16px; }
-  .step2 { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
-  .form.js .step2 { display: none; }
-  .form.js.on-step2 .step1 { display: none; }
-  .form.js.on-step2 .step2 { display: flex; margin-top: 0; padding-top: 0; border-top: 0; }
-  .form.js .next { display: inline-flex; }
-  .form:not(.js) .next { display: none; }
-  .step2-title { font-size: 24px; }
-  .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-  .row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .row label { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #d5dde4; }
-  .row small { color: var(--steel); font-size: 13px; }
-  input {
-    font: inherit; font-size: 16px; color: var(--chalk);
-    background: var(--navy); border: 1px solid #2a3b4c; border-radius: 8px;
-    min-height: 50px; padding: 0 14px; width: 100%;
-  }
-  input:focus { border-color: var(--lime); outline: none; }
-  .consent { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: var(--steel); }
-  .consent input { min-height: 0; width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: var(--lime); }
-  .next, .submit { align-self: flex-start; min-height: 56px; padding: 0 32px; font-size: 18px; }
-  .form-note { color: var(--steel); font-size: 14px; }
-
-  /* Calculator */
-  .calc-section { padding: 72px 0; }
-  .calc { padding: 40px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 56px; border-color: #2a3b4c; }
-  .calc-copy { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 12px; }
-  .calc-copy h2 { font-size: clamp(30px, 4.2vw, 44px); }
-  .calc-inputs { display: flex; flex-direction: column; gap: 28px; }
-  .calc-field { display: flex; flex-direction: column; gap: 12px; }
-  .calc-label { color: #d5dde4; font-size: 15px; }
-  .stepper { display: inline-flex; align-items: center; border: 1px solid #2a3b4c; border-radius: 10px; overflow: hidden; align-self: flex-start; }
-  .step-btn { width: 56px; height: 56px; border: 0; background: var(--navy); color: var(--chalk); font-size: 26px; cursor: pointer; font-family: var(--font-mono); }
-  .step-btn:hover { background: var(--line); }
-  .missed { min-width: 80px; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 32px; font-variant-numeric: tabular-nums; }
-  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-  .chip { min-height: 48px; padding: 0 18px; border-radius: 8px; border: 1px solid #2a3b4c; background: var(--navy); color: var(--chalk); font: 500 16px var(--font-mono); cursor: pointer; }
-  .chip:hover { border-color: var(--steel); }
-  .chip[aria-pressed='true'] { background: var(--lime); border-color: var(--lime); color: var(--navy); }
-  .calc-result { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; border-left: 1px solid var(--line); padding-left: 48px; }
-  .calc-total { font-family: var(--font-display); font-weight: 700; font-size: clamp(48px, 6vw, 72px); line-height: 1; color: var(--lime); font-variant-numeric: tabular-nums; }
-  .calc-tail { color: var(--chalk); font-size: 18px; }
-  .calc-formula { color: var(--steel); font-size: 13px; }
-  .calc-note { color: var(--steel); font-size: 14px; margin-bottom: 8px; }
-
   /* Leaks */
   .leaks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .leak { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .leak { padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .leak-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .icon { color: var(--lime); transition: color .2s ease; }
   .leak h3 { font-size: 22px; }
   .leak p { color: var(--body); font-size: 16px; }
 
-  /* Ruled cells (why it happens / why it works) */
-  .cells { display: grid; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
-  .cells.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cells.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .cell { padding: 32px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
-  .cell h3 { font-size: 24px; }
-  .cell p { color: var(--body); font-size: 16px; }
-  .bonus { margin-top: 16px; padding: 28px 32px; display: flex; flex-direction: column; gap: 10px; border-color: var(--lime); }
-  .bonus h3 { font-size: 24px; }
-  .bonus p { color: var(--body); }
-
-  /* Illustrations: shared frame + callout labels */
-  .illo { position: relative; margin: 0; background: #071520; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  /* Illustrations: framed image with a numbered legend underneath (no text on the drawing) */
+  .illo-block { display: flex; flex-direction: column; gap: 14px; }
+  .illo { margin: 0; background: #071520; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
   .illo :global(img) { width: 100%; height: auto; }
-  .callout {
-    position: absolute; transform: translateY(-100%); padding-bottom: 4px;
-    font-size: 12px; line-height: 1.3; letter-spacing: 0.04em; color: var(--chalk);
-    text-shadow: 0 0 6px #071520, 0 0 2px #071520;
-  }
+  .legend { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; font-size: 13px; color: #d5dde4; }
+  .legend li { display: flex; gap: 10px; align-items: baseline; }
+  .legend span { color: var(--lime); }
 
   /* System */
   .foundation { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; border-color: var(--lime); margin-bottom: 16px; align-items: center; }
@@ -667,23 +429,28 @@ const formula = (missed: number, value: number) =>
   .system-close { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 40px; }
   .system-close .closing { margin-top: 0; }
 
-  /* Steps */
-  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .howstep { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
-  .howstep h3 { font-size: 22px; }
-  .howstep p { color: var(--body); font-size: 16px; }
-  .expect { margin-top: 56px; max-width: 880px; }
-  .expect h3 { font-size: 24px; margin-bottom: 20px; }
-  .expect dl, .g-box dl { margin: 0; border-top: 1px solid var(--line); }
-  .expect-row, .g-row { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--line); }
-  dt { color: var(--lime); font-size: 14px; letter-spacing: 0.06em; padding-top: 2px; }
-  dd { margin: 0; color: #d5dde4; }
-  .path-tag { margin-left: 10px; font-size: 12px; color: var(--steel); border: 1px solid var(--line); border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+  /* How it works: timeline */
+  .timeline { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 24px; right: calc(25% - 8px); top: 24px; border-top: 1px dashed #2a3b4c; }
+  .timeline li { position: relative; display: flex; flex-direction: column; gap: 12px; }
+  .node {
+    width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 8px;
+    background: var(--navy); border: 1px solid var(--lime); color: var(--lime); font-size: 14px;
+  }
+  .timeline li:last-child .node { background: var(--lime); color: var(--navy); }
+  .timeline h3 { font-size: 22px; }
+  .timeline p { color: var(--body); font-size: 16px; }
 
-  /* Guarantee */
-  .g-box { padding: 32px; border-color: var(--lime); max-width: 880px; }
-  .g-row dd { font-size: 18px; color: var(--chalk); }
-  .note { color: var(--steel); font-size: 14px; margin-top: 20px; }
+  /* Guarantee: light section */
+  .light { background: var(--chalk); color: var(--navy); border-top: 0; }
+  .light .eyebrow { color: var(--lime-ink); }
+  .light .section-head h2 { color: var(--navy); }
+  .g-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .g-tiles.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .g-tile { background: #fff; border: 1px solid #dcdad6; border-top: 4px solid var(--lime); border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .g-label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime-ink); }
+  .g-tile p { font-family: var(--font-display); font-weight: 500; font-size: 21px; line-height: 1.3; color: var(--navy); }
+  .note { color: #4f5d6b; font-size: 14px; margin-top: 24px; }
 
   /* Founder */
   .founder { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 56px; align-items: center; }
@@ -694,6 +461,7 @@ const formula = (missed: number, value: number) =>
   .founder-copy h2 { font-size: clamp(34px, 5vw, 52px); }
   .details { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
   .details li { font-size: 13px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 6px; color: #d5dde4; }
+  .details li:nth-child(-n+2) { border-color: var(--lime); color: var(--lime); }
 
   /* FAQ */
   .faq { border-top: 1px solid var(--line); max-width: 880px; }
@@ -708,42 +476,28 @@ const formula = (missed: number, value: number) =>
   details p { color: var(--body); padding: 0 0 24px; max-width: 720px; }
 
   /* Final */
-  .final-head { display: flex; flex-direction: column; gap: 18px; text-align: center; align-items: center; max-width: 820px; margin: 0 auto 48px; }
-  .final h2 { font-size: clamp(36px, 5.4vw, 60px); }
-  .final-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 980px; margin: 0 auto; }
-  .final-grid.has-cal { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); max-width: none; }
-  .final-card { padding: 32px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
-  .final-card h3 { font-size: 28px; }
-  .final-card p { color: var(--body); }
-  .primary-card { border-color: var(--lime); }
-  .big { min-height: 58px; padding: 0 34px; font-size: 18px; margin-top: auto; }
-  .calendar { width: 100%; min-height: 640px; border: 0; border-radius: 10px; background: var(--chalk); }
-  .contact { display: flex; gap: 16px; flex-wrap: wrap; margin-top: auto; padding-top: 8px; font-size: 15px; }
-  .addr { color: var(--steel); font-size: 13px; }
+  .final-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: start; }
+  .final-score { display: flex; flex-direction: column; gap: 20px; }
+  .final h2 { font-size: clamp(36px, 5vw, 56px); }
+  .final-book { padding: 32px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .final-book h3 { font-size: 26px; }
+  .final-book p { color: var(--body); }
+  .calendar { width: 100%; min-height: 620px; border: 0; border-radius: 10px; background: var(--chalk); }
+  .contact { display: flex; gap: 16px; flex-wrap: wrap; font-size: 15px; }
 
   @media (max-width: 1000px) {
-    .hero-grid, .founder, .foundation, .paths, .final-grid, .final-grid.has-cal { grid-template-columns: minmax(0, 1fr); }
+    .hero-grid, .founder, .foundation, .paths, .final-grid, .full { grid-template-columns: minmax(0, 1fr); }
     .score-card { justify-self: start; }
     .photo { max-width: 360px; }
-    .leaks, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .cells.three, .full { grid-template-columns: minmax(0, 1fr); }
+    .leaks, .timeline, .g-tiles, .g-tiles.n3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .timeline::before { display: none; }
     .full .promise { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 16px; }
-    .row.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .calc { grid-template-columns: minmax(0, 1fr); }
-    .calc-result { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 28px; }
-  }
-  @media (max-width: 700px) {
-    /* Bullet lists already say everything the labels do; small labels would collide. */
-    .callout { display: none; }
   }
   @media (max-width: 640px) {
     .hero { padding: 56px 0 72px; }
-    .leaks, .steps, .cells.two, .row, .row.three { grid-template-columns: minmax(0, 1fr); }
-    .leak, .cell, .howstep, .foundation, .form, .g-box, .bonus, .calc, .full, .final-card { padding: 22px; }
+    .leaks, .timeline, .g-tiles, .g-tiles.n3, .legend { grid-template-columns: minmax(0, 1fr); }
+    .leak, .foundation, .full, .final-book, .g-tile { padding: 22px; }
     .path { padding: 14px; }
-    .expect-row, .g-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
     .score-value { font-size: 64px; }
-    .next, .submit, .big { width: 100%; }
-    .addr { display: none; }
   }
 </style>

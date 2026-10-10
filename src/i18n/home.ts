@@ -1,9 +1,6 @@
 export type Lang = 'en' | 'es';
 
 type Item = { title: string; body: string };
-// A label drawn on an illustration's callout line. x/y are the left end of the
-// horizontal line segment, as a % of the image; the text sits just above it.
-type Callout = { x: number; y: number; text: string; w?: number }; // w: max label width, % of image
 type Msg = { from: 'note' | 'in' | 'out' | 'booked'; text: string };
 
 const en = {
@@ -45,19 +42,6 @@ const en = {
       note: 'We’ll never sell your info.',
     },
   },
-  calc: {
-    eyebrow: 'Quick math',
-    title: 'How much is your voicemail costing you?',
-    missedLabel: 'Calls you miss in a busy week',
-    fewer: 'Fewer missed calls',
-    more: 'More missed calls',
-    valueLabel: 'Your average job is worth',
-    resultLabel: 'If half of those calls would have booked',
-    resultTail: 'a month going to whoever answered instead.',
-    formula: '{n} calls a week × 4 weeks × {v} × 50%',
-    note: 'Your numbers, rough math. Your free Score shows the real ones.',
-    cta: 'Get the real number, free',
-  },
   leaks: {
     eyebrow: 'Where the jobs go',
     title: 'Your work is good. Jobs are still slipping away.',
@@ -68,17 +52,6 @@ const en = {
       { title: 'Happy customers go quiet.', body: 'You did great work, but nobody asked for the review, the referral or the next service.' },
       { title: 'Quotes die in silence.', body: 'You sent the estimate. Nobody followed up. That job was already half sold.' },
     ] as Item[],
-  },
-  why: {
-    eyebrow: 'It’s not your fault',
-    title: 'The game changed. Most contractors haven’t caught up.',
-    items: [
-      { title: 'You can’t be in two places.', body: 'When you’re doing the job, you can’t answer the phone. Your customer won’t wait.' },
-      { title: 'Customers move fast.', body: 'If nobody answers in a few minutes, they’ve already called someone else.' },
-      { title: 'Search changed.', body: 'Google Maps and AI assistants now decide who gets the call, and they reward reviews, speed and good information.' },
-      { title: 'Word of mouth isn’t a system.', body: 'It’s great when it comes. You can’t plan your month around it.' },
-    ] as Item[],
-    bonus: null as (Item & { label: string }) | null,
     closing: 'The good news: every one of these leaks can be fixed with the right system.',
   },
   system: {
@@ -95,12 +68,12 @@ const en = {
         'Website chats get a reply in seconds',
         'Appointments land straight on your calendar',
       ],
-      callouts: [
-        { x: 34.7, y: 9.3, text: 'You stay on the job' },
-        { x: 55.2, y: 53.5, text: 'AI answers 24/7, EN/ES' },
-        { x: 62.5, y: 69.1, text: 'Missed call? Instant text back' },
-        { x: 15.6, y: 82.5, text: 'Booked on your calendar' },
-      ] as Callout[],
+      legend: [
+        'You stay on the job',
+        'AI answers 24/7, EN/ES',
+        'Missed call? Instant text back',
+        'Booked on your calendar',
+      ] as string[],
       imageAlt: 'Blueprint drawing of a contractor working on an AC unit while the phone on his toolbox rings',
       demoLabel: 'Example · what your customer sees',
       demo: [
@@ -130,12 +103,12 @@ const en = {
         promise: 'Your Blueprint Score improves in 90 days, or next month is free.',
         image: 'found',
         imageAlt: 'Blueprint map of local service businesses with one lime pin standing out as the top result',
-        callouts: [
-          { x: 11, y: 28.6, text: 'Top of Google Maps' },
-          { x: 76.4, y: 29, text: 'Recommended by AI' },
-          { x: 12.4, y: 73.9, text: 'Five-star reviews' },
-          { x: 76.2, y: 73.2, text: 'Listed everywhere' },
-        ] as Callout[],
+        legend: [
+          'Top of Google Maps',
+          'Recommended by AI',
+          'Five-star reviews',
+          'Listed everywhere',
+        ] as string[],
       },
       {
         tag: 'Path 2',
@@ -153,12 +126,12 @@ const en = {
         promise: '10+ booked appointments in your first 30 days after ads go live, or we keep working free.',
         image: 'booked',
         imageAlt: 'Blueprint flow: an ad on a phone, then a chat reply, then a booked day on a calendar',
-        callouts: [
-          { x: 33.2, y: 32.2, text: 'Facebook + Instagram ads' },
-          { x: 27.8, y: 74.5, text: 'Google Local Services Ads' },
-          { x: 55.6, y: 58.3, text: 'Answered in seconds', w: 17 },
-          { x: 80, y: 34.7, text: 'Booked' },
-        ] as Callout[],
+        legend: [
+          'Facebook + Instagram ads',
+          'Google Local Services Ads',
+          'Answered in seconds',
+          'Booked',
+        ] as string[],
       },
       {
         tag: 'Path 3',
@@ -169,7 +142,7 @@ const en = {
         promise: 'Both promises included.',
         image: '',
         imageAlt: '',
-        callouts: [] as Callout[],
+        legend: [] as string[],
       },
     ],
     closing: 'Not sure which path fits? That’s exactly what your free Score tells you.',
@@ -184,22 +157,6 @@ const en = {
       { title: 'We build your system.', body: 'Set up in 7 to 14 days. You don’t touch the tech.' },
       { title: 'You get booked.', body: 'Every lead answered, more reviews, more jobs, and a short results report every week.' },
     ] as Item[],
-    expectTitle: 'What to expect',
-    expect: [
-      { when: 'Week 1', body: 'Every call and message answered. Review requests start going out.', path: '' },
-      { when: 'Weeks 2–4', body: 'Ads start booking appointments.', path: 'Get Booked' },
-      { when: 'Months 2–3', body: 'You climb on Google Maps and start showing up in AI answers.', path: 'Get Found' },
-    ],
-  },
-  works: {
-    eyebrow: 'Why it works',
-    title: 'Speed, trust and visibility. All three, working together.',
-    items: [
-      { title: 'Speed wins the job.', body: 'The first company to respond usually gets it. We make sure that’s you.' },
-      { title: 'Trust closes it.', body: 'Homeowners check reviews before they call. We make yours impossible to ignore.' },
-      { title: 'Visibility keeps it coming.', body: 'We put you where customers are searching, on Google and in AI answers.' },
-    ] as Item[],
-    closing: 'Most agencies sell you one piece. We build the whole system.',
   },
   guarantee: {
     eyebrow: 'Our guarantee',
@@ -215,8 +172,8 @@ const en = {
   founder: {
     eyebrow: 'Who’s behind Blueprint',
     title: 'Hi, I’m Piero.',
-    body: 'I spent years in sales and finance, on the dealership floor and in auto lending, and saw the same thing every day: the business that responds first and follows up best wins. Most home service owners do great work but don’t have the systems to compete with the big companies. Blueprint gives you those systems, set up and run for you, so you can stay focused on the work.',
-    details: ['Based in Las Vegas', 'Working with home service businesses across the U.S.', 'English and Spanish'],
+    body: 'My background is sales and marketing. I’ve built the follow-up, ads and automation that turn interest into booked appointments, and I spent years in sales and finance watching the same thing happen every day: the business that responds first and follows up best wins. Most home service owners do great work but don’t have that marketing machine behind them. Blueprint builds it for you and runs it, so you can stay focused on the work.',
+    details: ['Sales and marketing', 'Ads, follow-up and automation', 'Based in Las Vegas', 'Working with home service businesses across the U.S.', 'English and Spanish'],
     photoAlt: 'Piero Quino, founder of Blueprint Strategies',
   },
   faq: {
@@ -230,10 +187,7 @@ const en = {
       { q: 'How fast will I see results?', a: 'Every lead gets answered from week one. Ads start booking appointments in weeks two to four. Google Maps and AI visibility build over two to three months.' },
       { q: 'Do I need to be good with technology?', a: 'No. We set everything up and run it. You show up to the appointments and do the work.' },
       { q: 'Will the AI receptionist sound like a robot?', a: 'No. It sounds natural, knows your services and hours, and passes the conversation to you whenever a person is needed.' },
-      { q: 'I already work with a marketing company.', a: 'Get your Score anyway. It’s free and shows what’s working and what isn’t.' },
-      { q: 'Can’t I just do this myself?', a: 'You can, and your Score shows you what to fix. Most owners would rather be on the job than learning ad platforms at 10 p.m.' },
       { q: 'Do you work in Spanish?', a: 'Yes. We work in English and Spanish, and so can your AI receptionist.' },
-      { q: 'Where are you located?', a: 'Las Vegas, Nevada. We work with home service businesses across the U.S.' },
     ],
   },
   final: {
@@ -304,19 +258,6 @@ const es: typeof en = {
       note: 'Nunca vendemos tu información.',
     },
   },
-  calc: {
-    eyebrow: 'Haz la cuenta',
-    title: '¿Cuánto te está costando el buzón de voz?',
-    missedLabel: 'Llamadas que se te pasan en una semana ocupada',
-    fewer: 'Menos llamadas perdidas',
-    more: 'Más llamadas perdidas',
-    valueLabel: 'Tu trabajo promedio vale',
-    resultLabel: 'Si la mitad de esas llamadas se hubiera agendado',
-    resultTail: 'al mes que se van con el que sí contestó.',
-    formula: '{n} llamadas por semana × 4 semanas × {v} × 50%',
-    note: 'Tus números, cuenta rápida. Tu Score gratis te muestra los reales.',
-    cta: 'Quiero el número real, gratis',
-  },
   leaks: {
     eyebrow: 'A dónde se van los trabajos',
     title: 'Tu trabajo es bueno. Pero se te están escapando clientes.',
@@ -327,21 +268,6 @@ const es: typeof en = {
       { title: 'Tus clientes contentos se quedan callados.', body: 'Hiciste un gran trabajo, pero nadie les pidió la reseña, la recomendación ni el siguiente servicio.' },
       { title: 'Las cotizaciones se mueren solas.', body: 'Mandaste el presupuesto y nadie le dio seguimiento. Ese trabajo ya estaba medio vendido.' },
     ],
-  },
-  why: {
-    eyebrow: 'Por qué pasa',
-    title: 'El juego cambió. No es tu culpa.',
-    items: [
-      { title: 'No puedes estar en dos lugares.', body: 'Si estás trabajando, no puedes contestar. El cliente no espera.' },
-      { title: 'Los clientes se mueven rápido.', body: 'Si nadie contesta en unos minutos, ya llamaron a otro.' },
-      { title: 'La búsqueda cambió.', body: 'Google Maps y la inteligencia artificial ahora deciden a quién llaman, y premian las reseñas, la rapidez y la buena información.' },
-      { title: 'El boca a boca no es un sistema.', body: 'Es buenísimo cuando llega, pero no puedes planear tu mes con eso.' },
-    ],
-    bonus: {
-      label: 'Ventaja extra',
-      title: 'Tus clientes también hablan español.',
-      body: 'Muchos clientes buscan en español y prefieren que los atiendan en su idioma. Con Blueprint, tu negocio contesta en inglés y en español, día y noche.',
-    },
     closing: 'La buena noticia: cada una de estas fugas se arregla con el sistema correcto.',
   },
   system: {
@@ -358,11 +284,11 @@ const es: typeof en = {
         'Los chats de tu sitio web se contestan en segundos',
         'Las citas caen directo en tu calendario',
       ],
-      callouts: [
-        { x: 34.7, y: 9.3, text: 'Tú sigues trabajando' },
-        { x: 55.2, y: 53.5, text: 'La IA contesta 24/7' },
-        { x: 62.5, y: 69.1, text: '¿Llamada perdida? Mensaje al instante' },
-        { x: 15.6, y: 82.5, text: 'Cita en tu calendario' },
+      legend: [
+        'Tú sigues trabajando',
+        'La IA contesta 24/7',
+        '¿Llamada perdida? Mensaje al instante',
+        'Cita en tu calendario',
       ],
       imageAlt: 'Dibujo tipo plano de un técnico trabajando en un aire acondicionado mientras suena el teléfono sobre su caja de herramientas',
       demoLabel: 'Ejemplo · lo que ve tu cliente',
@@ -393,11 +319,11 @@ const es: typeof en = {
         promise: 'Tu Blueprint Score mejora en 90 días, o el siguiente mes es gratis.',
         image: 'found',
         imageAlt: 'Mapa tipo plano de negocios de servicios con un pin verde destacado como el primer resultado',
-        callouts: [
-          { x: 11, y: 28.6, text: 'Arriba en Google Maps' },
-          { x: 76.4, y: 29, text: 'Recomendado por la IA' },
-          { x: 12.4, y: 73.9, text: 'Reseñas de 5 estrellas' },
-          { x: 76.2, y: 73.2, text: 'En todos los directorios' },
+        legend: [
+          'Arriba en Google Maps',
+          'Recomendado por la IA',
+          'Reseñas de 5 estrellas',
+          'En todos los directorios',
         ],
       },
       {
@@ -416,11 +342,11 @@ const es: typeof en = {
         promise: '10+ citas agendadas en tus primeros 30 días desde que salen los anuncios, o seguimos trabajando gratis.',
         image: 'booked',
         imageAlt: 'Flujo tipo plano: un anuncio en un celular, luego un mensaje, luego un día agendado en el calendario',
-        callouts: [
-          { x: 33.2, y: 32.2, text: 'Anuncios en Facebook e Instagram' },
-          { x: 27.8, y: 74.5, text: 'Google Local Services Ads' },
-          { x: 55.6, y: 58.3, text: 'Contestado en segundos', w: 19 },
-          { x: 80, y: 34.7, text: 'Agendado' },
+        legend: [
+          'Anuncios en Facebook e Instagram',
+          'Google Local Services Ads',
+          'Contestado en segundos',
+          'Agendado',
         ],
       },
       {
@@ -432,7 +358,7 @@ const es: typeof en = {
         promise: 'Con las dos promesas.',
         image: '',
         imageAlt: '',
-        callouts: [],
+        legend: [],
       },
     ],
     closing: '¿No sabes cuál es para ti? Para eso es tu Score gratis.',
@@ -447,22 +373,6 @@ const es: typeof en = {
       { title: 'Construimos tu sistema.', body: 'Listo en 7 a 14 días. Tú no tocas nada de tecnología.' },
       { title: 'Tu agenda se llena.', body: 'Cada cliente atendido, más reseñas, más trabajos, y un reporte corto cada semana.' },
     ],
-    expectTitle: 'Qué esperar',
-    expect: [
-      { when: 'Semana 1', body: 'Cada llamada y mensaje contestado. Empiezan a salir las solicitudes de reseña.', path: '' },
-      { when: 'Semanas 2–4', body: 'Los anuncios empiezan a agendar citas.', path: 'Que te contraten' },
-      { when: 'Meses 2–3', body: 'Subes en Google Maps y empiezas a aparecer en las respuestas de la IA.', path: 'Que te encuentren' },
-    ],
-  },
-  works: {
-    eyebrow: 'Por qué funciona',
-    title: 'Rapidez, confianza y visibilidad. Las tres juntas.',
-    items: [
-      { title: 'La rapidez gana el trabajo.', body: 'La primera empresa que contesta casi siempre se lo lleva. Nos aseguramos de que seas tú.' },
-      { title: 'La confianza lo cierra.', body: 'Antes de llamar, la gente revisa las reseñas. Hacemos que las tuyas se noten.' },
-      { title: 'La visibilidad lo mantiene.', body: 'Te ponemos donde tus clientes buscan: Google y la IA.' },
-    ],
-    closing: 'La mayoría de las agencias te vende una pieza. Nosotros construimos el sistema completo.',
   },
   guarantee: {
     eyebrow: 'Nuestra garantía',
@@ -478,8 +388,8 @@ const es: typeof en = {
   founder: {
     eyebrow: 'Quién está detrás',
     title: 'Hola, soy Piero.',
-    body: 'Soy peruano y vivo en Las Vegas. Pasé años en ventas y finanzas, y vi lo mismo todos los días: gana el que contesta primero y da mejor seguimiento. Muchos dueños de negocios hispanos hacen un trabajo excelente pero no tienen los sistemas para competir con las empresas grandes. Blueprint te da esos sistemas, instalados y manejados por nosotros, para que tú te enfoques en tu trabajo.',
-    details: ['En Las Vegas', 'Trabajamos con negocios en todo EE. UU.', 'Inglés y español'],
+    body: 'Soy peruano y vivo en Las Vegas. Mi experiencia es en ventas y marketing: he armado el seguimiento, los anuncios y la automatización que convierten interés en citas agendadas, y pasé años en ventas y finanzas viendo lo mismo todos los días: gana el que contesta primero y da mejor seguimiento. Muchos dueños de negocios hacen un trabajo excelente pero no tienen esa máquina de marketing detrás. Blueprint te la construye y la maneja, para que tú te enfoques en tu trabajo.',
+    details: ['Ventas y marketing', 'Anuncios, seguimiento y automatización', 'En Las Vegas', 'Trabajamos con negocios en todo EE. UU.', 'Inglés y español'],
     photoAlt: 'Piero Quino, fundador de Blueprint Strategies',
   },
   faq: {
@@ -493,10 +403,7 @@ const es: typeof en = {
       { q: '¿Qué tan rápido veo resultados?', a: 'Cada cliente se atiende desde la primera semana. Los anuncios empiezan a agendar citas entre la semana dos y la cuatro. Tu posición en Google Maps y en la IA se construye en dos a tres meses.' },
       { q: '¿Tengo que saber de tecnología?', a: 'No. Nosotros instalamos y manejamos todo. Tú llegas a las citas y haces el trabajo.' },
       { q: '¿La recepcionista con IA suena como robot?', a: 'No. Suena natural, conoce tus servicios y tu horario, y te pasa la conversación cuando hace falta una persona.' },
-      { q: 'Ya trabajo con una compañía de marketing.', a: 'Pide tu Score de todos modos. Es gratis y te muestra qué está funcionando y qué no.' },
-      { q: '¿No puedo hacerlo yo mismo?', a: 'Claro que puedes, y tu Score te dice qué arreglar. La mayoría de los dueños prefiere estar en el trabajo que aprendiendo plataformas de anuncios a las 10 de la noche.' },
       { q: '¿Mi recepcionista con IA puede hablar en español?', a: 'Sí. Contesta en inglés o en español, según el idioma de tu cliente.' },
-      { q: '¿Dónde están ubicados?', a: 'En Las Vegas, Nevada. Trabajamos con negocios de servicios del hogar en todo Estados Unidos.' },
     ],
   },
   final: {
