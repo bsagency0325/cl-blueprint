@@ -96,13 +96,11 @@ const leakIcons = [
         <p>{t.system.sub}</p>
       </div>
 
-      <!-- Foundation: illustration + what's included + live text-back example -->
-      <div class="foundation card">
-        <div class="illo-block" data-reveal>
-          <figure class="illo">
-            <Image src={answerImg} alt={t.system.foundation.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
-          </figure>
-        </div>
+      <!-- Foundation (full width): illustration + what's included + live AI call / text-back example -->
+      <div class="foundation card sys">
+        <figure class="illo" data-reveal>
+          <Image src={answerImg} alt={t.system.foundation.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+        </figure>
         <div class="foundation-copy">
           <span class="mono tag">{t.system.foundation.label}</span>
           <h3>{t.system.foundation.title}</h3>
@@ -110,68 +108,99 @@ const leakIcons = [
           <ul class="ticks">
             {t.system.foundation.items.map((it) => <li>{it}</li>)}
           </ul>
-          <div class="demo" data-demo>
-            <p class="mono demo-label">{t.system.foundation.demoLabel}</p>
-            <ol class="thread">
-              {t.system.foundation.demo.map((m) => (
-                <li class={`msg msg-${m.from}`}>{m.text}</li>
+          <div class="demo" data-demo data-tabs>
+            <div class="demo-top">
+              <p class="mono demo-label">{t.system.foundation.demoLabel}</p>
+              <div class="tabs" role="tablist">
+                <button type="button" role="tab" class="tab" aria-selected="true" data-tab="call">{t.system.foundation.call.tabCall}</button>
+                <button type="button" role="tab" class="tab" aria-selected="false" data-tab="text">{t.system.foundation.call.tabText}</button>
+              </div>
+            </div>
+            <div class="pane" data-pane="call" role="tabpanel">
+              <div class="msg call-in mono"><span class="ring" aria-hidden="true"></span>{t.system.foundation.call.incoming}</div>
+              <div class="msg call-live">
+                <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                <span>{t.system.foundation.call.answered}</span>
+              </div>
+              {t.system.foundation.call.lines.map((l) => (
+                <div class={`msg line line-${l.who}`}>
+                  <span class="mono who">{l.who === 'ai' ? t.system.foundation.call.aiLabel : t.system.foundation.call.callerLabel}</span>
+                  <span>{l.text}</span>
+                </div>
               ))}
-            </ol>
+              <div class="msg msg-booked">{t.system.foundation.call.booked}</div>
+            </div>
+            <div class="pane" data-pane="text" role="tabpanel">
+              {t.system.foundation.demo.map((m) => (
+                <div class={`msg msg-${m.from}`}>{m.text}</div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Get Found + Get Booked: same layout as the foundation, each with its own example screen -->
-      {illustrated.map((p, n) => (
-        <div class={`path card${n % 2 ? ' flip' : ''}`}>
-          <figure class="illo" data-reveal>
-            <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
-          </figure>
-          <div class="path-copy">
-            <span class="mono tag">{p.tag}</span>
-            <h3>{p.name}</h3>
-            <p class="for">{p.for}</p>
-            <ul class="ticks">
-              {p.items.map((it) => <li>{it}</li>)}
-            </ul>
+      <!-- Get Found + Get Booked, side by side under the foundation -->
+      <div class="paths">
+        {illustrated.map((p) => (
+          <div class="path card sys">
+            <figure class="illo" data-reveal>
+              <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+            </figure>
+            <div class="path-copy">
+              <span class="mono tag">{p.tag}</span>
+              <h3>{p.name}</h3>
+              <p class="for">{p.for}</p>
+              <ul class="ticks">
+                {p.items.map((it) => <li>{it}</li>)}
+              </ul>
+            </div>
             {p.demo?.kind === 'maps' && (
               <div class="demo" data-demo>
                 <p class="mono demo-label">{p.demo.label}</p>
                 <div class="msg search mono"><span aria-hidden="true">⌕</span>{p.demo.search}</div>
-                <ol class="results">
-                  {p.demo.results.map((r, i) => (
-                    <li class={`msg result${i === 0 ? ' top' : ''}`}>
-                      <span class="pin" aria-hidden="true"></span>
-                      <span class="r-name">{r.name}</span>
-                      <span class="stars" aria-label={`${r.stars}/5`}>{'★'.repeat(r.stars)}<span class="off">{'★'.repeat(5 - r.stars)}</span></span>
-                      {r.tag && <span class="mono r-tag">{r.tag}</span>}
-                    </li>
-                  ))}
-                </ol>
+                {p.demo.results.map((r, i) => (
+                  <div class={`msg result${i === 0 ? ' top' : ''}`}>
+                    <span class="pin" aria-hidden="true"></span>
+                    <span class="r-name">{r.name}</span>
+                    <span class="stars" aria-label={`${r.stars}/5`}>{'★'.repeat(r.stars)}<span class="off">{'★'.repeat(5 - r.stars)}</span></span>
+                    {r.tag && <span class="mono r-tag">{r.tag}</span>}
+                  </div>
+                ))}
                 <div class="msg ask">{p.demo.ask}</div>
-                <div class="msg answer">{p.demo.answer}</div>
+                <div class="msg answer"><span class="mono who">AI</span>{p.demo.answer}</div>
               </div>
             )}
             {p.demo?.kind === 'booked' && (
               <div class="demo" data-demo>
                 <p class="mono demo-label">{p.demo.label}</p>
-                <div class="msg ad">
-                  <span class="mono ad-tag">{p.demo.adTag}</span>
-                  <p>{p.demo.ad}</p>
-                  <span class="ad-btn">{p.demo.adButton}</span>
+                <div class="msg meta">
+                  <div class="meta-head">
+                    <span class="avatar" aria-hidden="true"><img src="/brand/icon.svg" alt="" width="8" height="16" /></span>
+                    <span class="meta-who"><strong>{p.demo.page}</strong><span>{p.demo.adTag} · ◍</span></span>
+                    <span class="meta-dots" aria-hidden="true">···</span>
+                  </div>
+                  <p class="meta-text">{p.demo.ad}</p>
+                  <div class="meta-media" aria-hidden="true">
+                    <svg viewBox="0 0 120 60" width="120" height="60" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="38" y="10" width="44" height="40" rx="3"/><circle cx="60" cy="30" r="13"/><circle cx="60" cy="30" r="8"/><circle cx="60" cy="30" r="3"/><path d="M42 50h36M30 30h4M86 30h4M60 4v3"/></svg>
+                  </div>
+                  <div class="meta-cta">
+                    <span class="meta-head-line"><span class="mono">facebook · instagram</span><strong>{p.demo.adHeadline}</strong></span>
+                    <span class="meta-btn">{p.demo.adButton}</span>
+                  </div>
+                  <div class="meta-actions">{p.demo.actions.map((a) => <span>{a}</span>)}</div>
                 </div>
-                <div class="msg msg-note">↓</div>
+                <div class="msg flow-arrow" aria-hidden="true">↓</div>
                 <div class="msg lead-msg mono">{p.demo.lead}</div>
-                <div class="msg msg-note">↓</div>
+                <div class="msg flow-arrow" aria-hidden="true">↓</div>
                 <div class="msg msg-booked">{p.demo.booked}</div>
               </div>
             )}
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       <!-- Full Blueprint -->
-      <div class="full card" data-reveal>
+      <div class="full card sys" data-reveal>
         <div>
           <span class="mono tag">{fullPath.tag}</span>
           <h3>{fullPath.name}</h3>
@@ -206,25 +235,34 @@ const leakIcons = [
     </div>
   </section>
 
-  <!-- GUARANTEES: the one light section, so it stands out -->
-  <section class="section light" id={ids.guarantee}>
-    <div class="wrap">
-      <div class="section-head" data-reveal>
-        <p class="eyebrow">{t.guarantee.eyebrow}</p>
-      </div>
-      <div class="g-wrap" data-reveal>
-        <div class="g-main">
-          <h3>{t.guarantee.title}</h3>
-          <p>{t.guarantee.body}</p>
-        </div>
-        <div class="g-tiles">
-          {t.guarantee.items.map((g) => (
-            <div class="g-tile">
-              <span class="mono g-label">{g.label}</span>
-              <p>{g.body}</p>
-            </div>
+  <!-- GUARANTEE: a stopwatch that answers well before 60 seconds -->
+  <section class="section grid-bg spot guarantee" id={ids.guarantee}>
+    <div class="wrap g-grid">
+      <div class="clock" data-clock data-reveal aria-hidden="true">
+        <svg viewBox="0 0 220 220" width="220" height="220">
+          <circle class="dial" cx="110" cy="110" r="96" />
+          {Array.from({ length: 60 }, (_, i) => (
+            <line class={i % 5 ? 'tick' : 'tick major'} x1="110" y1={i % 5 ? 20 : 16} x2="110" y2="26" transform={`rotate(${i * 6} 110 110)`} />
           ))}
+          <circle class="sweep" cx="110" cy="110" r="96" pathLength="60" />
+        </svg>
+        <div class="clock-read">
+          <span class="mono clock-time" data-clock-time>0:09</span>
+          <span class="mono clock-stamp">{t.guarantee.clock} ✓</span>
         </div>
+      </div>
+      <div class="g-copy" data-reveal>
+        <p class="eyebrow">{t.guarantee.eyebrow}</p>
+        <h2>{t.guarantee.title}</h2>
+        <p class="lead">{t.guarantee.body}</p>
+        <ul class="g-list">
+          {t.guarantee.items.map((g) => (
+            <li>
+              <span class="mono g-label">{g.label}</span>
+              <span>{g.body}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </section>
@@ -292,10 +330,40 @@ const leakIcons = [
 </main>
 
 <script>
-  // Motion effects. Skipped entirely for visitors who prefer reduced motion,
-  // so everything is simply visible for them (and without JavaScript).
+  // Foundation example: tabs between the AI receptionist call and the missed-call text-back.
+  const timers = new WeakMap<Element, number[]>();
   const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!calm && 'IntersectionObserver' in window) {
+  const motion = !calm && 'IntersectionObserver' in window;
+
+  // Show a demo's messages one by one (or all at once without motion).
+  const play = (root: Element, onDone?: () => void) => {
+    for (const id of timers.get(root) ?? []) clearTimeout(id);
+    const msgs = [...root.querySelectorAll('.msg')];
+    if (!motion) { msgs.forEach((m) => m.classList.add('shown')); return; }
+    msgs.forEach((m) => m.classList.remove('shown'));
+    const ids = msgs.map((m, i) => window.setTimeout(() => m.classList.add('shown'), 250 + i * 750));
+    if (onDone) ids.push(window.setTimeout(onDone, 250 + msgs.length * 750 + 2600));
+    timers.set(root, ids);
+  };
+
+  for (const demo of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
+    document.documentElement.classList.add('js-tabs');
+    const tabs = [...demo.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const panes = [...demo.querySelectorAll<HTMLElement>('[data-pane]')];
+    let touched = false;
+    const show = (name: string) => {
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === name)));
+      panes.forEach((p) => (p.hidden = p.dataset.pane !== name));
+      const pane = panes.find((p) => p.dataset.pane === name)!;
+      // After the call plays, move on to the text-back once, unless the visitor picked a tab.
+      play(pane, name === 'call' ? () => { if (!touched) show('text'); } : undefined);
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => { touched = true; show(t.dataset.tab!); }));
+    demo.addEventListener('demo:start', () => show('call'), { once: true });
+    panes.forEach((p) => (p.hidden = p.dataset.pane !== 'call'));
+  }
+
+  if (motion) {
     document.documentElement.classList.add('fx');
 
     const once = (els: Iterable<Element>, fn: (el: Element) => void, threshold = 0.2) => {
@@ -309,38 +377,69 @@ const leakIcons = [
     once(document.querySelectorAll('[data-reveal]'), (el) => el.classList.add('in'), 0.12);
 
     // Score card counts up and its bars fill.
+    const countUp = (n: HTMLElement, end: number, ms: number, fmt = (v: number) => String(v)) => {
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - t0) / ms);
+        n.textContent = fmt(Math.round(end * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
     once(document.querySelectorAll('[data-score]'), (card) => {
       card.classList.add('in');
-      for (const n of card.querySelectorAll<HTMLElement>('[data-count]')) {
-        const end = Number(n.dataset.count);
-        const t0 = performance.now();
-        const tick = (now: number) => {
-          const p = Math.min(1, (now - t0) / 1200);
-          n.textContent = String(Math.round(end * (1 - Math.pow(1 - p, 3))));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        n.textContent = '0';
-        requestAnimationFrame(tick);
-      }
+      for (const n of card.querySelectorAll<HTMLElement>('[data-count]')) countUp(n, Number(n.dataset.count), 1200);
     }, 0.3);
 
-    // Text-back example: messages arrive one by one.
+    // Example screens play when they scroll into view.
     once(document.querySelectorAll('[data-demo]'), (demo) => {
-      demo.querySelectorAll('.msg').forEach((m, i) => setTimeout(() => m.classList.add('shown'), 300 + i * 850));
+      if (demo.hasAttribute('data-tabs')) demo.dispatchEvent(new Event('demo:start'));
+      else play(demo);
+    }, 0.35);
+
+    // Guarantee stopwatch: sweeps, stops well under a minute, gets stamped.
+    once(document.querySelectorAll('[data-clock]'), (clock) => {
+      clock.classList.add('run');
+      const out = clock.querySelector<HTMLElement>('[data-clock-time]')!;
+      countUp(out, 9, 1600, (v) => `0:${String(v).padStart(2, '0')}`);
+      setTimeout(() => clock.classList.add('done'), 1700);
     }, 0.4);
 
-    // Blueprint grid lights up around the cursor (mouse and trackpad only).
+    // Blueprint grid lights up around the cursor, with a drafting crosshair (mouse and trackpad only).
     if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      const xh = document.createElement('div');
+      xh.className = 'xhair';
+      xh.setAttribute('aria-hidden', 'true');
+      xh.innerHTML = '<span class="xh"></span><span class="yh"></span><span class="xy"></span>';
+      document.body.append(xh);
+      const xy = xh.querySelector<HTMLElement>('.xy')!;
       for (const sec of document.querySelectorAll<HTMLElement>('.spot')) {
         sec.addEventListener('pointermove', (e) => {
           const r = sec.getBoundingClientRect();
           sec.style.setProperty('--mx', `${e.clientX - r.left}px`);
           sec.style.setProperty('--my', `${e.clientY - r.top}px`);
           sec.classList.add('lit');
+          xh.style.setProperty('--cx', `${e.clientX}px`);
+          xh.style.setProperty('--cy', `${e.clientY}px`);
+          xy.textContent = `X ${String(Math.round(e.clientX)).padStart(4, '0')} · Y ${String(Math.round(e.pageY)).padStart(5, '0')}`;
+          xh.classList.add('on');
         });
-        sec.addEventListener('pointerleave', () => sec.classList.remove('lit'));
+        sec.addEventListener('pointerleave', () => { sec.classList.remove('lit'); xh.classList.remove('on'); });
       }
     }
+
+    // Scroll ruler along the top edge.
+    const ruler = document.createElement('div');
+    ruler.className = 'ruler';
+    ruler.setAttribute('aria-hidden', 'true');
+    ruler.innerHTML = '<i></i>';
+    document.body.append(ruler);
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      ruler.style.setProperty('--p', String(max > 0 ? scrollY / max : 0));
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 </script>
 
@@ -412,55 +511,109 @@ const leakIcons = [
 
   /* Illustrations: framed, no text on the drawing */
   .illo { margin: 0; background: var(--panel); border-radius: 10px; overflow: hidden; }
-  .illo :global(img) { width: 100%; height: auto; }
+  .illo :global(img) { width: 100%; height: auto; -webkit-mask-image: radial-gradient(closest-side, #000 82%, transparent); mask-image: radial-gradient(closest-side, #000 82%, transparent); }
 
-  /* System */
-  .foundation { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; border-color: var(--lime); margin-bottom: 16px; align-items: center; }
+  /* System cards: lime outline + drafting corner marks on hover */
+  .sys { position: relative; transition: border-color .25s ease, box-shadow .25s ease; }
+  .sys::before, .sys::after {
+    content: ''; position: absolute; width: 18px; height: 18px; pointer-events: none;
+    border: 0 solid var(--lime); opacity: 0; transition: opacity .25s ease, transform .25s ease;
+  }
+  .sys::before { top: -7px; left: -7px; border-top-width: 2px; border-left-width: 2px; transform: translate(4px, 4px); }
+  .sys::after { bottom: -7px; right: -7px; border-bottom-width: 2px; border-right-width: 2px; transform: translate(-4px, -4px); }
+  .sys:hover { border-color: var(--lime); box-shadow: 0 0 0 1px rgba(156, 226, 74, 0.25); }
+  .sys:hover::before, .sys:hover::after { opacity: 1; transform: none; }
+
+  .foundation { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; margin-bottom: 16px; align-items: center; }
   .foundation-copy { display: flex; flex-direction: column; gap: 14px; }
-  .foundation h3 { font-size: clamp(28px, 3.4vw, 38px); }
+  .foundation h3, .path h3 { font-size: clamp(28px, 3.4vw, 38px); }
   .foundation-body { color: var(--chalk); font-size: 19px; }
+
+  /* Example screens */
   .demo { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; background: var(--navy); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
-  .demo-label { color: var(--steel); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-  .thread { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .demo-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .demo-label { color: var(--steel); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; }
+  .tab { border: 0; background: transparent; color: var(--steel); font: 500 13px var(--font-body); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+  .tab[aria-selected='true'] { background: var(--lime); color: var(--navy); }
+  .tabs { display: none; }
+  :global(.js-tabs) .tabs { display: inline-flex; }
+  .pane { display: flex; flex-direction: column; gap: 8px; }
+  .pane[hidden] { display: none; }
   .msg { max-width: 85%; padding: 9px 13px; border-radius: 14px; font-size: 15px; line-height: 1.4; }
-  .msg-note { align-self: center; max-width: none; padding: 2px 0 6px; font: 500 12px var(--font-mono); color: var(--steel); }
+  .msg-note, .flow-arrow { align-self: center; max-width: none; padding: 2px 0 6px; font: 500 12px var(--font-mono); color: var(--steel); }
+  .flow-arrow { padding: 0; color: var(--lime); font-size: 14px; }
   .msg-in { align-self: flex-start; background: var(--line); color: var(--chalk); border-bottom-left-radius: 4px; }
   .msg-out { align-self: flex-end; background: var(--lime); color: var(--navy); border-bottom-right-radius: 4px; }
   .msg-booked { align-self: stretch; max-width: none; text-align: center; border: 1px dashed var(--lime); color: var(--lime); font: 500 13px var(--font-mono); border-radius: 8px; margin-top: 4px; }
   :global(.fx) [data-demo] .msg { opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease; }
   :global(.fx) [data-demo] .msg.shown { opacity: 1; transform: none; }
 
-  .path { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; margin-bottom: 16px; }
-  .path.flip .illo { order: 2; }
-  .path-copy { display: flex; flex-direction: column; gap: 14px; }
+  /* AI receptionist call */
+  .call-in { align-self: stretch; max-width: none; display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--steel); padding: 4px 2px; }
+  .ring { width: 10px; height: 10px; border-radius: 50%; background: var(--lime); position: relative; flex-shrink: 0; }
+  .ring::after { content: ''; position: absolute; inset: -5px; border: 1px solid var(--lime); border-radius: 50%; animation: ring 1.4s ease-out infinite; }
+  @keyframes ring { from { transform: scale(.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
+  .call-live { align-self: stretch; max-width: none; display: flex; align-items: center; gap: 12px; background: rgba(156, 226, 74, 0.08); border: 1px solid rgba(156, 226, 74, 0.35); color: var(--chalk); font-size: 14px; border-radius: 10px; }
+  .wave { display: inline-flex; align-items: center; gap: 3px; height: 20px; flex-shrink: 0; }
+  .wave i { width: 3px; height: 30%; background: var(--lime); border-radius: 2px; animation: wave 1s ease-in-out infinite; }
+  .wave i:nth-child(2) { animation-delay: -.8s; } .wave i:nth-child(3) { animation-delay: -.6s; } .wave i:nth-child(4) { animation-delay: -.4s; }
+  .wave i:nth-child(5) { animation-delay: -.2s; } .wave i:nth-child(6) { animation-delay: -.7s; } .wave i:nth-child(7) { animation-delay: -.3s; }
+  @keyframes wave { 0%, 100% { height: 25%; } 50% { height: 100%; } }
+  .line { display: flex; flex-direction: column; gap: 2px; border-radius: 12px; }
+  .line .who { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .line-caller { align-self: flex-start; background: var(--line); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .line-caller .who { color: var(--steel); }
+  .line-ai { align-self: flex-end; background: var(--panel); border: 1px solid var(--lime); color: var(--chalk); border-bottom-right-radius: 4px; }
+  .line-ai .who, .answer .who { color: var(--lime); }
 
-  /* Path example screens */
+  /* Get Found + Get Booked side by side */
+  .paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .path { padding: 24px; display: flex; flex-direction: column; gap: 22px; }
+  .path-copy { display: flex; flex-direction: column; gap: 14px; padding: 0 8px; }
+  .path .demo { margin-top: auto; }
+
+  /* Maps example */
   .search { max-width: none; align-self: stretch; display: flex; gap: 10px; align-items: center; background: var(--chalk); color: var(--navy); border-radius: 999px; font-size: 13px; padding: 9px 16px; }
   .search span { font-size: 16px; line-height: 1; }
-  .results { list-style: none; margin: 4px 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-  .result { max-width: none; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; border: 1px solid var(--line); border-radius: 10px; color: #d5dde4; }
+  .result { max-width: none; align-self: stretch; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; border: 1px solid var(--line); border-radius: 10px; color: #d5dde4; }
   .result .pin { width: 10px; height: 10px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--steel); }
   .result.top { border-color: var(--lime); color: var(--chalk); }
   .result.top .pin { background: var(--lime); }
   .stars { color: var(--lime); letter-spacing: 1px; font-size: 13px; }
   .stars .off { color: var(--line); }
   .r-tag { grid-column: 2 / -1; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); }
-  .ask { align-self: flex-end; background: var(--line); color: var(--chalk); border-bottom-right-radius: 4px; }
-  .answer { align-self: flex-start; background: var(--panel); border: 1px solid var(--lime); color: var(--chalk); border-bottom-left-radius: 4px; }
-  .ad { max-width: none; align-self: stretch; background: var(--chalk); color: var(--navy); border-radius: 12px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
-  .ad p { font-weight: 500; }
-  .ad-tag { font-size: 11px; color: #4f5d6b; letter-spacing: 0.08em; text-transform: uppercase; }
-  .ad-btn { background: var(--lime); color: var(--navy); font-weight: 500; font-size: 14px; padding: 6px 14px; border-radius: 6px; }
+  .ask { align-self: flex-end; background: var(--line); color: var(--chalk); border-bottom-right-radius: 4px; margin-top: 6px; }
+  .answer { align-self: flex-start; display: flex; flex-direction: column; gap: 2px; background: var(--panel); border: 1px solid var(--lime); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .answer .who { font-size: 11px; letter-spacing: 0.08em; }
+
+  /* Facebook / Instagram style ad */
+  .meta { max-width: none; align-self: stretch; padding: 0; background: #fff; color: #1c1e21; border-radius: 10px; overflow: hidden; font-size: 14px; }
+  .meta-head { display: flex; align-items: center; gap: 10px; padding: 10px 12px 6px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--navy); display: grid; place-items: center; flex-shrink: 0; }
+  .avatar img { height: 16px; width: auto; }
+  .meta-who { display: flex; flex-direction: column; line-height: 1.2; }
+  .meta-who strong { font-size: 14px; }
+  .meta-who span { font-size: 12px; color: #65676b; }
+  .meta-dots { margin-left: auto; color: #65676b; letter-spacing: 1px; }
+  .meta-text { padding: 0 12px 8px; }
+  .meta-media { background: var(--panel); color: var(--lime); display: grid; place-items: center; padding: 18px 0; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 16px 16px; }
+  .meta-cta { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #f0f2f5; padding: 8px 12px; }
+  .meta-head-line { display: flex; flex-direction: column; line-height: 1.25; }
+  .meta-head-line .mono { font-size: 10px; text-transform: uppercase; color: #65676b; letter-spacing: 0.06em; }
+  .meta-head-line strong { font-size: 14px; }
+  .meta-btn { background: #e4e6eb; color: #1c1e21; font-weight: 500; font-size: 13px; padding: 7px 12px; border-radius: 6px; white-space: nowrap; }
+  .meta-actions { display: flex; justify-content: space-around; border-top: 1px solid #e4e6eb; padding: 6px 0; color: #65676b; font-size: 12px; font-weight: 500; }
   .lead-msg { max-width: none; align-self: stretch; text-align: center; background: var(--line); color: var(--chalk); font-size: 13px; border-radius: 8px; }
-  .path h3 { font-size: clamp(28px, 3.4vw, 38px); }
+
+  .full { margin-top: 16px; padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
   .full h3 { font-size: 30px; }
+  .full > div { display: flex; flex-direction: column; gap: 10px; }
   .for { color: var(--chalk); }
   .path-body { color: var(--body); }
-  .ticks { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .ticks { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
   .ticks li { padding-left: 22px; position: relative; color: #d5dde4; font-size: 16px; }
   .ticks li::before { content: ''; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; background: var(--lime); }
-  .full { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
-  .full > div { display: flex; flex-direction: column; gap: 10px; }
   .system-close { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 40px; }
   .system-close .closing { margin-top: 0; }
 
@@ -476,18 +629,42 @@ const leakIcons = [
   .timeline h3 { font-size: 22px; }
   .timeline p { color: var(--body); font-size: 16px; }
 
-  /* Guarantee: light section */
-  .light { background: var(--chalk); color: var(--navy); border-top: 0; }
-  .light .eyebrow { color: var(--lime-ink); }
-  .light .section-head h2 { color: var(--navy); }
-  .g-wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; align-items: stretch; }
-  .g-main { background: var(--navy); color: var(--chalk); border-radius: 14px; padding: 36px; display: flex; flex-direction: column; justify-content: center; gap: 16px; border-top: 4px solid var(--lime); }
-  .g-main h3 { font-size: clamp(30px, 3.6vw, 42px); color: var(--chalk); }
-  .g-main p { color: var(--body); font-size: 18px; }
-  .g-tiles { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .g-tile { background: #fff; border: 1px solid #dcdad6; border-radius: 12px; padding: 22px 26px; display: flex; flex-direction: column; gap: 8px; }
-  .g-label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime-ink); }
-  .g-tile p { font-size: 17px; line-height: 1.45; color: #22303d; }
+  /* Guarantee: stopwatch */
+  .g-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: center; }
+  .clock { position: relative; width: min(100%, 340px); aspect-ratio: 1; justify-self: center; }
+  .clock svg { width: 100%; height: 100%; }
+  .dial { fill: var(--panel); stroke: var(--line); stroke-width: 1; }
+  .tick { stroke: #2a3b4c; stroke-width: 1; }
+  .tick.major { stroke: var(--steel); stroke-width: 1.5; }
+  .sweep { fill: none; stroke: var(--lime); stroke-width: 6; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 110px 110px; stroke-dasharray: 9 60; }
+  :global(.fx) [data-clock] .sweep { stroke-dasharray: 0 60; transition: stroke-dasharray 1.6s cubic-bezier(.3, .7, .2, 1); }
+  :global(.fx) [data-clock].run .sweep { stroke-dasharray: 9 60; }
+  .clock-read { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .clock-time { font-family: var(--font-display); font-weight: 700; font-size: clamp(44px, 6vw, 64px); color: var(--chalk); font-variant-numeric: tabular-nums; line-height: 1; }
+  .clock-stamp { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--navy); background: var(--lime); padding: 5px 10px; border-radius: 4px; transform: rotate(-4deg); }
+  :global(.fx) [data-clock] .clock-stamp { opacity: 0; transform: rotate(-4deg) scale(1.6); transition: opacity .25s ease, transform .35s cubic-bezier(.3, 1.6, .5, 1); }
+  :global(.fx) [data-clock].done .clock-stamp { opacity: 1; transform: rotate(-4deg) scale(1); }
+  .g-copy { display: flex; flex-direction: column; gap: 18px; }
+  .g-copy h2 { font-size: clamp(34px, 5vw, 52px); }
+  .g-list { list-style: none; margin: 8px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .g-list li { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--line); color: #d5dde4; }
+  .g-label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); padding-top: 3px; }
+
+  /* Blueprint crosshair + scroll ruler (desktop, motion on) */
+  :global(.xhair) { position: fixed; inset: 0; pointer-events: none; z-index: 40; opacity: 0; transition: opacity .2s ease; }
+  :global(.xhair.on) { opacity: 1; }
+  :global(.xhair .xh), :global(.xhair .yh) { position: absolute; background: rgba(156, 226, 74, 0.18); }
+  :global(.xhair .xh) { left: 0; right: 0; height: 1px; top: var(--cy); }
+  :global(.xhair .yh) { top: 0; bottom: 0; width: 1px; left: var(--cx); }
+  :global(.xhair .xy) { position: absolute; left: calc(var(--cx) + 12px); top: calc(var(--cy) + 12px); font: 500 11px var(--font-mono); color: var(--lime); letter-spacing: 0.06em; }
+  :global(.ruler) { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; pointer-events: none; }
+  :global(.ruler i) { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: var(--lime); }
+
+  /* Leak icons draw themselves on hover */
+  @media (hover: hover) {
+    .leak:hover .icon :global(path), .leak:hover .icon :global(circle) { animation: draw .9s ease forwards; }
+  }
+  @keyframes draw { from { stroke-dasharray: 80; stroke-dashoffset: 80; } to { stroke-dasharray: 80; stroke-dashoffset: 0; } }
 
   /* Founder */
   .founder { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 56px; align-items: center; }
@@ -522,7 +699,7 @@ const leakIcons = [
   .contact { display: flex; gap: 16px; flex-wrap: wrap; font-size: 15px; }
 
   @media (max-width: 1000px) {
-    .hero-grid, .founder, .foundation, .path, .final-grid, .full, .g-wrap { grid-template-columns: minmax(0, 1fr); }
+    .hero-grid, .founder, .foundation, .paths, .final-grid, .full, .g-grid { grid-template-columns: minmax(0, 1fr); }
     .score-card { justify-self: start; }
     .photo { max-width: 360px; }
     .leaks, .timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -531,7 +708,10 @@ const leakIcons = [
   @media (max-width: 640px) {
     .hero { padding: 56px 0 72px; }
     .leaks, .timeline { grid-template-columns: minmax(0, 1fr); }
-    .leak, .foundation, .path, .full, .final-book, .g-main { padding: 22px; }
+    .leak, .foundation, .full, .final-book { padding: 22px; }
+    .path { padding: 14px; }
+    .g-list li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .clock { width: 240px; }
     .score-value { font-size: 64px; }
   }
 </style>

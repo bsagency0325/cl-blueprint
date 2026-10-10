@@ -5,7 +5,7 @@ type Msg = { from: 'note' | 'in' | 'out' | 'booked'; text: string };
 // Example screens shown next to each path's illustration. Placeholder names only, never real businesses.
 type PathDemo =
   | { kind: 'maps'; label: string; search: string; results: { name: string; stars: number; tag: string }[]; ask: string; answer: string }
-  | { kind: 'booked'; label: string; adTag: string; ad: string; adButton: string; lead: string; booked: string }
+  | { kind: 'booked'; label: string; page: string; adTag: string; ad: string; adHeadline: string; adButton: string; actions: string[]; lead: string; booked: string }
   | null;
 
 const en = {
@@ -74,6 +74,21 @@ const en = {
         'Appointments land straight on your calendar',
       ],
       imageAlt: 'Blueprint drawing of a contractor working on an AC unit while the phone on his toolbox rings',
+      call: {
+        tabCall: 'AI receptionist',
+        tabText: 'Missed call → text',
+        incoming: 'Incoming call · 2:14 PM · you’re on a roof',
+        answered: 'Answered by your AI receptionist on the first ring',
+        callerLabel: 'Caller',
+        aiLabel: 'AI',
+        lines: [
+          { who: 'caller', text: 'Hi, my water heater is leaking. Can someone come today?' },
+          { who: 'ai', text: 'Sorry to hear that. We can have a technician there today. Does 2:30 or 4:00 work better?' },
+          { who: 'caller', text: '4:00, please.' },
+          { who: 'ai', text: 'Done. You’re booked for 4:00, and I’m texting you the confirmation now.' },
+        ],
+        booked: 'Booked · Water heater · Today 4:00 PM',
+      },
       demoLabel: 'Example · what your customer sees',
       demo: [
         { from: 'note', text: 'Missed call · 7:42 PM · you’re on a job' },
@@ -106,8 +121,8 @@ const en = {
           search: 'AC repair near me',
           results: [
             { name: 'Your business', stars: 5, tag: 'Top result' },
-            { name: 'Another company', stars: 4, tag: '' },
-            { name: 'Another company', stars: 3, tag: '' },
+            { name: 'Competitor', stars: 4, tag: '' },
+            { name: 'Competitor', stars: 3, tag: '' },
           ],
           ask: 'Who should I call for AC repair near me?',
           answer: 'Your business is a top pick: great reviews, and they answer fast.',
@@ -131,9 +146,12 @@ const en = {
         demo: {
           kind: 'booked',
           label: 'Example · from ad to booked job',
+          page: 'Your business',
           adTag: 'Sponsored',
           ad: 'AC not cooling? Same-week repair. Book in 30 seconds.',
+          adHeadline: 'Same-week AC repair',
           adButton: 'Book now',
+          actions: ['Like', 'Comment', 'Share'],
           lead: 'New lead · AC repair · answered in seconds',
           booked: 'Booked · Thursday 10:00 AM · on your calendar',
         } as PathDemo,
@@ -166,6 +184,7 @@ const en = {
     eyebrow: 'Our guarantee',
     title: 'Every lead answered in under 60 seconds.',
     body: 'Day or night, in English or Spanish. If we miss it, that month is free.',
+    clock: 'Answered',
     items: [
       { label: 'No long contracts', body: 'Month-to-month. We earn the next month with results you can see every week.' },
       { label: 'Your ads, your money', body: 'Ad spend goes straight to Facebook or Google, in your name. You see every dollar.' },
@@ -288,6 +307,21 @@ const es: typeof en = {
         'Las citas caen directo en tu calendario',
       ],
       imageAlt: 'Dibujo tipo plano de un técnico trabajando en un aire acondicionado mientras suena el teléfono sobre su caja de herramientas',
+      call: {
+        tabCall: 'Recepcionista con IA',
+        tabText: 'Llamada perdida → texto',
+        incoming: 'Llamada entrante · 2:14 PM · estás en un techo',
+        answered: 'Contestó tu recepcionista con IA al primer timbre',
+        callerLabel: 'Cliente',
+        aiLabel: 'IA',
+        lines: [
+          { who: 'caller', text: 'Hola, mi calentador de agua está goteando. ¿Pueden venir hoy?' },
+          { who: 'ai', text: 'Lo siento. Podemos mandar a un técnico hoy mismo. ¿Le queda mejor a las 2:30 o a las 4:00?' },
+          { who: 'caller', text: 'A las 4:00, por favor.' },
+          { who: 'ai', text: 'Listo. Quedó agendado para las 4:00 y le mando la confirmación por mensaje.' },
+        ],
+        booked: 'Agendado · Calentador de agua · Hoy 4:00 PM',
+      },
       demoLabel: 'Ejemplo · lo que ve tu cliente',
       demo: [
         { from: 'note', text: 'Llamada perdida · 7:42 PM · estás en un trabajo' },
@@ -320,8 +354,8 @@ const es: typeof en = {
           search: 'reparación de aire acondicionado cerca de mí',
           results: [
             { name: 'Tu negocio', stars: 5, tag: 'Primer lugar' },
-            { name: 'Otra empresa', stars: 4, tag: '' },
-            { name: 'Otra empresa', stars: 3, tag: '' },
+            { name: 'Competidor', stars: 4, tag: '' },
+            { name: 'Competidor', stars: 3, tag: '' },
           ],
           ask: '¿A quién llamo para reparar mi aire acondicionado?',
           answer: 'Tu negocio es una de las mejores opciones: buenas reseñas y contesta rápido.',
@@ -345,9 +379,12 @@ const es: typeof en = {
         demo: {
           kind: 'booked',
           label: 'Ejemplo · del anuncio al trabajo agendado',
+          page: 'Tu negocio',
           adTag: 'Patrocinado',
           ad: '¿Tu aire no enfría? Reparación esta misma semana. Agenda en 30 segundos.',
+          adHeadline: 'Reparación de AC esta semana',
           adButton: 'Agendar',
+          actions: ['Me gusta', 'Comentar', 'Compartir'],
           lead: 'Nuevo cliente · Reparación de AC · contestado en segundos',
           booked: 'Agendado · Jueves 10:00 AM · en tu calendario',
         },
@@ -380,6 +417,7 @@ const es: typeof en = {
     eyebrow: 'Nuestra garantía',
     title: 'Cada cliente contestado en menos de 60 segundos.',
     body: 'De día o de noche, en español o en inglés. Si no cumplimos, ese mes es gratis.',
+    clock: 'Contestado',
     items: [
       { label: 'Sin contratos largos', body: 'Mes a mes. Nos ganamos el siguiente mes con resultados que ves cada semana.' },
       { label: 'Tus anuncios, tu dinero', body: 'La inversión en anuncios va directo a Facebook o Google, a tu nombre. Ves cada dólar.' },
