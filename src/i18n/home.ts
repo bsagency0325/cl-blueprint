@@ -5,7 +5,7 @@ type Msg = { from: 'note' | 'in' | 'out' | 'booked'; text: string };
 // Example screens shown next to each path's illustration. Placeholder names only, never real businesses.
 type PathDemo =
   | { kind: 'maps'; label: string; search: string; results: { name: string; stars: number; tag: string }[]; ask: string; answer: string }
-  | { kind: 'booked'; label: string; page: string; adTag: string; ad: string; adHeadline: string; adButton: string; actions: string[]; lead: string; booked: string }
+  | { kind: 'booked'; label: string; page: string; where: string; ad: string; lead: string; booked: string }
   | null;
 
 const en = {
@@ -145,13 +145,10 @@ const en = {
         imageAlt: 'Blueprint flow: an ad on a phone, then a chat reply, then a booked day on a calendar',
         demo: {
           kind: 'booked',
-          label: 'Example · from ad to booked job',
+          label: 'Example · from their feed to your calendar',
           page: 'Your business',
-          adTag: 'Sponsored',
-          ad: 'AC not cooling? Same-week repair. Book in 30 seconds.',
-          adHeadline: 'Same-week AC repair',
-          adButton: 'Book now',
-          actions: ['Like', 'Comment', 'Share'],
+          where: 'In their feed · Facebook · Instagram',
+          ad: 'AC not cooling? We can be there this week.',
           lead: 'New lead · AC repair · answered in seconds',
           booked: 'Booked · Thursday 10:00 AM · on your calendar',
         } as PathDemo,
@@ -378,13 +375,10 @@ const es: typeof en = {
         imageAlt: 'Flujo tipo plano: un anuncio en un celular, luego un mensaje, luego un día agendado en el calendario',
         demo: {
           kind: 'booked',
-          label: 'Ejemplo · del anuncio al trabajo agendado',
+          label: 'Ejemplo · de su feed a tu calendario',
           page: 'Tu negocio',
-          adTag: 'Patrocinado',
-          ad: '¿Tu aire no enfría? Reparación esta misma semana. Agenda en 30 segundos.',
-          adHeadline: 'Reparación de AC esta semana',
-          adButton: 'Agendar',
-          actions: ['Me gusta', 'Comentar', 'Compartir'],
+          where: 'En su feed · Facebook · Instagram',
+          ad: '¿Tu aire no enfría? Podemos ir esta misma semana.',
           lead: 'Nuevo cliente · Reparación de AC · contestado en segundos',
           booked: 'Agendado · Jueves 10:00 AM · en tu calendario',
         },

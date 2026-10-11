@@ -22,10 +22,11 @@ const illustrated = t.system.paths.filter((p) => p.image);
 const fullPath = t.system.paths.find((p) => !p.image)!;
 
 // Line icons for the four leaks, drawn on a 24×24 grid in the blueprint style.
+// Every stroke uses pathLength=100 so all four icons draw in exactly the same time.
 const leakIcons = [
-  '<path d="M12 21s-6-5.3-6-11a6 6 0 1 1 12 0c0 5.7-6 11-6 11z" stroke-dasharray="2.5 2"/><path d="M10 8.5a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6.9V12M12 14.2v.1"/>',
+  '<path d="M12 21s-6-5.3-6-11a6 6 0 1 1 12 0c0 5.7-6 11-6 11z" class="dash" style="--dash:5.6 4.5"/><path d="M10 8.5a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6.9V12M12 14.2v.1"/>',
   '<path d="M5 4h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.1 6.1l1.4-2.3L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16 16 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z"/><path d="M15 3.5l5.5 5.5M20.5 3.5L15 9"/>',
-  '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" stroke-dasharray="2.5 2"/>',
+  '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" class="dash" style="--dash:4.05 3.24"/>',
   '<path d="M6 3h8l4 4v6"/><path d="M6 3v18h7"/><path d="M14 3v4h4M9 10h6M9 13.5h4"/><circle cx="17.5" cy="17.5" r="3.5"/><path d="M17.5 15.8v1.9l1.2.8"/>',
 ];
 ---
@@ -75,7 +76,7 @@ const leakIcons = [
         {t.leaks.items.map((item, i) => (
           <div class="leak card lift">
             <div class="leak-top">
-              <svg class="icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={leakIcons[i]} />
+              <svg class="icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={leakIcons[i].replace(/<(path|circle) /g, '<$1 pathLength="100" ')} />
               <span class="mono num">0{i + 1}</span>
             </div>
             <h3>{item.title}</h3>
@@ -173,21 +174,15 @@ const leakIcons = [
             {p.demo?.kind === 'booked' && (
               <div class="demo" data-demo>
                 <p class="mono demo-label">{p.demo.label}</p>
-                <div class="msg meta">
-                  <div class="meta-head">
+                <div class="msg post">
+                  <div class="post-head">
                     <span class="avatar" aria-hidden="true"><img src="/brand/icon.svg" alt="" width="8" height="16" /></span>
-                    <span class="meta-who"><strong>{p.demo.page}</strong><span>{p.demo.adTag} · ◍</span></span>
-                    <span class="meta-dots" aria-hidden="true">···</span>
+                    <span class="post-who"><strong>{p.demo.page}</strong><span class="mono">{p.demo.where}</span></span>
                   </div>
-                  <p class="meta-text">{p.demo.ad}</p>
-                  <div class="meta-media" aria-hidden="true">
+                  <p class="post-text">{p.demo.ad}</p>
+                  <div class="post-media" aria-hidden="true">
                     <svg viewBox="0 0 120 60" width="120" height="60" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="38" y="10" width="44" height="40" rx="3"/><circle cx="60" cy="30" r="13"/><circle cx="60" cy="30" r="8"/><circle cx="60" cy="30" r="3"/><path d="M42 50h36M30 30h4M86 30h4M60 4v3"/></svg>
                   </div>
-                  <div class="meta-cta">
-                    <span class="meta-head-line"><span class="mono">facebook · instagram</span><strong>{p.demo.adHeadline}</strong></span>
-                    <span class="meta-btn">{p.demo.adButton}</span>
-                  </div>
-                  <div class="meta-actions">{p.demo.actions.map((a) => <span>{a}</span>)}</div>
                 </div>
                 <div class="msg flow-arrow" aria-hidden="true">↓</div>
                 <div class="msg lead-msg mono">{p.demo.lead}</div>
@@ -405,26 +400,38 @@ const leakIcons = [
       setTimeout(() => clock.classList.add('done'), 1700);
     }, 0.4);
 
-    // Blueprint grid lights up around the cursor, with a drafting crosshair (mouse and trackpad only).
+    // Mouse and trackpad only: the grid lights up around the cursor, and the
+    // drawings get a drafting crosshair that reads coordinates off the drawing.
     if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      const xh = document.createElement('div');
-      xh.className = 'xhair';
-      xh.setAttribute('aria-hidden', 'true');
-      xh.innerHTML = '<span class="xh"></span><span class="yh"></span><span class="xy"></span>';
-      document.body.append(xh);
-      const xy = xh.querySelector<HTMLElement>('.xy')!;
       for (const sec of document.querySelectorAll<HTMLElement>('.spot')) {
         sec.addEventListener('pointermove', (e) => {
           const r = sec.getBoundingClientRect();
           sec.style.setProperty('--mx', `${e.clientX - r.left}px`);
           sec.style.setProperty('--my', `${e.clientY - r.top}px`);
           sec.classList.add('lit');
-          xh.style.setProperty('--cx', `${e.clientX}px`);
-          xh.style.setProperty('--cy', `${e.clientY}px`);
-          xy.textContent = `X ${String(Math.round(e.clientX)).padStart(4, '0')} · Y ${String(Math.round(e.pageY)).padStart(5, '0')}`;
+        });
+        sec.addEventListener('pointerleave', () => sec.classList.remove('lit'));
+      }
+      for (const fig of document.querySelectorAll<HTMLElement>('.illo')) {
+        const xh = document.createElement('div');
+        xh.className = 'xhair';
+        xh.setAttribute('aria-hidden', 'true');
+        xh.innerHTML = '<span class="xh"></span><span class="yh"></span><span class="xy"></span>';
+        fig.append(xh);
+        const xy = xh.querySelector<HTMLElement>('.xy')!;
+        fig.addEventListener('pointermove', (e) => {
+          const r = fig.getBoundingClientRect();
+          const x = e.clientX - r.left, y = e.clientY - r.top;
+          xh.style.setProperty('--cx', `${x}px`);
+          xh.style.setProperty('--cy', `${y}px`);
+          xh.classList.toggle('flip', x > r.width - 130);
+          xh.classList.toggle('up', y > r.height - 34);
+          // Read in drawing units (0–1000 across the drawing), like a plan sheet.
+          const ux = Math.round((x / r.width) * 1000), uy = Math.round((y / r.width) * 1000);
+          xy.textContent = `X ${String(ux).padStart(4, '0')} · Y ${String(uy).padStart(4, '0')}`;
           xh.classList.add('on');
         });
-        sec.addEventListener('pointerleave', () => { sec.classList.remove('lit'); xh.classList.remove('on'); });
+        fig.addEventListener('pointerleave', () => xh.classList.remove('on'));
       }
     }
 
@@ -510,7 +517,8 @@ const leakIcons = [
   .leak p { color: var(--body); font-size: 16px; }
 
   /* Illustrations: framed, no text on the drawing */
-  .illo { margin: 0; background: var(--panel); border-radius: 10px; overflow: hidden; }
+  .illo { position: relative; margin: 0; background: var(--panel); border-radius: 10px; overflow: hidden; }
+  :global(.fx) .illo { cursor: crosshair; }
   .illo :global(img) { width: 100%; height: auto; -webkit-mask-image: radial-gradient(closest-side, #000 82%, transparent); mask-image: radial-gradient(closest-side, #000 82%, transparent); }
 
   /* System cards: lime outline + drafting corner marks on hover */
@@ -588,22 +596,15 @@ const leakIcons = [
   .answer .who { font-size: 11px; letter-spacing: 0.08em; }
 
   /* Facebook / Instagram style ad */
-  .meta { max-width: none; align-self: stretch; padding: 0; background: #fff; color: #1c1e21; border-radius: 10px; overflow: hidden; font-size: 14px; }
-  .meta-head { display: flex; align-items: center; gap: 10px; padding: 10px 12px 6px; }
-  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--navy); display: grid; place-items: center; flex-shrink: 0; }
+  .post { max-width: none; align-self: stretch; padding: 0; background: var(--navy); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .post-head { display: flex; align-items: center; gap: 10px; padding: 12px 12px 6px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--panel); border: 1px solid var(--line); display: grid; place-items: center; flex-shrink: 0; }
   .avatar img { height: 16px; width: auto; }
-  .meta-who { display: flex; flex-direction: column; line-height: 1.2; }
-  .meta-who strong { font-size: 14px; }
-  .meta-who span { font-size: 12px; color: #65676b; }
-  .meta-dots { margin-left: auto; color: #65676b; letter-spacing: 1px; }
-  .meta-text { padding: 0 12px 8px; }
-  .meta-media { background: var(--panel); color: var(--lime); display: grid; place-items: center; padding: 18px 0; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 16px 16px; }
-  .meta-cta { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #f0f2f5; padding: 8px 12px; }
-  .meta-head-line { display: flex; flex-direction: column; line-height: 1.25; }
-  .meta-head-line .mono { font-size: 10px; text-transform: uppercase; color: #65676b; letter-spacing: 0.06em; }
-  .meta-head-line strong { font-size: 14px; }
-  .meta-btn { background: #e4e6eb; color: #1c1e21; font-weight: 500; font-size: 13px; padding: 7px 12px; border-radius: 6px; white-space: nowrap; }
-  .meta-actions { display: flex; justify-content: space-around; border-top: 1px solid #e4e6eb; padding: 6px 0; color: #65676b; font-size: 12px; font-weight: 500; }
+  .post-who { display: flex; flex-direction: column; line-height: 1.3; }
+  .post-who strong { font-size: 14px; color: var(--chalk); }
+  .post-who .mono { font-size: 11px; color: var(--steel); letter-spacing: 0.04em; }
+  .post-text { padding: 0 12px 10px; color: var(--chalk); font-size: 14px; }
+  .post-media { color: var(--lime); display: grid; place-items: center; padding: 18px 0; border-top: 1px solid var(--line); background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 16px 16px; }
   .lead-msg { max-width: none; align-self: stretch; text-align: center; background: var(--line); color: var(--chalk); font-size: 13px; border-radius: 8px; }
 
   .full { margin-top: 16px; padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
@@ -651,20 +652,23 @@ const leakIcons = [
   .g-label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); padding-top: 3px; }
 
   /* Blueprint crosshair + scroll ruler (desktop, motion on) */
-  :global(.xhair) { position: fixed; inset: 0; pointer-events: none; z-index: 40; opacity: 0; transition: opacity .2s ease; }
+  :global(.xhair) { position: absolute; inset: 0; pointer-events: none; z-index: 2; opacity: 0; transition: opacity .2s ease; }
   :global(.xhair.on) { opacity: 1; }
-  :global(.xhair .xh), :global(.xhair .yh) { position: absolute; background: rgba(156, 226, 74, 0.18); }
+  :global(.xhair .xh), :global(.xhair .yh) { position: absolute; background: rgba(156, 226, 74, 0.35); }
   :global(.xhair .xh) { left: 0; right: 0; height: 1px; top: var(--cy); }
   :global(.xhair .yh) { top: 0; bottom: 0; width: 1px; left: var(--cx); }
-  :global(.xhair .xy) { position: absolute; left: calc(var(--cx) + 12px); top: calc(var(--cy) + 12px); font: 500 11px var(--font-mono); color: var(--lime); letter-spacing: 0.06em; }
+  :global(.xhair .xy) { position: absolute; left: calc(var(--cx) + 12px); top: calc(var(--cy) + 12px); font: 500 11px var(--font-mono); color: var(--lime); letter-spacing: 0.06em; white-space: nowrap; }
+  :global(.xhair.up .xy) { top: auto; bottom: calc(100% - var(--cy) + 10px); }
+  :global(.xhair.flip .xy) { left: auto; right: calc(100% - var(--cx) + 12px); }
   :global(.ruler) { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; pointer-events: none; }
   :global(.ruler i) { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: var(--lime); }
 
   /* Leak icons draw themselves on hover */
   @media (hover: hover) {
-    .leak:hover .icon :global(path), .leak:hover .icon :global(circle) { animation: draw .9s ease forwards; }
+    .leak:hover .icon :global(path), .leak:hover .icon :global(circle) { animation: draw 2.2s cubic-bezier(.45, 0, .25, 1); }
   }
-  @keyframes draw { from { stroke-dasharray: 80; stroke-dashoffset: 80; } to { stroke-dasharray: 80; stroke-dashoffset: 0; } }
+  .icon :global(.dash) { stroke-dasharray: var(--dash); }
+  @keyframes draw { from { stroke-dasharray: 100; stroke-dashoffset: 100; } to { stroke-dasharray: 100; stroke-dashoffset: 0; } }
 
   /* Founder */
   .founder { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 56px; align-items: center; }
