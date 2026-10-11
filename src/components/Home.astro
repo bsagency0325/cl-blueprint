@@ -1,71 +1,58 @@
 ---
+import { Image } from 'astro:assets';
 import { content, type Lang } from '../i18n/home';
 import { site } from '../config';
+import ScoreForm from './ScoreForm.astro';
+import answerImg from '../assets/illustrations/answer.jpg';
+import foundImg from '../assets/illustrations/found.jpg';
+import bookedImg from '../assets/illustrations/booked.jpg';
+import pieroImg from '../assets/piero.jpg';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = content[lang];
 const ids = t.ids;
 const scoreValues = [52, 18, 35, 60];
-const thanks = lang === 'es' ? '/es/gracias/' : '/thanks/';
-const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.items] : t.guarantee.items;
+const scoreTotal = 41;
+
+const images = { found: foundImg, booked: bookedImg } as const;
+const imgWidths = [480, 720, 1024];
+const imgSizes = '(max-width: 1000px) calc(100vw - 48px), 560px';
+const illustrated = t.system.paths.filter((p) => p.image);
+const fullPath = t.system.paths.find((p) => !p.image)!;
+
+// Line icons for the four leaks, drawn on a 24×24 grid in the blueprint style.
+// Every stroke uses pathLength=100 so all four icons draw in exactly the same time.
+const leakIcons = [
+  '<path d="M12 21s-6-5.3-6-11a6 6 0 1 1 12 0c0 5.7-6 11-6 11z" class="dash" style="--dash:5.6 4.5"/><path d="M10 8.5a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6.9V12M12 14.2v.1"/>',
+  '<path d="M5 4h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.1 6.1l1.4-2.3L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16 16 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z"/><path d="M15 3.5l5.5 5.5M20.5 3.5L15 9"/>',
+  '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" class="dash" style="--dash:4.05 3.24"/>',
+  '<path d="M6 3h8l4 4v6"/><path d="M6 3v18h7"/><path d="M14 3v4h4M9 10h6M9 13.5h4"/><circle cx="17.5" cy="17.5" r="3.5"/><path d="M17.5 15.8v1.9l1.2.8"/>',
+];
 ---
 <main>
-  <!-- HERO + FORM -->
-  <section class="hero grid-bg">
+  <!-- HERO: the free Score is the one goal of the page -->
+  <section class="hero grid-bg spot">
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">{t.hero.eyebrow}</p>
         <h1>{t.hero.title}</h1>
         <p class="lead">{t.hero.sub}</p>
-
-        <form id={ids.score} class="form card" name="blueprint-score" method="POST" action={thanks} data-netlify="true" netlify-honeypot="company-website">
-          <input type="hidden" name="form-name" value="blueprint-score" />
-          <input type="hidden" name="language" value={lang} />
-          <p class="sr-only"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
-
-          <div class="step step1">
-            <div class="row">
-              <label><span>{t.form.step1.business}</span><input name="business" autocomplete="organization" required /></label>
-              <label><span>{t.form.step1.city}</span><input name="city" autocomplete="address-level2" required /></label>
-            </div>
-            <button class="btn btn-primary next" type="button">{t.form.step1.button}</button>
-            <p class="form-note">{t.form.step1.note}</p>
-          </div>
-
-          <div class="step step2">
-            <h2 class="step2-title">{t.form.step2.heading}</h2>
-            <div class="row three">
-              <label><span>{t.form.step2.name}</span><input name="name" autocomplete="name" required /></label>
-              <label><span>{t.form.step2.phone}</span><input name="phone" type="tel" autocomplete="tel" required aria-describedby={`phone-help-${lang}`} /><small id={`phone-help-${lang}`}>{t.form.step2.phoneHelp}</small></label>
-              <label><span>{t.form.step2.email}</span><input name="email" type="email" autocomplete="email" required /></label>
-            </div>
-            <label class="consent">
-              <input type="checkbox" name="sms_consent" value="yes" />
-              <span>
-                {t.form.step2.consent}{' '}
-                <a href="/privacy-policy">{t.form.step2.privacy}</a> · <a href="/terms">{t.form.step2.terms}</a>
-              </span>
-            </label>
-            <button class="btn btn-primary submit" type="submit">{t.form.step2.button}</button>
-            <p class="form-note">{t.form.step2.note}</p>
-          </div>
-        </form>
-
+        <ScoreForm lang={lang} id={ids.score} uid={`${lang}-top`} />
         <p class="trust"><span class="dot" aria-hidden="true"></span>{t.hero.trust}</p>
       </div>
 
-      <div class="score-card card" aria-hidden="true">
+      <div class="score-card card" aria-hidden="true" data-score>
         <div class="score-top">
           <span class="mono label">{t.hero.card.label}</span>
           <img src="/brand/icon.svg" alt="" width="14" height="28" />
         </div>
-        <div class="score-value"><span>41</span><span class="out">/ 100</span></div>
+        <div class="score-value"><span data-count={scoreTotal}>{scoreTotal}</span><span class="out">/ 100</span></div>
         <div class="bars">
           {t.hero.card.metrics.map((m, i) => (
             <div class="bar">
-              <div class="bar-row"><span>{m}</span><span class="mono">{scoreValues[i]}</span></div>
-              <div class="track"><div class="fill" style={`width:${scoreValues[i]}%`}></div></div>
+              <div class="bar-row"><span>{m}</span><span class="mono" data-count={scoreValues[i]}>{scoreValues[i]}</span></div>
+              <div class="track"><div class="fill" style={`--w:${scoreValues[i]}%`}></div></div>
             </div>
           ))}
         </div>
@@ -80,166 +67,206 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   <!-- THE PROBLEM -->
   <section class="section">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.leaks.eyebrow}</p>
         <h2>{t.leaks.title}</h2>
         <p>{t.leaks.sub}</p>
       </div>
-      <div class="leaks">
+      <div class="leaks" data-reveal>
         {t.leaks.items.map((item, i) => (
-          <div class="leak card">
-            <span class="mono num">0{i + 1}</span>
+          <div class="leak card lift">
+            <div class="leak-top">
+              <svg class="icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={leakIcons[i].replace(/<(path|circle) /g, '<$1 pathLength="100" ')} />
+              <span class="mono num">0{i + 1}</span>
+            </div>
             <h3>{item.title}</h3>
             <p>{item.body}</p>
           </div>
         ))}
       </div>
-    </div>
-  </section>
-
-  <!-- WHY IT HAPPENS -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">{t.why.eyebrow}</p>
-        <h2>{t.why.title}</h2>
-      </div>
-      <div class="cells two">
-        {t.why.items.map((item) => (
-          <div class="cell">
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </div>
-        ))}
-      </div>
-      {t.why.bonus && (
-        <div class="bonus card">
-          <span class="mono tag">{t.why.bonus.label}</span>
-          <h3>{t.why.bonus.title}</h3>
-          <p>{t.why.bonus.body}</p>
-        </div>
-      )}
-      <p class="closing">{t.why.closing}</p>
+      <p class="closing" data-reveal>{t.leaks.closing}</p>
     </div>
   </section>
 
   <!-- THE SYSTEM -->
-  <section class="section grid-bg" id={ids.system}>
+  <section class="section grid-bg spot" id={ids.system}>
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.system.eyebrow}</p>
         <h2>{t.system.title}</h2>
         <p>{t.system.sub}</p>
       </div>
 
-      <div class="foundation card">
-        <span class="mono tag">{t.system.foundation.label}</span>
-        <h3>{t.system.foundation.title}</h3>
-        <p>{t.system.foundation.body}</p>
+      <!-- Foundation (full width): illustration + what's included + live AI call / text-back example -->
+      <div class="foundation card sys">
+        <figure class="illo" data-reveal>
+          <Image src={answerImg} alt={t.system.foundation.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+        </figure>
+        <div class="foundation-copy">
+          <span class="mono tag">{t.system.foundation.label}</span>
+          <h3>{t.system.foundation.title}</h3>
+          <p class="foundation-body">{t.system.foundation.body}</p>
+          <ul class="ticks">
+            {t.system.foundation.items.map((it) => <li>{it}</li>)}
+          </ul>
+          <div class="demo" data-demo data-tabs>
+            <div class="demo-top">
+              <p class="mono demo-label">{t.system.foundation.demoLabel}</p>
+              <div class="tabs" role="tablist">
+                <button type="button" role="tab" class="tab" aria-selected="true" data-tab="call">{t.system.foundation.call.tabCall}</button>
+                <button type="button" role="tab" class="tab" aria-selected="false" data-tab="text">{t.system.foundation.call.tabText}</button>
+              </div>
+            </div>
+            <div class="pane" data-pane="call" role="tabpanel">
+              <div class="msg call-in mono"><span class="ring" aria-hidden="true"></span>{t.system.foundation.call.incoming}</div>
+              <div class="msg call-live">
+                <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                <span>{t.system.foundation.call.answered}</span>
+              </div>
+              {t.system.foundation.call.lines.map((l) => (
+                <div class={`msg line line-${l.who}`}>
+                  <span class="mono who">{l.who === 'ai' ? t.system.foundation.call.aiLabel : t.system.foundation.call.callerLabel}</span>
+                  <span>{l.text}</span>
+                </div>
+              ))}
+              <div class="msg msg-booked">{t.system.foundation.call.booked}</div>
+            </div>
+            <div class="pane" data-pane="text" role="tabpanel">
+              {t.system.foundation.demo.map((m) => (
+                <div class={`msg msg-${m.from}`}>{m.text}</div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
+      <!-- Get Found + Get Booked, side by side under the foundation -->
       <div class="paths">
-        {t.system.paths.map((p) => (
-          <div class="path card">
-            <span class="mono tag">{p.tag}</span>
-            <h3>{p.name}</h3>
-            <p class="for">{p.for}</p>
-            {p.items.length > 0 && (
+        {illustrated.map((p) => (
+          <div class="path card sys">
+            <figure class="illo" data-reveal>
+              <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+            </figure>
+            <div class="path-copy">
+              <span class="mono tag">{p.tag}</span>
+              <h3>{p.name}</h3>
+              <p class="for">{p.for}</p>
               <ul class="ticks">
                 {p.items.map((it) => <li>{it}</li>)}
               </ul>
+            </div>
+            {p.demo?.kind === 'maps' && (
+              <div class="demo" data-demo>
+                <p class="mono demo-label">{p.demo.label}</p>
+                <div class="msg search mono"><span aria-hidden="true">⌕</span>{p.demo.search}</div>
+                {p.demo.results.map((r, i) => (
+                  <div class={`msg result${i === 0 ? ' top' : ''}`}>
+                    <span class="pin" aria-hidden="true"></span>
+                    <span class="r-name">{r.name}</span>
+                    <span class="stars" aria-label={`${r.stars}/5`}>{'★'.repeat(r.stars)}<span class="off">{'★'.repeat(5 - r.stars)}</span></span>
+                    {r.tag && <span class="mono r-tag">{r.tag}</span>}
+                  </div>
+                ))}
+                <div class="msg ask">{p.demo.ask}</div>
+                <div class="msg answer"><span class="mono who">AI</span>{p.demo.answer}</div>
+              </div>
             )}
-            {p.body && <p class="path-body">{p.body}</p>}
-            <p class="promise"><span class="mono">{t.system.promiseLabel}</span>{p.promise}</p>
+            {p.demo?.kind === 'booked' && (
+              <div class="demo" data-demo>
+                <p class="mono demo-label">{p.demo.label}</p>
+                <div class="msg post">
+                  <div class="post-head">
+                    <span class="avatar" aria-hidden="true"><img src="/brand/icon.svg" alt="" width="8" height="16" /></span>
+                    <span class="post-who"><strong>{p.demo.page}</strong><span class="mono">{p.demo.where}</span></span>
+                  </div>
+                  <p class="post-text">{p.demo.ad}</p>
+                  <div class="post-media" aria-hidden="true">
+                    <svg viewBox="0 0 120 60" width="120" height="60" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="38" y="10" width="44" height="40" rx="3"/><circle cx="60" cy="30" r="13"/><circle cx="60" cy="30" r="8"/><circle cx="60" cy="30" r="3"/><path d="M42 50h36M30 30h4M86 30h4M60 4v3"/></svg>
+                  </div>
+                </div>
+                <div class="msg flow-arrow" aria-hidden="true">↓</div>
+                <div class="msg lead-msg mono">{p.demo.lead}</div>
+                <div class="msg flow-arrow" aria-hidden="true">↓</div>
+                <div class="msg msg-booked">{p.demo.booked}</div>
+              </div>
+            )}
           </div>
         ))}
       </div>
 
-      <div class="system-close">
+      <!-- Full Blueprint -->
+      <div class="full card sys" data-reveal>
+        <div>
+          <span class="mono tag">{fullPath.tag}</span>
+          <h3>{fullPath.name}</h3>
+          <p class="for">{fullPath.for}</p>
+        </div>
+        <p class="path-body">{fullPath.body}</p>
+      </div>
+
+      <div class="system-close" data-reveal>
         <p class="closing">{t.system.closing}</p>
-        <a class="btn btn-ghost" href={`#${ids.score}`}>{t.system.cta}</a>
+        <a class="btn btn-primary" href={`#${ids.score}`} data-focus-form>{t.system.cta}</a>
       </div>
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
+  <!-- HOW IT WORKS: a 4-step timeline -->
   <section class="section" id={ids.how}>
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.how.eyebrow}</p>
         <h2>{t.how.title}</h2>
       </div>
-      <ol class="steps">
+      <ol class="timeline" data-reveal>
         {t.how.steps.map((s, i) => (
-          <li class="step card">
-            <span class="mono num">0{i + 1}</span>
+          <li>
+            <span class="node mono" aria-hidden="true">0{i + 1}</span>
             <h3>{s.title}</h3>
             <p>{s.body}</p>
           </li>
         ))}
       </ol>
+    </div>
+  </section>
 
-      <div class="expect">
-        <h3>{t.how.expectTitle}</h3>
-        <dl>
-          {t.how.expect.map((e) => (
-            <div class="expect-row">
-              <dt class="mono">{e.when}</dt>
-              <dd>{e.body}{e.path && <span class="mono path-tag">{e.path}</span>}</dd>
-            </div>
+  <!-- GUARANTEE: a stopwatch that answers well before 60 seconds -->
+  <section class="section grid-bg spot guarantee" id={ids.guarantee}>
+    <div class="wrap g-grid">
+      <div class="clock" data-clock data-reveal aria-hidden="true">
+        <svg viewBox="0 0 220 220" width="220" height="220">
+          <circle class="dial" cx="110" cy="110" r="96" />
+          {Array.from({ length: 60 }, (_, i) => (
+            <line class={i % 5 ? 'tick' : 'tick major'} x1="110" y1={i % 5 ? 20 : 16} x2="110" y2="26" transform={`rotate(${i * 6} 110 110)`} />
           ))}
-        </dl>
+          <circle class="sweep" cx="110" cy="110" r="96" pathLength="60" />
+        </svg>
+        <div class="clock-read">
+          <span class="mono clock-time" data-clock-time>0:09</span>
+          <span class="mono clock-stamp">{t.guarantee.clock} ✓</span>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- WHY IT WORKS -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">{t.works.eyebrow}</p>
-        <h2>{t.works.title}</h2>
-      </div>
-      <div class="cells three">
-        {t.works.items.map((item) => (
-          <div class="cell">
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </div>
-        ))}
-      </div>
-      <p class="closing">{t.works.closing}</p>
-    </div>
-  </section>
-
-  <!-- GUARANTEES -->
-  <section class="section grid-bg" id={ids.guarantee}>
-    <div class="wrap">
-      <div class="section-head">
+      <div class="g-copy" data-reveal>
         <p class="eyebrow">{t.guarantee.eyebrow}</p>
         <h2>{t.guarantee.title}</h2>
-      </div>
-      <div class="g-box card">
-        <dl>
-          {guarantees.map((g) => (
-            <div class="g-row">
-              <dt class="mono">{g.label}</dt>
-              <dd>{g.body}</dd>
-            </div>
+        <p class="lead">{t.guarantee.body}</p>
+        <ul class="g-list">
+          {t.guarantee.items.map((g) => (
+            <li>
+              <span class="mono g-label">{g.label}</span>
+              <span>{g.body}</span>
+            </li>
           ))}
-        </dl>
-        <p class="note">{t.guarantee.note}</p>
+        </ul>
       </div>
     </div>
   </section>
 
   <!-- FOUNDER -->
   <section class="section">
-    <div class="wrap founder">
+    <div class="wrap founder" data-reveal>
       <div class="photo">
-        {site.founderPhoto
-          ? <img src={site.founderPhoto} alt={t.founder.photoAlt} width="480" height="560" loading="lazy" />
-          : <img class="mark" src="/brand/icon.svg" alt="" width="60" height="120" />}
+        <Image src={pieroImg} alt={t.founder.photoAlt} widths={[400, 640, 900]} sizes="(max-width: 1000px) 360px, 400px" format="webp" quality={80} loading="lazy" />
       </div>
       <div class="founder-copy">
         <p class="eyebrow">{t.founder.eyebrow}</p>
@@ -255,7 +282,7 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   <!-- FAQ -->
   <section class="section" id={ids.faq}>
     <div class="wrap faq-wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.faq.eyebrow}</p>
         <h2>{t.faq.title}</h2>
       </div>
@@ -270,44 +297,156 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
     </div>
   </section>
 
-  <!-- FINAL CTA + CONTACT -->
-  <section class="section grid-bg final" id={ids.contact}>
-    <div class="wrap final-inner">
-      <h2>{t.final.title}</h2>
-      <p class="lead">{t.final.sub}</p>
-      <a class="btn btn-primary big" href={`#${ids.score}`} data-focus-form>{t.final.button}</a>
-      <p class="secondary">{t.final.secondary}</p>
-      <div class="contact">
-        <a class="btn btn-ghost" href={`mailto:${site.email}`}>{t.final.email}<span class="mono addr">{site.email}</span></a>
-        {site.phone && <a class="btn btn-ghost" href={`sms:${site.phone}`}>{t.final.phone}</a>}
-        {site.whatsapp && <a class="btn btn-ghost" href={`https://wa.me/${site.whatsapp}`} rel="noopener">{t.final.whatsapp}</a>}
+  <!-- FINAL: the Score form again, with Piero's calendar beside it -->
+  <section class="section grid-bg spot final" id={ids.contact}>
+    <div class="wrap final-grid">
+      <div class="final-score" data-reveal>
+        <span class="mono tag">{t.final.scoreTitle}</span>
+        <h2>{t.final.title}</h2>
+        <p class="lead">{t.final.scoreBody}</p>
+        <ScoreForm lang={lang} uid={`${lang}-end`} />
+      </div>
+      <div class="final-book card" data-reveal>
+        <span class="mono tag">15 min</span>
+        <h3>{t.final.bookTitle}</h3>
+        <p>{t.final.bookBody}</p>
+        {site.calendarUrl
+          ? <iframe class="calendar" src={site.calendarUrl} title={t.final.bookTitle} loading="lazy"></iframe>
+          : <a class="btn btn-ghost" href={`mailto:${site.email}`}>{t.final.bookFallback}</a>}
+        {(site.phone || site.whatsapp) && (
+          <div class="contact">
+            {site.phone && <a href={`sms:${site.phone}`}>{t.final.phone}</a>}
+            {site.whatsapp && <a href={`https://wa.me/${site.whatsapp}`} rel="noopener">{t.final.whatsapp}</a>}
+          </div>
+        )}
       </div>
     </div>
   </section>
 </main>
 
 <script>
-  // Two-step Score form: step 2 appears after business name + city are filled in.
-  // Without JavaScript both steps show at once and the form still submits.
-  for (const form of document.querySelectorAll<HTMLFormElement>('form[name="blueprint-score"]')) {
-    form.classList.add('js');
-    const step1 = form.querySelector<HTMLElement>('.step1')!;
-    const next = form.querySelector<HTMLButtonElement>('.next')!;
-    next.addEventListener('click', () => {
-      const fields = [...step1.querySelectorAll('input')];
-      const invalid = fields.find((f) => !f.checkValidity());
-      if (invalid) { invalid.reportValidity(); return; }
-      form.classList.add('on-step2');
-      form.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
-    });
-    step1.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && e.target instanceof HTMLInputElement) { e.preventDefault(); next.click(); }
-    });
+  // Foundation example: tabs between the AI receptionist call and the missed-call text-back.
+  const timers = new WeakMap<Element, number[]>();
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motion = !calm && 'IntersectionObserver' in window;
+
+  // Show a demo's messages one by one (or all at once without motion).
+  const play = (root: Element, onDone?: () => void) => {
+    for (const id of timers.get(root) ?? []) clearTimeout(id);
+    const msgs = [...root.querySelectorAll('.msg')];
+    if (!motion) { msgs.forEach((m) => m.classList.add('shown')); return; }
+    msgs.forEach((m) => m.classList.remove('shown'));
+    const ids = msgs.map((m, i) => window.setTimeout(() => m.classList.add('shown'), 250 + i * 750));
+    if (onDone) ids.push(window.setTimeout(onDone, 250 + msgs.length * 750 + 2600));
+    timers.set(root, ids);
+  };
+
+  for (const demo of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
+    document.documentElement.classList.add('js-tabs');
+    const tabs = [...demo.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const panes = [...demo.querySelectorAll<HTMLElement>('[data-pane]')];
+    let touched = false;
+    const show = (name: string) => {
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === name)));
+      panes.forEach((p) => (p.hidden = p.dataset.pane !== name));
+      const pane = panes.find((p) => p.dataset.pane === name)!;
+      // After the call plays, move on to the text-back once, unless the visitor picked a tab.
+      play(pane, name === 'call' ? () => { if (!touched) show('text'); } : undefined);
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => { touched = true; show(t.dataset.tab!); }));
+    demo.addEventListener('demo:start', () => show('call'), { once: true });
+    panes.forEach((p) => (p.hidden = p.dataset.pane !== 'call'));
   }
-  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-focus-form]')) {
-    link.addEventListener('click', () => {
-      setTimeout(() => document.querySelector<HTMLInputElement>('form[name="blueprint-score"] input[name="business"]')?.focus({ preventScroll: true }), 400);
-    });
+
+  if (motion) {
+    document.documentElement.classList.add('fx');
+
+    const once = (els: Iterable<Element>, fn: (el: Element) => void, threshold = 0.2) => {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { fn(e.target); io.unobserve(e.target); }
+      }, { threshold, rootMargin: '0px 0px -40px 0px' });
+      for (const el of els) io.observe(el);
+    };
+
+    // Sections fade in as they enter.
+    once(document.querySelectorAll('[data-reveal]'), (el) => el.classList.add('in'), 0.12);
+
+    // Score card counts up and its bars fill.
+    const countUp = (n: HTMLElement, end: number, ms: number, fmt = (v: number) => String(v)) => {
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - t0) / ms);
+        n.textContent = fmt(Math.round(end * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    once(document.querySelectorAll('[data-score]'), (card) => {
+      card.classList.add('in');
+      for (const n of card.querySelectorAll<HTMLElement>('[data-count]')) countUp(n, Number(n.dataset.count), 1200);
+    }, 0.3);
+
+    // Example screens play when they scroll into view.
+    once(document.querySelectorAll('[data-demo]'), (demo) => {
+      if (demo.hasAttribute('data-tabs')) demo.dispatchEvent(new Event('demo:start'));
+      else play(demo);
+    }, 0.35);
+
+    // Guarantee stopwatch: sweeps, stops well under a minute, gets stamped.
+    once(document.querySelectorAll('[data-clock]'), (clock) => {
+      clock.classList.add('run');
+      const out = clock.querySelector<HTMLElement>('[data-clock-time]')!;
+      countUp(out, 9, 1600, (v) => `0:${String(v).padStart(2, '0')}`);
+      setTimeout(() => clock.classList.add('done'), 1700);
+    }, 0.4);
+
+    // Mouse and trackpad only: the grid lights up around the cursor, and the
+    // drawings get a drafting crosshair that reads coordinates off the drawing.
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      for (const sec of document.querySelectorAll<HTMLElement>('.spot')) {
+        sec.addEventListener('pointermove', (e) => {
+          const r = sec.getBoundingClientRect();
+          sec.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          sec.style.setProperty('--my', `${e.clientY - r.top}px`);
+          sec.classList.add('lit');
+        });
+        sec.addEventListener('pointerleave', () => sec.classList.remove('lit'));
+      }
+      for (const fig of document.querySelectorAll<HTMLElement>('.illo')) {
+        const xh = document.createElement('div');
+        xh.className = 'xhair';
+        xh.setAttribute('aria-hidden', 'true');
+        xh.innerHTML = '<span class="xh"></span><span class="yh"></span><span class="xy"></span>';
+        fig.append(xh);
+        const xy = xh.querySelector<HTMLElement>('.xy')!;
+        fig.addEventListener('pointermove', (e) => {
+          const r = fig.getBoundingClientRect();
+          const x = e.clientX - r.left, y = e.clientY - r.top;
+          xh.style.setProperty('--cx', `${x}px`);
+          xh.style.setProperty('--cy', `${y}px`);
+          xh.classList.toggle('flip', x > r.width - 130);
+          xh.classList.toggle('up', y > r.height - 34);
+          // Read in drawing units (0–1000 across the drawing), like a plan sheet.
+          const ux = Math.round((x / r.width) * 1000), uy = Math.round((y / r.width) * 1000);
+          xy.textContent = `X ${String(ux).padStart(4, '0')} · Y ${String(uy).padStart(4, '0')}`;
+          xh.classList.add('on');
+        });
+        fig.addEventListener('pointerleave', () => xh.classList.remove('on'));
+      }
+    }
+
+    // Scroll ruler along the top edge.
+    const ruler = document.createElement('div');
+    ruler.className = 'ruler';
+    ruler.setAttribute('aria-hidden', 'true');
+    ruler.innerHTML = '<i></i>';
+    document.body.append(ruler);
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      ruler.style.setProperty('--p', String(max > 0 ? scrollY / max : 0));
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 </script>
 
@@ -316,6 +455,34 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   .tag { color: var(--lime); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
   .num { color: var(--lime); font-size: 13px; }
   .closing { margin-top: 40px; font-family: var(--font-display); font-weight: 500; font-size: 24px; color: var(--chalk); max-width: 760px; }
+
+  /* Blueprint grid spotlight */
+  .spot { position: relative; }
+  .spot > .wrap { position: relative; z-index: 1; }
+  .spot::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+    background-image:
+      linear-gradient(rgba(156, 226, 74, 0.28) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(156, 226, 74, 0.28) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), #000, transparent 70%);
+    mask-image: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), #000, transparent 70%);
+    transition: opacity .35s ease;
+  }
+  .spot.lit::after { opacity: 1; }
+
+  /* Hover cards lift and flip to Chalk (like the old site) */
+  .lift { transition: transform .2s ease, background-color .2s ease, border-color .2s ease; }
+  @media (hover: hover) {
+    .lift:hover { transform: translateY(-4px); background: var(--chalk); border-color: var(--chalk); }
+    .lift:hover h3 { color: var(--navy); }
+    .lift:hover p { color: #2b3a48; }
+    .lift:hover .num, .lift:hover .icon { color: var(--lime-ink); }
+  }
+
+  /* Sections fade in (only when the script turns motion on) */
+  :global(.fx) [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  :global(.fx) [data-reveal].in { opacity: 1; transform: none; }
 
   /* Hero */
   .hero { padding: 88px 0 104px; }
@@ -329,102 +496,189 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   .score-top { display: flex; justify-content: space-between; align-items: center; }
   .score-top img { height: 28px; width: auto; }
   .label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--steel); }
-  .score-value { font-family: var(--font-display); font-weight: 700; font-size: 84px; line-height: 1; display: flex; align-items: baseline; gap: 10px; }
+  .score-value { font-family: var(--font-display); font-weight: 700; font-size: 84px; line-height: 1; display: flex; align-items: baseline; gap: 10px; font-variant-numeric: tabular-nums; }
   .out { font-size: 28px; font-weight: 500; color: var(--steel); }
   .bars { display: flex; flex-direction: column; gap: 14px; }
   .bar-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
   .bar-row .mono { color: var(--steel); }
-  .track { height: 8px; border-radius: 4px; background: var(--line); }
-  .fill { height: 8px; border-radius: 4px; background: var(--lime); }
+  .track { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+  .fill { height: 8px; border-radius: 4px; background: var(--lime); width: var(--w); }
+  :global(.fx) [data-score] .fill { width: 0; transition: width 1.2s cubic-bezier(.2, .7, .2, 1); }
+  :global(.fx) [data-score].in .fill { width: var(--w); }
   .score-foot { border-top: 1px solid var(--line); padding-top: 18px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; color: var(--body); }
   .lost { font-family: var(--font-display); font-weight: 700; font-size: 28px; color: var(--lime); }
 
-  /* Form */
-  .form { padding: 24px; scroll-margin-top: 100px; }
-  .step { display: flex; flex-direction: column; gap: 16px; }
-  .step2 { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
-  .form.js .step2 { display: none; }
-  .form.js.on-step2 .step1 { display: none; }
-  .form.js.on-step2 .step2 { display: flex; margin-top: 0; padding-top: 0; border-top: 0; }
-  .form.js .next { display: inline-flex; }
-  .form:not(.js) .next { display: none; }
-  .step2-title { font-size: 24px; }
-  .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-  .row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .row label { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #d5dde4; }
-  .row small { color: var(--steel); font-size: 13px; }
-  input {
-    font: inherit; font-size: 16px; color: var(--chalk);
-    background: var(--navy); border: 1px solid #2a3b4c; border-radius: 8px;
-    min-height: 50px; padding: 0 14px; width: 100%;
-  }
-  input:focus { border-color: var(--lime); outline: none; }
-  .consent { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: var(--steel); }
-  .consent input { min-height: 0; width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: var(--lime); }
-  .next, .submit { align-self: flex-start; min-height: 56px; padding: 0 32px; font-size: 18px; }
-  .form-note { color: var(--steel); font-size: 14px; }
-
   /* Leaks */
   .leaks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .leak { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .leak { padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .leak-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .icon { color: var(--lime); transition: color .2s ease; }
   .leak h3 { font-size: 22px; }
   .leak p { color: var(--body); font-size: 16px; }
 
-  /* Ruled cells (why it happens / why it works) */
-  .cells { display: grid; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
-  .cells.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cells.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .cell { padding: 32px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
-  .cell h3 { font-size: 24px; }
-  .cell p { color: var(--body); font-size: 16px; }
-  .bonus { margin-top: 16px; padding: 28px 32px; display: flex; flex-direction: column; gap: 10px; border-color: var(--lime); }
-  .bonus h3 { font-size: 24px; }
-  .bonus p { color: var(--body); }
+  /* Illustrations: framed, no text on the drawing */
+  .illo { position: relative; margin: 0; background: var(--panel); border-radius: 10px; overflow: hidden; }
+  :global(.fx) .illo { cursor: crosshair; }
+  .illo :global(img) { width: 100%; height: auto; -webkit-mask-image: radial-gradient(closest-side, #000 82%, transparent); mask-image: radial-gradient(closest-side, #000 82%, transparent); }
 
-  /* System */
-  .foundation { padding: 32px; display: flex; flex-direction: column; gap: 12px; border-color: var(--lime); margin-bottom: 16px; }
-  .foundation h3 { font-size: clamp(26px, 3.4vw, 34px); }
-  .foundation p { color: var(--body); max-width: 820px; }
-  .paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .path { padding: 32px; display: flex; flex-direction: column; gap: 14px; }
-  .path h3 { font-size: 28px; }
+  /* System cards: lime outline + drafting corner marks on hover */
+  .sys { position: relative; transition: border-color .25s ease, box-shadow .25s ease; }
+  .sys::before, .sys::after {
+    content: ''; position: absolute; width: 18px; height: 18px; pointer-events: none;
+    border: 0 solid var(--lime); opacity: 0; transition: opacity .25s ease, transform .25s ease;
+  }
+  .sys::before { top: -7px; left: -7px; border-top-width: 2px; border-left-width: 2px; transform: translate(4px, 4px); }
+  .sys::after { bottom: -7px; right: -7px; border-bottom-width: 2px; border-right-width: 2px; transform: translate(-4px, -4px); }
+  .sys:hover { border-color: var(--lime); box-shadow: 0 0 0 1px rgba(156, 226, 74, 0.25); }
+  .sys:hover::before, .sys:hover::after { opacity: 1; transform: none; }
+
+  .foundation { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; margin-bottom: 16px; align-items: center; }
+  .foundation-copy { display: flex; flex-direction: column; gap: 14px; }
+  .foundation h3, .path h3 { font-size: clamp(28px, 3.4vw, 38px); }
+  .foundation-body { color: var(--chalk); font-size: 19px; }
+
+  /* Example screens */
+  .demo { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; background: var(--navy); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+  .demo-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .demo-label { color: var(--steel); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; }
+  .tab { border: 0; background: transparent; color: var(--steel); font: 500 13px var(--font-body); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+  .tab[aria-selected='true'] { background: var(--lime); color: var(--navy); }
+  .tabs { display: none; }
+  :global(.js-tabs) .tabs { display: inline-flex; }
+  .pane { display: flex; flex-direction: column; gap: 8px; }
+  .pane[hidden] { display: none; }
+  .msg { max-width: 85%; padding: 9px 13px; border-radius: 14px; font-size: 15px; line-height: 1.4; }
+  .msg-note, .flow-arrow { align-self: center; max-width: none; padding: 2px 0 6px; font: 500 12px var(--font-mono); color: var(--steel); }
+  .flow-arrow { padding: 0; color: var(--lime); font-size: 14px; }
+  .msg-in { align-self: flex-start; background: var(--line); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .msg-out { align-self: flex-end; background: var(--lime); color: var(--navy); border-bottom-right-radius: 4px; }
+  .msg-booked { align-self: stretch; max-width: none; text-align: center; border: 1px dashed var(--lime); color: var(--lime); font: 500 13px var(--font-mono); border-radius: 8px; margin-top: 4px; }
+  :global(.fx) [data-demo] .msg { opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease; }
+  :global(.fx) [data-demo] .msg.shown { opacity: 1; transform: none; }
+
+  /* AI receptionist call */
+  .call-in { align-self: stretch; max-width: none; display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--steel); padding: 4px 2px; }
+  .ring { width: 10px; height: 10px; border-radius: 50%; background: var(--lime); position: relative; flex-shrink: 0; }
+  .ring::after { content: ''; position: absolute; inset: -5px; border: 1px solid var(--lime); border-radius: 50%; animation: ring 1.4s ease-out infinite; }
+  @keyframes ring { from { transform: scale(.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
+  .call-live { align-self: stretch; max-width: none; display: flex; align-items: center; gap: 12px; background: rgba(156, 226, 74, 0.08); border: 1px solid rgba(156, 226, 74, 0.35); color: var(--chalk); font-size: 14px; border-radius: 10px; }
+  .wave { display: inline-flex; align-items: center; gap: 3px; height: 20px; flex-shrink: 0; }
+  .wave i { width: 3px; height: 30%; background: var(--lime); border-radius: 2px; animation: wave 1s ease-in-out infinite; }
+  .wave i:nth-child(2) { animation-delay: -.8s; } .wave i:nth-child(3) { animation-delay: -.6s; } .wave i:nth-child(4) { animation-delay: -.4s; }
+  .wave i:nth-child(5) { animation-delay: -.2s; } .wave i:nth-child(6) { animation-delay: -.7s; } .wave i:nth-child(7) { animation-delay: -.3s; }
+  @keyframes wave { 0%, 100% { height: 25%; } 50% { height: 100%; } }
+  .line { display: flex; flex-direction: column; gap: 2px; border-radius: 12px; }
+  .line .who { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .line-caller { align-self: flex-start; background: var(--line); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .line-caller .who { color: var(--steel); }
+  .line-ai { align-self: flex-end; background: var(--panel); border: 1px solid var(--lime); color: var(--chalk); border-bottom-right-radius: 4px; }
+  .line-ai .who, .answer .who { color: var(--lime); }
+
+  /* Get Found + Get Booked side by side */
+  .paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .path { padding: 24px; display: flex; flex-direction: column; gap: 22px; }
+  .path-copy { display: flex; flex-direction: column; gap: 14px; padding: 0 8px; }
+  .path .demo { margin-top: auto; }
+
+  /* Maps example */
+  .search { max-width: none; align-self: stretch; display: flex; gap: 10px; align-items: center; background: var(--chalk); color: var(--navy); border-radius: 999px; font-size: 13px; padding: 9px 16px; }
+  .search span { font-size: 16px; line-height: 1; }
+  .result { max-width: none; align-self: stretch; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; border: 1px solid var(--line); border-radius: 10px; color: #d5dde4; }
+  .result .pin { width: 10px; height: 10px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--steel); }
+  .result.top { border-color: var(--lime); color: var(--chalk); }
+  .result.top .pin { background: var(--lime); }
+  .stars { color: var(--lime); letter-spacing: 1px; font-size: 13px; }
+  .stars .off { color: var(--line); }
+  .r-tag { grid-column: 2 / -1; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); }
+  .ask { align-self: flex-end; background: var(--line); color: var(--chalk); border-bottom-right-radius: 4px; margin-top: 6px; }
+  .answer { align-self: flex-start; display: flex; flex-direction: column; gap: 2px; background: var(--panel); border: 1px solid var(--lime); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .answer .who { font-size: 11px; letter-spacing: 0.08em; }
+
+  /* Facebook / Instagram style ad */
+  .post { max-width: none; align-self: stretch; padding: 0; background: var(--navy); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .post-head { display: flex; align-items: center; gap: 10px; padding: 12px 12px 6px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--panel); border: 1px solid var(--line); display: grid; place-items: center; flex-shrink: 0; }
+  .avatar img { height: 16px; width: auto; }
+  .post-who { display: flex; flex-direction: column; line-height: 1.3; }
+  .post-who strong { font-size: 14px; color: var(--chalk); }
+  .post-who .mono { font-size: 11px; color: var(--steel); letter-spacing: 0.04em; }
+  .post-text { padding: 0 12px 10px; color: var(--chalk); font-size: 14px; }
+  .post-media { color: var(--lime); display: grid; place-items: center; padding: 18px 0; border-top: 1px solid var(--line); background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 16px 16px; }
+  .lead-msg { max-width: none; align-self: stretch; text-align: center; background: var(--line); color: var(--chalk); font-size: 13px; border-radius: 8px; }
+
+  .full { margin-top: 16px; padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+  .full h3 { font-size: 30px; }
+  .full > div { display: flex; flex-direction: column; gap: 10px; }
   .for { color: var(--chalk); }
-  .path-body { color: var(--body); flex: 1; }
-  .ticks { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-  .ticks li { padding-left: 22px; position: relative; color: #d5dde4; font-size: 15px; }
+  .path-body { color: var(--body); }
+  .ticks { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .ticks li { padding-left: 22px; position: relative; color: #d5dde4; font-size: 16px; }
   .ticks li::before { content: ''; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; background: var(--lime); }
-  .promise { border-top: 1px solid var(--line); padding-top: 16px; color: var(--chalk); font-size: 15px; display: flex; flex-direction: column; gap: 6px; }
-  .promise .mono { color: var(--lime); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
   .system-close { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 40px; }
   .system-close .closing { margin-top: 0; }
 
-  /* Steps */
-  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .step.card { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
-  .step.card h3 { font-size: 22px; }
-  .step.card p { color: var(--body); font-size: 16px; }
-  .expect { margin-top: 56px; max-width: 880px; }
-  .expect h3 { font-size: 24px; margin-bottom: 20px; }
-  .expect dl, .g-box dl { margin: 0; border-top: 1px solid var(--line); }
-  .expect-row, .g-row { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--line); }
-  dt { color: var(--lime); font-size: 14px; letter-spacing: 0.06em; padding-top: 2px; }
-  dd { margin: 0; color: #d5dde4; }
-  .path-tag { margin-left: 10px; font-size: 12px; color: var(--steel); border: 1px solid var(--line); border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+  /* How it works: timeline */
+  .timeline { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 24px; right: calc(25% - 8px); top: 24px; border-top: 1px dashed #2a3b4c; }
+  .timeline li { position: relative; display: flex; flex-direction: column; gap: 12px; }
+  .node {
+    width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 8px;
+    background: var(--navy); border: 1px solid var(--lime); color: var(--lime); font-size: 14px;
+  }
+  .timeline li:last-child .node { background: var(--lime); color: var(--navy); }
+  .timeline h3 { font-size: 22px; }
+  .timeline p { color: var(--body); font-size: 16px; }
 
-  /* Guarantee */
-  .g-box { padding: 32px; border-color: var(--lime); max-width: 880px; }
-  .g-row dd { font-size: 18px; color: var(--chalk); }
-  .note { color: var(--steel); font-size: 14px; margin-top: 20px; }
+  /* Guarantee: stopwatch */
+  .g-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: center; }
+  .clock { position: relative; width: min(100%, 340px); aspect-ratio: 1; justify-self: center; }
+  .clock svg { width: 100%; height: 100%; }
+  .dial { fill: var(--panel); stroke: var(--line); stroke-width: 1; }
+  .tick { stroke: #2a3b4c; stroke-width: 1; }
+  .tick.major { stroke: var(--steel); stroke-width: 1.5; }
+  .sweep { fill: none; stroke: var(--lime); stroke-width: 6; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 110px 110px; stroke-dasharray: 9 60; }
+  :global(.fx) [data-clock] .sweep { stroke-dasharray: 0 60; transition: stroke-dasharray 1.6s cubic-bezier(.3, .7, .2, 1); }
+  :global(.fx) [data-clock].run .sweep { stroke-dasharray: 9 60; }
+  .clock-read { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .clock-time { font-family: var(--font-display); font-weight: 700; font-size: clamp(44px, 6vw, 64px); color: var(--chalk); font-variant-numeric: tabular-nums; line-height: 1; }
+  .clock-stamp { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--navy); background: var(--lime); padding: 5px 10px; border-radius: 4px; transform: rotate(-4deg); }
+  :global(.fx) [data-clock] .clock-stamp { opacity: 0; transform: rotate(-4deg) scale(1.6); transition: opacity .25s ease, transform .35s cubic-bezier(.3, 1.6, .5, 1); }
+  :global(.fx) [data-clock].done .clock-stamp { opacity: 1; transform: rotate(-4deg) scale(1); }
+  .g-copy { display: flex; flex-direction: column; gap: 18px; }
+  .g-copy h2 { font-size: clamp(34px, 5vw, 52px); }
+  .g-list { list-style: none; margin: 8px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .g-list li { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--line); color: #d5dde4; }
+  .g-label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); padding-top: 3px; }
+
+  /* Blueprint crosshair + scroll ruler (desktop, motion on) */
+  :global(.xhair) { position: absolute; inset: 0; pointer-events: none; z-index: 2; opacity: 0; transition: opacity .2s ease; }
+  :global(.xhair.on) { opacity: 1; }
+  :global(.xhair .xh), :global(.xhair .yh) { position: absolute; background: rgba(156, 226, 74, 0.35); }
+  :global(.xhair .xh) { left: 0; right: 0; height: 1px; top: var(--cy); }
+  :global(.xhair .yh) { top: 0; bottom: 0; width: 1px; left: var(--cx); }
+  :global(.xhair .xy) { position: absolute; left: calc(var(--cx) + 12px); top: calc(var(--cy) + 12px); font: 500 11px var(--font-mono); color: var(--lime); letter-spacing: 0.06em; white-space: nowrap; }
+  :global(.xhair.up .xy) { top: auto; bottom: calc(100% - var(--cy) + 10px); }
+  :global(.xhair.flip .xy) { left: auto; right: calc(100% - var(--cx) + 12px); }
+  :global(.ruler) { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; pointer-events: none; }
+  :global(.ruler i) { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: var(--lime); }
+
+  /* Leak icons draw themselves on hover */
+  @media (hover: hover) {
+    .leak:hover .icon :global(path), .leak:hover .icon :global(circle) { animation: draw 2.2s cubic-bezier(.45, 0, .25, 1); }
+  }
+  .icon :global(.dash) { stroke-dasharray: var(--dash); }
+  @keyframes draw { from { stroke-dasharray: 100; stroke-dashoffset: 100; } to { stroke-dasharray: 100; stroke-dashoffset: 0; } }
 
   /* Founder */
   .founder { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 56px; align-items: center; }
   .photo { aspect-ratio: 6 / 7; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .photo img { width: 100%; height: 100%; object-fit: cover; }
-  .photo img.mark { width: auto; height: 120px; object-fit: contain; }
+  .photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
   .founder-copy { display: flex; flex-direction: column; gap: 20px; }
   .founder-copy h2 { font-size: clamp(34px, 5vw, 52px); }
   .details { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
   .details li { font-size: 13px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 6px; color: #d5dde4; }
+  .details li:nth-child(-n+2) { border-color: var(--lime); color: var(--lime); }
 
   /* FAQ */
   .faq { border-top: 1px solid var(--line); max-width: 880px; }
@@ -439,28 +693,29 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   details p { color: var(--body); padding: 0 0 24px; max-width: 720px; }
 
   /* Final */
-  .final-inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; max-width: 820px; }
-  .final h2 { font-size: clamp(36px, 5.4vw, 60px); }
-  .big { min-height: 58px; padding: 0 34px; font-size: 18px; }
-  .secondary { color: var(--steel); margin-top: 16px; }
-  .contact { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-  .addr { color: var(--steel); font-size: 13px; }
+  .final-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: start; }
+  .final-score { display: flex; flex-direction: column; gap: 20px; }
+  .final h2 { font-size: clamp(36px, 5vw, 56px); }
+  .final-book { padding: 32px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .final-book h3 { font-size: 26px; }
+  .final-book p { color: var(--body); }
+  .calendar { width: 100%; min-height: 620px; border: 0; border-radius: 10px; background: var(--chalk); }
+  .contact { display: flex; gap: 16px; flex-wrap: wrap; font-size: 15px; }
 
   @media (max-width: 1000px) {
-    .hero-grid, .founder { grid-template-columns: minmax(0, 1fr); }
+    .hero-grid, .founder, .foundation, .paths, .final-grid, .full, .g-grid { grid-template-columns: minmax(0, 1fr); }
     .score-card { justify-self: start; }
     .photo { max-width: 360px; }
-    .leaks, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .paths, .cells.three { grid-template-columns: minmax(0, 1fr); }
-    .row.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .leaks, .timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .timeline::before { display: none; }
   }
   @media (max-width: 640px) {
     .hero { padding: 56px 0 72px; }
-    .leaks, .steps, .cells.two, .row, .row.three { grid-template-columns: minmax(0, 1fr); }
-    .leak, .cell, .step.card, .path, .foundation, .form, .g-box, .bonus { padding: 22px; }
-    .expect-row, .g-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .leaks, .timeline { grid-template-columns: minmax(0, 1fr); }
+    .leak, .foundation, .full, .final-book { padding: 22px; }
+    .path { padding: 14px; }
+    .g-list li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .clock { width: 240px; }
     .score-value { font-size: 64px; }
-    .next, .submit, .big { width: 100%; }
-    .addr { display: none; }
   }
 </style>
