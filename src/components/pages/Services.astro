@@ -1,12 +1,11 @@
 ---
-// Services: the whole system on one page (foundation + three paths), the speed guarantee,
-// four questions about the system and the Score form. No prices.
+// Services: the whole system on one page (foundation + three paths, with the example screens),
+// four questions about the system and a short closing band. No prices. The guarantee and the full
+// form + calendar block live on the home page only, so this page doesn't repeat them.
 import Page from '../../layouts/Page.astro';
-import PageHead from '../sections/PageHead.astro';
 import System from '../sections/System.astro';
-import Guarantee from '../sections/Guarantee.astro';
 import Faq from '../sections/Faq.astro';
-import Final from '../sections/Final.astro';
+import CtaBand from '../sections/CtaBand.astro';
 import Fx from '../Fx.astro';
 import { content, type Lang } from '../../i18n/home';
 import { pages } from '../../i18n/pages';
@@ -42,17 +41,9 @@ const schema = [
 ---
 <Page lang={lang} page="services" title={p.meta.title} description={p.meta.description} schema={schema}>
   <main>
-    <PageHead eyebrow={p.head.eyebrow} title={p.head.title} sub={p.head.sub}>
-      <a class="btn btn-primary ph-cta" href={routes.score[lang]}>{t.system.cta}</a>
-    </PageHead>
-    <System lang={lang} />
-    <Guarantee lang={lang} />
+    <System lang={lang} head={p.head} />
     <Faq lang={lang} eyebrow={p.faq.eyebrow} title={p.faq.title} items={p.faq.items} />
-    <Final lang={lang} />
+    <CtaBand lang={lang} />
   </main>
   <Fx />
 </Page>
-
-<style>
-  .ph-cta { align-self: flex-start; margin-top: 8px; }
-</style>

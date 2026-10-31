@@ -6,6 +6,6 @@ export const site = {
   phone: '',
   // WhatsApp number in international format without "+", e.g. '17025550123'.
   whatsapp: '',
-  // GHL booking calendar URL for the 15-minute Score Review (home page and thank-you pages).
+  // GHL booking calendar URL for the Score Review call (home page and thank-you pages).
   calendarUrl: '',
 };
