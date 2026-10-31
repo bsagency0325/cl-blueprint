@@ -6,7 +6,6 @@ export const routes = {
   home: { en: '/', es: '/es/' },
   services: { en: '/services/', es: '/es/servicios/' },
   score: { en: '/score/', es: '/es/score/' },
-  about: { en: '/about/', es: '/es/nosotros/' },
   contact: { en: '/contact/', es: '/es/contacto/' },
 } as const;
 
@@ -16,7 +15,6 @@ export type Page = keyof typeof routes;
 export const menu: { page: Page; label: Record<Lang, string> }[] = [
   { page: 'services', label: { en: 'Services', es: 'Servicios' } },
   { page: 'score', label: { en: 'Blueprint Score', es: 'Blueprint Score' } },
-  { page: 'about', label: { en: 'About', es: 'Nosotros' } },
   { page: 'contact', label: { en: 'Contact', es: 'Contacto' } },
 ];
 

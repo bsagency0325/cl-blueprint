@@ -17,7 +17,7 @@ const ids = t.ids;
       <ScoreForm lang={lang} uid={`${lang}-end`} />
     </div>
     <div class="final-book card" data-reveal>
-      <span class="mono tag">15 min</span>
+      <span class="mono tag">{lang === 'es' ? 'Sin presión' : 'No pressure'}</span>
       <h3>{t.final.bookTitle}</h3>
       <p>{t.final.bookBody}</p>
       {site.calendarUrl

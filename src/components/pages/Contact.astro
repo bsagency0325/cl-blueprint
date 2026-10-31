@@ -1,5 +1,5 @@
 ---
-// Contact: book 15 minutes (or email while the calendar link is pending), other ways to reach us,
+// Contact: book a call (or email while the calendar link is pending), other ways to reach us,
 // a nudge to start with the Score, and the full FAQ ("Before you call").
 import Page from '../../layouts/Page.astro';
 import PageHead from '../sections/PageHead.astro';
@@ -38,7 +38,7 @@ const schema = [{
     <section class="section reach">
       <div class="wrap reach-grid">
         <div class="book card" data-reveal>
-          <span class="mono tag">15 min</span>
+          <span class="mono tag">{lang === 'es' ? 'Sin presión' : 'No pressure'}</span>
           <h2>{p.book}</h2>
           {site.calendarUrl
             ? <iframe class="calendar" src={site.calendarUrl} title={p.book} loading="lazy"></iframe>

@@ -8,8 +8,10 @@ import answerImg from '../../assets/illustrations/answer.jpg';
 import foundImg from '../../assets/illustrations/found.jpg';
 import bookedImg from '../../assets/illustrations/booked.jpg';
 
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+// head: when given, the section opens the page with its own H1 (Services page).
+interface Props { lang: Lang; head?: { eyebrow: string; title: string; sub: string } }
+const { lang, head } = Astro.props;
+const asPageHead = Boolean(head);
 const t = content[lang];
 const ids = t.ids;
 const pid = pathIds[lang];
@@ -21,12 +23,12 @@ const illustrated = t.system.paths.filter((p) => p.image);
 const fullPath = t.system.paths.find((p) => !p.image)!;
 ---
 <!-- THE SYSTEM -->
-<section class="section grid-bg spot" id={ids.system}>
+<section class={asPageHead ? 'section grid-bg spot top' : 'section grid-bg spot'} id={ids.system}>
   <div class="wrap">
-    <div class="section-head" data-reveal>
-      <p class="eyebrow">{t.system.eyebrow}</p>
-      <h2>{t.system.title}</h2>
-      <p>{t.system.sub}</p>
+    <div class={asPageHead ? 'section-head page-h' : 'section-head'} data-reveal>
+      <p class="eyebrow">{head?.eyebrow ?? t.system.eyebrow}</p>
+      {head ? <h1>{head.title}</h1> : <h2>{t.system.title}</h2>}
+      <p>{head?.sub ?? t.system.sub}</p>
     </div>
 
     <!-- Foundation (full width): illustration + what's included + live AI call / text-back example -->
@@ -144,6 +146,8 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
 </section>
 
 <style>
+  .top { border-top: 0; padding-top: 80px; }
+  .page-h h1 { font-size: clamp(40px, 6vw, 64px); }
   .for { color: var(--chalk); }
   .foundation { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; margin-bottom: 16px; align-items: center; }
   .foundation-copy { display: flex; flex-direction: column; gap: 14px; }

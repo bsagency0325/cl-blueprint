@@ -1,7 +1,7 @@
 ---
+// Parked: not used while the About section is off (Oct 31 2026). Kept so it can come back as is.
 import { Image } from 'astro:assets';
 import { content, type Lang } from '../../i18n/home';
-import { routes } from '../../i18n/routes';
 import pieroImg from '../../assets/piero.jpg';
 
 interface Props { lang: Lang; short?: boolean; heading?: 1 | 2 }
@@ -21,7 +21,6 @@ const t = content[lang];
       <ul class="details mono">
         {t.founder.details.map((d) => <li>{d}</li>)}
       </ul>
-      {short && <a class="more" href={routes.about[lang]}>{t.founder.more} →</a>}
     </div>
   </div>
 </section>

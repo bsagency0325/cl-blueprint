@@ -1,6 +1,6 @@
 ---
 // Home page: the free Score up top, the four leaks, the system in short (full version on /services),
-// the speed guarantee, Piero in two lines and the Score form again. How it works and the FAQ moved
+// the speed guarantee and the Score form again. How it works and the FAQ moved
 // to the Score, Services and Contact pages to keep this page short.
 import { Image } from 'astro:assets';
 import { content, type Lang } from '../i18n/home';
@@ -8,7 +8,6 @@ import { routes, pathIds } from '../i18n/routes';
 import ScoreForm from './ScoreForm.astro';
 import ScoreCard from './sections/ScoreCard.astro';
 import Guarantee from './sections/Guarantee.astro';
-import Founder from './sections/Founder.astro';
 import Final from './sections/Final.astro';
 import Fx from './Fx.astro';
 import answerImg from '../assets/illustrations/answer.jpg';
@@ -129,8 +128,6 @@ const leakIcons = [
   </section>
 
   <Guarantee lang={lang} />
-
-  <Founder lang={lang} short />
 
   <Final lang={lang} />
 </main>
