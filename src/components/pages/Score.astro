@@ -1,0 +1,104 @@
+---
+// Blueprint Score: the page every green button points to. Form first, then what we check,
+// how it works and the Score questions.
+import Page from '../../layouts/Page.astro';
+import ScoreForm from '../ScoreForm.astro';
+import ScoreCard from '../sections/ScoreCard.astro';
+import How from '../sections/How.astro';
+import Faq from '../sections/Faq.astro';
+import Fx from '../Fx.astro';
+import { content, type Lang } from '../../i18n/home';
+import { pages } from '../../i18n/pages';
+import { routes } from '../../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const p = pages[lang].score;
+const t = content[lang];
+const site = 'https://blueprintstrategies.us';
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Blueprint Score',
+  serviceType: lang === 'es' ? 'Auditoría de marketing gratis' : 'Free marketing audit',
+  description: p.meta.description,
+  url: new URL(routes.score[lang], site).href,
+  provider: { '@type': 'ProfessionalService', name: 'Blueprint Strategies', url: site },
+  areaServed: 'US',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+}];
+---
+<Page lang={lang} page="score" title={p.meta.title} description={p.meta.description} schema={schema}>
+  <main>
+    <section class="hero grid-bg spot">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">{p.head.eyebrow}</p>
+          <h1>{p.head.title}</h1>
+          <p class="lead">{p.head.sub}</p>
+          <ScoreForm lang={lang} id={t.ids.score} uid={`${lang}-score`} />
+          <p class="trust"><span class="dot" aria-hidden="true"></span>{t.hero.trust}</p>
+        </div>
+        <ScoreCard lang={lang} />
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">{p.checks.eyebrow}</p>
+          <h2>{p.checks.title}</h2>
+        </div>
+        <ol class="checks" data-reveal>
+          {p.checks.items.map((c, i) => (
+            <li class="check card">
+              <span class="mono num">0{i + 1}</span>
+              <h3>{c.title}</h3>
+              <p>{c.body}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="closing" data-reveal>{p.checks.closing}</p>
+      </div>
+    </section>
+
+    <How lang={lang} />
+
+    <Faq lang={lang} eyebrow={p.faq.eyebrow} title={p.faq.title} items={p.faq.items} />
+
+    <section class="section grid-bg spot again">
+      <div class="wrap again-inner" data-reveal>
+        <h2>{t.final.title}</h2>
+        <a class="btn btn-primary" href={`#${t.ids.score}`} data-focus-form>{t.system.cta}</a>
+      </div>
+    </section>
+  </main>
+  <Fx />
+</Page>
+
+<style>
+  .hero { padding: 88px 0 104px; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; align-items: center; }
+  .hero-copy { display: flex; flex-direction: column; gap: 24px; }
+  .hero h1 { font-size: clamp(40px, 6vw, 68px); line-height: 1.02; }
+  .trust { display: flex; align-items: center; gap: 12px; color: #d5dde4; font-size: 16px; }
+  .dot { width: 10px; height: 10px; background: var(--lime); flex-shrink: 0; }
+
+  .checks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .check { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .check h3 { font-size: 22px; }
+  .check p { color: var(--body); font-size: 16px; }
+
+  .again-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .again h2 { font-size: clamp(30px, 4vw, 44px); max-width: 720px; }
+
+  @media (max-width: 1000px) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr); }
+    .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .hero { padding: 56px 0 72px; }
+    .checks { grid-template-columns: minmax(0, 1fr); }
+    .check { padding: 22px; }
+  }
+</style>

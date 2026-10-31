@@ -1,0 +1,129 @@
+---
+// Motion and example screens for every page: section reveal, Score count-up, demo playback,
+// stopwatch, grid spotlight, drawing crosshair and scroll ruler. Off with reduced motion.
+---
+<script>
+  // Foundation example: tabs between the AI receptionist call and the missed-call text-back.
+  const timers = new WeakMap<Element, number[]>();
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motion = !calm && 'IntersectionObserver' in window;
+
+  // Show a demo's messages one by one (or all at once without motion).
+  const play = (root: Element, onDone?: () => void) => {
+    for (const id of timers.get(root) ?? []) clearTimeout(id);
+    const msgs = [...root.querySelectorAll('.msg')];
+    if (!motion) { msgs.forEach((m) => m.classList.add('shown')); return; }
+    msgs.forEach((m) => m.classList.remove('shown'));
+    const ids = msgs.map((m, i) => window.setTimeout(() => m.classList.add('shown'), 250 + i * 750));
+    if (onDone) ids.push(window.setTimeout(onDone, 250 + msgs.length * 750 + 2600));
+    timers.set(root, ids);
+  };
+
+  for (const demo of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
+    document.documentElement.classList.add('js-tabs');
+    const tabs = [...demo.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const panes = [...demo.querySelectorAll<HTMLElement>('[data-pane]')];
+    let touched = false;
+    const show = (name: string) => {
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === name)));
+      panes.forEach((p) => (p.hidden = p.dataset.pane !== name));
+      const pane = panes.find((p) => p.dataset.pane === name)!;
+      // After the call plays, move on to the text-back once, unless the visitor picked a tab.
+      play(pane, name === 'call' ? () => { if (!touched) show('text'); } : undefined);
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => { touched = true; show(t.dataset.tab!); }));
+    demo.addEventListener('demo:start', () => show('call'), { once: true });
+    panes.forEach((p) => (p.hidden = p.dataset.pane !== 'call'));
+  }
+
+  if (motion) {
+    document.documentElement.classList.add('fx');
+
+    const once = (els: Iterable<Element>, fn: (el: Element) => void, threshold = 0.2) => {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { fn(e.target); io.unobserve(e.target); }
+      }, { threshold, rootMargin: '0px 0px -40px 0px' });
+      for (const el of els) io.observe(el);
+    };
+
+    // Sections fade in as they enter.
+    once(document.querySelectorAll('[data-reveal]'), (el) => el.classList.add('in'), 0.12);
+
+    // Score card counts up and its bars fill.
+    const countUp = (n: HTMLElement, end: number, ms: number, fmt = (v: number) => String(v)) => {
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - t0) / ms);
+        n.textContent = fmt(Math.round(end * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    once(document.querySelectorAll('[data-score]'), (card) => {
+      card.classList.add('in');
+      for (const n of card.querySelectorAll<HTMLElement>('[data-count]')) countUp(n, Number(n.dataset.count), 1200);
+    }, 0.3);
+
+    // Example screens play when they scroll into view.
+    once(document.querySelectorAll('[data-demo]'), (demo) => {
+      if (demo.hasAttribute('data-tabs')) demo.dispatchEvent(new Event('demo:start'));
+      else play(demo);
+    }, 0.35);
+
+    // Guarantee stopwatch: sweeps, stops well under a minute, gets stamped.
+    once(document.querySelectorAll('[data-clock]'), (clock) => {
+      clock.classList.add('run');
+      const out = clock.querySelector<HTMLElement>('[data-clock-time]')!;
+      countUp(out, 9, 1600, (v) => `0:${String(v).padStart(2, '0')}`);
+      setTimeout(() => clock.classList.add('done'), 1700);
+    }, 0.4);
+
+    // Mouse and trackpad only: the grid lights up around the cursor, and the
+    // drawings get a drafting crosshair that reads coordinates off the drawing.
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      for (const sec of document.querySelectorAll<HTMLElement>('.spot')) {
+        sec.addEventListener('pointermove', (e) => {
+          const r = sec.getBoundingClientRect();
+          sec.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          sec.style.setProperty('--my', `${e.clientY - r.top}px`);
+          sec.classList.add('lit');
+        });
+        sec.addEventListener('pointerleave', () => sec.classList.remove('lit'));
+      }
+      for (const fig of document.querySelectorAll<HTMLElement>('.illo')) {
+        const xh = document.createElement('div');
+        xh.className = 'xhair';
+        xh.setAttribute('aria-hidden', 'true');
+        xh.innerHTML = '<span class="xh"></span><span class="yh"></span><span class="xy"></span>';
+        fig.append(xh);
+        const xy = xh.querySelector<HTMLElement>('.xy')!;
+        fig.addEventListener('pointermove', (e) => {
+          const r = fig.getBoundingClientRect();
+          const x = e.clientX - r.left, y = e.clientY - r.top;
+          xh.style.setProperty('--cx', `${x}px`);
+          xh.style.setProperty('--cy', `${y}px`);
+          xh.classList.toggle('flip', x > r.width - 130);
+          xh.classList.toggle('up', y > r.height - 34);
+          // Read in drawing units (0–1000 across the drawing), like a plan sheet.
+          const ux = Math.round((x / r.width) * 1000), uy = Math.round((y / r.width) * 1000);
+          xy.textContent = `X ${String(ux).padStart(4, '0')} · Y ${String(uy).padStart(4, '0')}`;
+          xh.classList.add('on');
+        });
+        fig.addEventListener('pointerleave', () => xh.classList.remove('on'));
+      }
+    }
+
+    // Scroll ruler along the top edge.
+    const ruler = document.createElement('div');
+    ruler.className = 'ruler';
+    ruler.setAttribute('aria-hidden', 'true');
+    ruler.innerHTML = '<i></i>';
+    document.body.append(ruler);
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      ruler.style.setProperty('--p', String(max > 0 ? scrollY / max : 0));
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+</script>

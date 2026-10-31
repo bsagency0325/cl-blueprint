@@ -1,0 +1,48 @@
+---
+// A list of questions with FAQPage schema. Each page passes the questions that fit it.
+import type { Lang } from '../../i18n/home';
+interface Props {
+  lang: Lang;
+  id?: string;
+  eyebrow: string;
+  title: string;
+  items: { q: string; a: string }[];
+}
+const { lang, id, eyebrow, title, items } = Astro.props;
+---
+<script type="application/ld+json" set:html={JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: lang,
+  mainEntity: items.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+})} />
+<section class="section" id={id}>
+  <div class="wrap faq-wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">{eyebrow}</p>
+      <h2>{title}</h2>
+    </div>
+    <div class="faq">
+      {items.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* FAQ */
+  .faq { border-top: 1px solid var(--line); max-width: 880px; }
+  details { border-bottom: 1px solid var(--line); }
+  summary {
+    cursor: pointer; list-style: none; padding: 24px 40px 24px 0; position: relative;
+    font-family: var(--font-display); font-weight: 500; font-size: 21px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; position: absolute; right: 4px; top: 20px; font-size: 26px; color: var(--lime); }
+  details[open] summary::after { content: '–'; }
+  details p { color: var(--body); padding: 0 0 24px; max-width: 720px; }
+</style>

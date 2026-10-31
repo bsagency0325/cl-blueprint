@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/sections.css';
 
 interface Props {
   title: string;
@@ -7,9 +8,11 @@ interface Props {
   lang?: 'en' | 'es';
   alternate?: { en: string; es: string };
   noindex?: boolean;
+  // Extra JSON-LD for this page (Service, Person, ContactPage...).
+  schema?: object[];
 }
 
-const { title, description, lang = 'en', alternate, noindex = false } = Astro.props;
+const { title, description, lang = 'en', alternate, noindex = false, schema: extra = [] } = Astro.props;
 const site = Astro.site ?? new URL('https://blueprintstrategies.us');
 const canonical = new URL(Astro.url.pathname, site).href;
 const ogImage = new URL('/brand/og-image.png', site).href;
@@ -59,6 +62,7 @@ const schema = {
     <meta name="twitter:card" content="summary_large_image" />
 
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    {extra.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
   <body>
     <slot />
