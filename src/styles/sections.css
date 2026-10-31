@@ -55,3 +55,13 @@
 .xhair.flip .xy { left: auto; right: calc(100% - var(--cx) + 12px); }
 .ruler { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; pointer-events: none; }
 .ruler i { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: var(--lime); }
+
+/* Drawings print in from left to right, like a plan coming out of the plotter (motion on only) */
+.fx .illo img { clip-path: inset(0 100% 0 0); transition: clip-path 1.6s cubic-bezier(.6, 0, .2, 1); }
+.fx .illo.drawn img { clip-path: inset(0 0 0 0); }
+.fx .illo::after {
+  content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 2px;
+  background: var(--lime); opacity: 0; pointer-events: none; z-index: 1;
+}
+.fx .illo.drawn::after { animation: plot 1.6s cubic-bezier(.6, 0, .2, 1) forwards; }
+@keyframes plot { 0% { left: 0; opacity: 1; } 90% { opacity: 1; } 100% { left: calc(100% - 2px); opacity: 0; } }

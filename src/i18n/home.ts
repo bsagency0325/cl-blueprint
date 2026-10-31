@@ -60,6 +60,16 @@ const en = {
     ] as Item[],
     closing: 'The good news: every one of these leaks can be fixed with the right system.',
   },
+  ba: {
+    eyebrow: 'One missed call',
+    title: 'Same call. Two different endings.',
+    sub: 'Pick your trade and see what happens to a call you can’t pick up.',
+    before: 'Today',
+    after: 'With Blueprint',
+    missed: 'Missed call · 7:42 PM · you’re on a job',
+    voicemail: 'It goes to voicemail. They don’t leave a message.',
+    next: 'They call the next company on Google.',
+  },
   system: {
     eyebrow: 'The Blueprint system',
     title: 'One system. Built around what you need most.',
@@ -84,7 +94,7 @@ const en = {
         aiLabel: 'AI',
         lines: [
           { who: 'caller', text: 'Hi, my water heater is leaking. Can someone come today?' },
-          { who: 'ai', text: 'Sorry to hear that. We can have a technician there today. Does 2:30 or 4:00 work better?' },
+          { who: 'ai', text: 'Sorry to hear that. We can have someone there today. Does 2:30 or 4:00 work better?' },
           { who: 'caller', text: '4:00, please.' },
           { who: 'ai', text: 'Done. You’re booked for 4:00, and I’m texting you the confirmation now.' },
         ],
@@ -296,6 +306,16 @@ const es: typeof en = {
     ],
     closing: 'La buena noticia: cada una de estas fugas se arregla con el sistema correcto.',
   },
+  ba: {
+    eyebrow: 'Una llamada perdida',
+    title: 'La misma llamada. Dos finales distintos.',
+    sub: 'Elige tu oficio y mira qué pasa con una llamada que no puedes contestar.',
+    before: 'Hoy',
+    after: 'Con Blueprint',
+    missed: 'Llamada perdida · 7:42 PM · estás en un trabajo',
+    voicemail: 'Se va al buzón. No deja mensaje.',
+    next: 'Llama a la siguiente empresa en Google.',
+  },
   system: {
     eyebrow: 'El sistema Blueprint',
     title: 'Un sistema. Hecho a la medida de lo que más necesitas.',
@@ -320,7 +340,7 @@ const es: typeof en = {
         aiLabel: 'IA',
         lines: [
           { who: 'caller', text: 'Hola, mi calentador de agua está goteando. ¿Pueden venir hoy?' },
-          { who: 'ai', text: 'Lo siento. Podemos mandar a un técnico hoy mismo. ¿Le queda mejor a las 2:30 o a las 4:00?' },
+          { who: 'ai', text: 'Lo siento. Podemos mandar a alguien hoy mismo. ¿Le queda mejor a las 2:30 o a las 4:00?' },
           { who: 'caller', text: 'A las 4:00, por favor.' },
           { who: 'ai', text: 'Listo. Quedó agendado para las 4:00 y le mando la confirmación por mensaje.' },
         ],
