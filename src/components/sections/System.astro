@@ -4,6 +4,8 @@
 import { Image } from 'astro:assets';
 import { content, type Lang } from '../../i18n/home';
 import { routes, pathIds } from '../../i18n/routes';
+import { tradeLines } from '../../i18n/trades';
+import TradePicker from './TradePicker.astro';
 import answerImg from '../../assets/illustrations/answer.jpg';
 import foundImg from '../../assets/illustrations/found.jpg';
 import bookedImg from '../../assets/illustrations/booked.jpg';
@@ -12,6 +14,8 @@ import bookedImg from '../../assets/illustrations/booked.jpg';
 interface Props { lang: Lang; head?: { eyebrow: string; title: string; sub: string } }
 const { lang, head } = Astro.props;
 const asPageHead = Boolean(head);
+// Example screens start on HVAC; the trade chips swap every [data-tk] line.
+const tl = tradeLines(lang, 'hvac');
 const t = content[lang];
 const ids = t.ids;
 const pid = pathIds[lang];
@@ -30,6 +34,7 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
       {head ? <h1>{head.title}</h1> : <h2>{t.system.title}</h2>}
       <p>{head?.sub ?? t.system.sub}</p>
     </div>
+    <div class="pick" data-reveal><TradePicker lang={lang} /></div>
 
     <!-- Foundation (full width): illustration + what's included + live AI call / text-back example -->
     <div class="foundation card sys" id={pid.foundation}>
@@ -57,17 +62,17 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
               <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
               <span>{t.system.foundation.call.answered}</span>
             </div>
-            {t.system.foundation.call.lines.map((l) => (
+            {t.system.foundation.call.lines.map((l, i) => (
               <div class={`msg line line-${l.who}`}>
                 <span class="mono who">{l.who === 'ai' ? t.system.foundation.call.aiLabel : t.system.foundation.call.callerLabel}</span>
-                <span>{l.text}</span>
+                {i === 0 ? <span data-tk="caller">{tl.caller}</span> : <span>{l.text}</span>}
               </div>
             ))}
-            <div class="msg msg-booked">{t.system.foundation.call.booked}</div>
+            <div class="msg msg-booked" data-tk="callBooked">{tl.callBooked}</div>
           </div>
           <div class="pane" data-pane="text" role="tabpanel">
-            {t.system.foundation.demo.map((m) => (
-              <div class={`msg msg-${m.from}`}>{m.text}</div>
+            {t.system.foundation.demo.map((m, i) => (
+              <div class={`msg msg-${m.from}`} data-tk={i === 2 ? 'text' : m.from === 'booked' ? 'textBooked' : undefined}>{i === 2 ? tl.text : m.from === 'booked' ? tl.textBooked : m.text}</div>
             ))}
           </div>
         </div>
@@ -92,7 +97,7 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
           {p.demo?.kind === 'maps' && (
             <div class="demo" data-demo>
               <p class="mono demo-label">{p.demo.label}</p>
-              <div class="msg search mono"><span aria-hidden="true">⌕</span>{p.demo.search}</div>
+              <div class="msg search mono"><span aria-hidden="true">⌕</span><span data-tk="search">{tl.search}</span></div>
               {p.demo.results.map((r, i) => (
                 <div class={`msg result${i === 0 ? ' top' : ''}`}>
                   <span class="pin" aria-hidden="true"></span>
@@ -101,7 +106,7 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
                   {r.tag && <span class="mono r-tag">{r.tag}</span>}
                 </div>
               ))}
-              <div class="msg ask">{p.demo.ask}</div>
+              <div class="msg ask" data-tk="ask">{tl.ask}</div>
               <div class="msg answer"><span class="mono who">AI</span>{p.demo.answer}</div>
             </div>
           )}
@@ -113,13 +118,13 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
                   <span class="avatar" aria-hidden="true"><img src="/brand/icon.svg" alt="" width="8" height="16" /></span>
                   <span class="post-who"><strong>{p.demo.page}</strong><span class="mono">{p.demo.where}</span></span>
                 </div>
-                <p class="post-text">{p.demo.ad}</p>
+                <p class="post-text" data-tk="ad">{tl.ad}</p>
                 <div class="post-media" aria-hidden="true">
                   <svg viewBox="0 0 120 60" width="120" height="60" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="38" y="10" width="44" height="40" rx="3"/><circle cx="60" cy="30" r="13"/><circle cx="60" cy="30" r="8"/><circle cx="60" cy="30" r="3"/><path d="M42 50h36M30 30h4M86 30h4M60 4v3"/></svg>
                 </div>
               </div>
               <div class="msg flow-arrow" aria-hidden="true">↓</div>
-              <div class="msg lead-msg mono">{p.demo.lead}</div>
+              <div class="msg lead-msg mono" data-tk="lead">{tl.lead}</div>
               <div class="msg flow-arrow" aria-hidden="true">↓</div>
               <div class="msg msg-booked">{p.demo.booked}</div>
             </div>
@@ -146,6 +151,7 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
 </section>
 
 <style>
+  .pick { margin: -24px 0 32px; }
   .top { border-top: 0; padding-top: 80px; }
   .page-h h1 { font-size: clamp(40px, 6vw, 64px); }
   .for { color: var(--chalk); }

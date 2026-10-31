@@ -33,8 +33,17 @@
     };
     tabs.forEach((t) => t.addEventListener('click', () => { touched = true; show(t.dataset.tab!); }));
     demo.addEventListener('demo:start', () => show('call'), { once: true });
+    demo.addEventListener('demo:replay', () => { touched = false; show('call'); });
     panes.forEach((p) => (p.hidden = p.dataset.pane !== 'call'));
   }
+
+  // A new trade picked: replay every example screen with the new lines.
+  document.addEventListener('trade:change', () => {
+    for (const demo of document.querySelectorAll('[data-demo]')) {
+      if (demo.hasAttribute('data-tabs')) demo.dispatchEvent(new Event('demo:replay'));
+      else play(demo);
+    }
+  });
 
   if (motion) {
     document.documentElement.classList.add('fx');
@@ -48,6 +57,9 @@
 
     // Sections fade in as they enter.
     once(document.querySelectorAll('[data-reveal]'), (el) => el.classList.add('in'), 0.12);
+
+    // Drawings print in once, left to right.
+    once(document.querySelectorAll('.illo'), (el) => el.classList.add('drawn'), 0.3);
 
     // Score card counts up and its bars fill.
     const countUp = (n: HTMLElement, end: number, ms: number, fmt = (v: number) => String(v)) => {
