@@ -167,6 +167,7 @@ const en = {
     ],
     closing: 'Not sure which path fits? That’s exactly what your free Score tells you.',
     cta: 'Get my free Score',
+    more: 'See what’s included',
   },
   how: {
     eyebrow: 'How it works',
@@ -195,6 +196,8 @@ const en = {
     body: 'My background is sales and marketing, and a lot of it in your world. I worked as a sales engineer in HVAC and plumbing, sold to homeowners and to businesses, and spent time in finance. Along the way I built the ads, follow-up and automation that turn leads into booked jobs. The lesson was always the same: whoever answers first and follows up best gets the job. Blueprint builds that system for your business and runs it for you, so you can stay focused on the work.',
     details: ['Sales engineer · HVAC and plumbing', 'Sales and marketing', 'Based in Las Vegas', 'English and Spanish'],
     photoAlt: 'Piero Quino, founder of Blueprint Strategies',
+    short: 'I worked as a sales engineer in HVAC and plumbing and spent years in sales and marketing. The lesson was always the same: whoever answers first and follows up best gets the job. Blueprint builds that system for you and runs it.',
+    more: 'More about Piero and how we work',
   },
   faq: {
     eyebrow: 'FAQ',
@@ -400,6 +403,7 @@ const es: typeof en = {
     ],
     closing: '¿No sabes cuál es para ti? Para eso es tu Score gratis.',
     cta: 'Quiero mi Score gratis',
+    more: 'Mira qué incluye',
   },
   how: {
     eyebrow: 'Cómo funciona',
@@ -428,6 +432,8 @@ const es: typeof en = {
     body: 'Mi experiencia es en ventas y marketing, y buena parte en tu mismo mundo. Fui ingeniero de ventas en HVAC y plomería, le vendí a dueños de casa y a negocios, y trabajé en finanzas. En el camino armé los anuncios, el seguimiento y la automatización que convierten prospectos en trabajos agendados. La lección siempre fue la misma: se queda con el trabajo el que contesta primero y da mejor seguimiento. Blueprint construye ese sistema para tu negocio y lo maneja por ti, para que tú te enfoques en tu trabajo.',
     details: ['Ingeniero de ventas · HVAC y plomería', 'Ventas y marketing', 'En Las Vegas', 'Español e inglés'],
     photoAlt: 'Piero Quino, fundador de Blueprint Strategies',
+    short: 'Fui ingeniero de ventas en HVAC y plomería y llevo años en ventas y marketing. La lección siempre fue la misma: se queda con el trabajo el que contesta primero y da mejor seguimiento. Blueprint construye ese sistema por ti y lo maneja.',
+    more: 'Conoce más de Piero y cómo trabajamos',
   },
   faq: {
     eyebrow: 'Preguntas',

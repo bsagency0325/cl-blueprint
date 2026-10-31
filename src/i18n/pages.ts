@@ -1,0 +1,223 @@
+// Copy for the inner pages (Services, Score, About, Contact), in English and Spanish.
+// The home page copy lives in home.ts; FAQ answers are reused from there so they never disagree.
+import { content, type Lang } from './home';
+
+const faqEn = content.en.faq.items;
+const faqEs = content.es.faq.items;
+// Picks questions from the home FAQ list by position (see home.ts).
+const pick = (items: { q: string; a: string }[], idx: number[]) => idx.map((i) => items[i]);
+
+const en = {
+  services: {
+    meta: {
+      title: 'AI Receptionist, Google Maps & Ads for Contractors | Blueprint Strategies',
+      description:
+        'One system for home service businesses: an AI receptionist that answers every call in English and Spanish, Google Maps and AI search visibility, reviews, Facebook ads and Google Local Services Ads.',
+    },
+    head: {
+      eyebrow: 'Services',
+      title: 'Every lead answered. More jobs on your calendar.',
+      sub: 'One system with the same foundation for every business. Then we build what you need most: getting found, getting booked, or both.',
+    },
+    faq: {
+      eyebrow: 'FAQ',
+      title: 'Questions about the system.',
+      // Trade and area, AI receptionist, ad spend, how fast.
+      items: pick(faqEn, [1, 8, 3, 6]),
+    },
+  },
+  score: {
+    meta: {
+      title: 'Free Blueprint Score | Marketing Audit for Contractors | Blueprint Strategies',
+      description:
+        'Free audit for home service businesses: where you rank on Google Maps, whether AI search recommends you, how fast you answer leads and your reviews vs. competitors. By text and email within one business day.',
+    },
+    head: {
+      eyebrow: 'Free Blueprint Score',
+      title: 'Find out where your next jobs are going.',
+      sub: 'We check how customers find you, how fast you answer and how you stack up against the competitors in your city. Free, and it takes 30 seconds to ask for it.',
+    },
+    checks: {
+      eyebrow: 'What we check',
+      title: 'Six things that decide who gets the call.',
+      items: [
+        { title: 'Google Maps', body: 'Where you show up when someone nearby searches for your trade, and what your Google Business Profile is missing.' },
+        { title: 'AI search', body: 'Whether ChatGPT and Google’s AI name you when people ask who to call, and who they name instead.' },
+        { title: 'Response speed', body: 'How long a new customer waits for an answer when they call, text or message you.' },
+        { title: 'Reviews', body: 'How many reviews you have, how recent they are, and how they compare to the top competitors near you.' },
+        { title: 'Website', body: 'Whether your site loads fast on a phone and makes it easy to call or book.' },
+        { title: 'Listings', body: 'Whether your name, phone and hours match on Yelp, Angi, Nextdoor, BBB and the rest.' },
+      ],
+      closing: 'Plus an estimate of what it’s costing you every month.',
+    },
+    faq: {
+      eyebrow: 'FAQ',
+      title: 'About your Score.',
+      items: [
+        faqEn[0],
+        { q: 'Is it really free?', a: 'Yes. No card and no catch. You get your Score whether or not you ever work with us.' },
+        { q: 'Are you going to pressure me to buy?', a: 'No. If you want, we walk you through your Score on a 15-minute call and tell you which path fits. If we can’t help, we’ll tell you that too.' },
+        { q: 'How do I get it?', a: 'Type your business name and city, then tell us where to send it. Your Score arrives by text and email within one business day.' },
+        faqEn[9],
+      ],
+    },
+  },
+  about: {
+    meta: {
+      title: 'About Blueprint Strategies | Piero Quino, Las Vegas',
+      description:
+        'Blueprint Strategies is an AI growth agency for home service businesses, founded by Piero Quino in Las Vegas. Former sales engineer in HVAC and plumbing. English and Spanish. Month-to-month.',
+    },
+    intro:
+      'Blueprint Strategies is an AI growth agency for home service businesses. We’re based in Las Vegas and work with owners across the U.S., in English and Spanish.',
+    how: {
+      eyebrow: 'How we work',
+      title: 'Straight terms. Results you can see.',
+      items: [
+        { label: 'Month-to-month', body: 'No long contracts. 30 days’ notice. We earn the next month with results you can see.' },
+        { label: 'Your ads, your money', body: 'Ad spend goes straight to Facebook or Google, in your name. You see every dollar.' },
+        { label: 'A report every week', body: 'A short results report lands every week, so you always know what the system did.' },
+        { label: 'You don’t touch the tech', body: 'We set everything up in 7 to 14 days and run it. You show up to the jobs.' },
+        { label: 'English and Spanish', body: 'We work with you in either language, and so does your AI receptionist.' },
+      ],
+    },
+    name: {
+      eyebrow: 'The name',
+      title: 'Why “Blueprint”?',
+      body: 'Every good build starts with a plan. Our logo is a B made of a solid stem and a 3: one foundation and three paths. That’s how we work. First every lead gets answered, then we build the path that fits your business.',
+    },
+  },
+  contact: {
+    meta: {
+      title: 'Contact Blueprint Strategies | Book a 15-Minute Call',
+      description:
+        'Talk to Piero at Blueprint Strategies: book 15 minutes, in English or Spanish. AI growth systems for home service businesses, based in Las Vegas and working across the U.S.',
+    },
+    head: {
+      eyebrow: 'Contact',
+      title: 'Let’s talk about your business.',
+      sub: 'Book 15 minutes with Piero, in English or Spanish. No pressure.',
+    },
+    book: 'Book 15 minutes',
+    write: 'Prefer to write?',
+    where: 'Las Vegas, NV · Working with owners across the U.S.',
+    nudge: {
+      title: 'Haven’t gotten your Score yet?',
+      body: 'Start there, so the call is about your numbers.',
+      button: 'Get my free Score',
+    },
+    faq: {
+      eyebrow: 'FAQ',
+      title: 'Before you call.',
+      items: faqEn,
+    },
+  },
+};
+
+const es: typeof en = {
+  services: {
+    meta: {
+      title: 'Recepcionista con IA, Google Maps y anuncios para contratistas | Blueprint',
+      description:
+        'Un solo sistema para negocios de servicios del hogar: una recepcionista con IA que contesta cada llamada en español e inglés, visibilidad en Google Maps y en la IA, reseñas, anuncios en Facebook y Google Local Services Ads.',
+    },
+    head: {
+      eyebrow: 'Servicios',
+      title: 'Cada cliente atendido. Más trabajos en tu agenda.',
+      sub: 'Un solo sistema, con la misma base para todos. Luego armamos lo que más necesitas: que te encuentren, que te contraten, o las dos.',
+    },
+    faq: {
+      eyebrow: 'Preguntas',
+      title: 'Preguntas sobre el sistema.',
+      items: pick(faqEs, [1, 8, 3, 6]),
+    },
+  },
+  score: {
+    meta: {
+      title: 'Blueprint Score gratis | Auditoría de marketing para contratistas',
+      description:
+        'Auditoría gratis para negocios de servicios del hogar: dónde apareces en Google Maps, si la IA te recomienda, qué tan rápido contestas y tus reseñas vs. la competencia. Por mensaje y correo en un día hábil.',
+    },
+    head: {
+      eyebrow: 'Blueprint Score gratis',
+      title: 'Descubre a dónde se están yendo tus próximos trabajos.',
+      sub: 'Revisamos cómo te encuentran, qué tan rápido contestas y cómo estás frente a la competencia de tu ciudad. Es gratis y pedirlo toma 30 segundos.',
+    },
+    checks: {
+      eyebrow: 'Qué revisamos',
+      title: 'Seis cosas que deciden a quién llaman.',
+      items: [
+        { title: 'Google Maps', body: 'Dónde sales cuando alguien cerca busca tu oficio, y qué le falta a tu perfil de Google.' },
+        { title: 'Búsqueda con IA', body: 'Si ChatGPT y la IA de Google te nombran cuando preguntan a quién llamar, y a quién nombran en tu lugar.' },
+        { title: 'Velocidad de respuesta', body: 'Cuánto espera un cliente nuevo cuando te llama, te escribe o te manda mensaje.' },
+        { title: 'Reseñas', body: 'Cuántas tienes, qué tan recientes son y cómo te comparas con los mejores de tu zona.' },
+        { title: 'Sitio web', body: 'Si tu página carga rápido en el celular y hace fácil que te llamen o agenden.' },
+        { title: 'Directorios', body: 'Si tu nombre, teléfono y horario coinciden en Yelp, Angi, Nextdoor, BBB y los demás.' },
+      ],
+      closing: 'Y un estimado de lo que te está costando cada mes.',
+    },
+    faq: {
+      eyebrow: 'Preguntas',
+      title: 'Sobre tu Score.',
+      items: [
+        faqEs[0],
+        { q: '¿De verdad es gratis?', a: 'Sí. Sin tarjeta y sin letra chiquita. Recibes tu Score trabajes o no con nosotros.' },
+        { q: '¿Me van a presionar para comprar?', a: 'No. Si quieres, te explicamos tu Score en una llamada de 15 minutos y te decimos qué camino te conviene. Si no te podemos ayudar, también te lo decimos.' },
+        { q: '¿Cómo me llega?', a: 'Pones el nombre de tu negocio y tu ciudad, y luego a dónde te lo mandamos. Te llega por mensaje y correo dentro de un día hábil.' },
+        faqEs[9],
+      ],
+    },
+  },
+  about: {
+    meta: {
+      title: 'Nosotros | Piero Quino y Blueprint Strategies, Las Vegas',
+      description:
+        'Blueprint Strategies es una agencia de crecimiento con IA para negocios de servicios del hogar, fundada por Piero Quino en Las Vegas. Ex ingeniero de ventas en HVAC y plomería. Español e inglés. Mes a mes.',
+    },
+    intro:
+      'Blueprint Strategies es una agencia de crecimiento con IA para negocios de servicios del hogar. Estamos en Las Vegas y trabajamos con dueños de todo EE. UU., en español y en inglés.',
+    how: {
+      eyebrow: 'Cómo trabajamos',
+      title: 'Las cosas claras. Resultados que se ven.',
+      items: [
+        { label: 'Mes a mes', body: 'Sin contratos largos. 30 días de aviso. Nos ganamos el siguiente mes con resultados que ves.' },
+        { label: 'Tus anuncios, tu dinero', body: 'La inversión en anuncios va directo a Facebook o Google, a tu nombre. Ves cada dólar.' },
+        { label: 'Un reporte cada semana', body: 'Cada semana te llega un reporte corto, así siempre sabes qué hizo el sistema.' },
+        { label: 'Tú no tocas la tecnología', body: 'Instalamos todo en 7 a 14 días y lo manejamos. Tú llegas a los trabajos.' },
+        { label: 'Español e inglés', body: 'Trabajamos contigo en el idioma que prefieras, y tu recepcionista con IA también.' },
+      ],
+    },
+    name: {
+      eyebrow: 'El nombre',
+      title: '¿Por qué “Blueprint”?',
+      body: 'Blueprint quiere decir plano, y toda buena obra empieza con uno. Nuestro logo es una B hecha de una base firme y un 3: una base y tres caminos. Así trabajamos. Primero cada cliente recibe respuesta, y después armamos el camino que le queda a tu negocio.',
+    },
+  },
+  contact: {
+    meta: {
+      title: 'Contacto | Agenda 15 minutos con Blueprint Strategies',
+      description:
+        'Habla con Piero de Blueprint Strategies: agenda 15 minutos, en español o en inglés. Sistemas de crecimiento con IA para negocios de servicios del hogar, desde Las Vegas para todo EE. UU.',
+    },
+    head: {
+      eyebrow: 'Contacto',
+      title: 'Hablemos de tu negocio.',
+      sub: 'Agenda 15 minutos con Piero, en español o en inglés. Sin presión.',
+    },
+    book: 'Agenda 15 minutos',
+    write: '¿Prefieres escribir?',
+    where: 'Las Vegas, NV · Trabajamos con dueños de todo EE. UU.',
+    nudge: {
+      title: '¿Todavía no tienes tu Score?',
+      body: 'Empieza por ahí, así la llamada es sobre tus números.',
+      button: 'Quiero mi Score gratis',
+    },
+    faq: {
+      eyebrow: 'Preguntas',
+      title: 'Antes de llamar.',
+      items: faqEs,
+    },
+  },
+};
+
+export const pages: Record<Lang, typeof en> = { en, es };

@@ -1,40 +1,62 @@
 ---
-interface Props { lang?: 'en' | 'es' }
-const { lang = 'en' } = Astro.props;
+import { routes, menu, type Page } from '../i18n/routes';
+
+interface Props { lang?: 'en' | 'es'; page?: Page }
+const { lang = 'en', page } = Astro.props;
 const es = lang === 'es';
-const home = es ? '/es/' : '/';
-const links = es
-  ? [
-      { href: '/es/#sistema', label: 'El sistema' },
-      { href: '/es/#como-funciona', label: 'Cómo funciona' },
-      { href: '/es/#garantia', label: 'Garantía' },
-      { href: '/es/#preguntas', label: 'Preguntas' },
-    ]
-  : [
-      { href: '/#system', label: 'The system' },
-      { href: '/#how-it-works', label: 'How it works' },
-      { href: '/#guarantee', label: 'Guarantee' },
-      { href: '/#faq', label: 'FAQ' },
-    ];
+const other = es ? 'en' : 'es';
+// The language switch goes to the same page in the other language.
+const switchHref = page ? routes[page][other] : routes.home[other];
+const ctaLabel = es ? 'Tu Score gratis' : 'Free Score';
 ---
 <header class="nav">
   <div class="wrap nav-inner">
-    <a href={home} class="brand" aria-label="Blueprint Strategies home">
+    <a href={routes.home[lang]} class="brand" aria-label="Blueprint Strategies home">
       <img src="/brand/logo-horizontal.svg" alt="Blueprint Strategies" width="145" height="60" />
     </a>
     <nav aria-label={es ? 'Principal' : 'Main'} class="links">
-      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      {menu.map((m) => (
+        <a href={routes[m.page][lang]} aria-current={m.page === page ? 'page' : undefined}>{m.label[lang]}</a>
+      ))}
     </nav>
     <div class="actions">
-      <a class="lang mono" href={es ? '/' : '/es/'} hreflang={es ? 'en' : 'es'} lang={es ? 'en' : 'es'}>
-        {es ? 'EN' : 'ES'}
-      </a>
-      <a class="btn btn-primary cta" href={es ? '/es/#score' : '/#score'}>
-        {es ? 'Tu Score gratis' : 'Free Score'}
-      </a>
+      <a class="lang mono" href={switchHref} hreflang={other} lang={other}>{other.toUpperCase()}</a>
+      <a class="btn btn-primary cta" href={routes.score[lang]}>{ctaLabel}</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>
+        <span class="sr-only">{es ? 'Menú' : 'Menu'}</span>
+        <span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
     </div>
   </div>
+
+  <!-- Mobile menu: full-width panel under the bar -->
+  <div class="mobile" id="mobile-menu" hidden data-menu>
+    <nav class="wrap mobile-inner" aria-label={es ? 'Principal' : 'Main'}>
+      <a href={routes.home[lang]} aria-current={page === 'home' ? 'page' : undefined}>{es ? 'Inicio' : 'Home'}</a>
+      {menu.map((m) => (
+        <a href={routes[m.page][lang]} aria-current={m.page === page ? 'page' : undefined}>{m.label[lang]}</a>
+      ))}
+      <a class="btn btn-primary" href={routes.score[lang]}>{es ? 'Quiero mi Score gratis' : 'Get my free Score'}</a>
+      <a class="mono m-lang" href={switchHref} hreflang={other} lang={other}>{es ? 'English' : 'Español'}</a>
+    </nav>
+  </div>
 </header>
+
+<script>
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('[data-menu-btn]')) {
+    const panel = document.getElementById(btn.getAttribute('aria-controls')!)!;
+    const set = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+      document.documentElement.classList.toggle('menu-open', open);
+    };
+    btn.addEventListener('click', () => set(panel.hidden));
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { set(false); btn.focus(); } });
+    // Close when a link inside is used (e.g. an anchor on the same page) or the screen gets wide.
+    panel.addEventListener('click', (e) => { if ((e.target as Element).closest('a')) set(false); });
+    matchMedia('(min-width: 901px)').addEventListener('change', (e) => { if (e.matches) set(false); });
+  }
+</script>
 
 <style>
   .nav {
@@ -46,8 +68,9 @@ const links = es
   .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 84px; }
   .brand img { height: 54px; width: auto; }
   .links { display: flex; gap: 32px; }
-  .links a { color: var(--body); text-decoration: none; font-size: 16px; }
+  .links a { color: var(--body); text-decoration: none; font-size: 16px; padding: 6px 0; border-bottom: 2px solid transparent; }
   .links a:hover { color: var(--chalk); }
+  .links a[aria-current='page'] { color: var(--chalk); border-bottom-color: var(--lime); }
   .actions { display: flex; align-items: center; gap: 16px; }
   .lang {
     color: var(--steel); text-decoration: none; font-size: 14px;
@@ -55,6 +78,38 @@ const links = es
   }
   .lang:hover { color: var(--chalk); }
   .cta { min-height: 44px; padding: 0 18px; font-size: 15px; }
-  @media (max-width: 900px) { .links { display: none; } }
-  @media (max-width: 420px) { .brand img { height: 42px; } .cta { padding: 0 14px; } }
+
+  .menu-btn {
+    display: none; width: 48px; height: 48px; margin-right: -8px; border: 0; background: transparent;
+    color: var(--chalk); cursor: pointer; align-items: center; justify-content: center;
+  }
+  .bars { display: flex; flex-direction: column; gap: 5px; width: 22px; }
+  .bars i { display: block; height: 2px; background: currentColor; transition: transform .2s ease, opacity .2s ease; }
+  .menu-btn[aria-expanded='true'] .bars i:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .menu-btn[aria-expanded='true'] .bars i:nth-child(2) { opacity: 0; }
+  .menu-btn[aria-expanded='true'] .bars i:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile { border-top: 1px solid var(--line); background: var(--navy); height: calc(100dvh - 84px); overflow-y: auto; }
+  .mobile[hidden] { display: none; }
+  .mobile-inner { display: flex; flex-direction: column; padding-top: 16px; padding-bottom: 32px; }
+  .mobile-inner a:not(.btn) {
+    color: var(--chalk); text-decoration: none; font-family: var(--font-display); font-weight: 700; font-size: 26px;
+    min-height: 60px; display: flex; align-items: center; border-bottom: 1px solid var(--line);
+  }
+  .mobile-inner a[aria-current='page'] { color: var(--lime); }
+  .mobile-inner .btn { margin-top: 28px; width: 100%; min-height: 56px; }
+  .mobile-inner .m-lang { font: 500 15px var(--font-mono) !important; color: var(--steel) !important; border-bottom: 0 !important; justify-content: center; }
+
+  :global(html.menu-open) { overflow: hidden; }
+
+  @media (max-width: 900px) {
+    .links { display: none; }
+    .menu-btn { display: inline-flex; }
+    .lang { display: none; }
+  }
+  @media (max-width: 420px) {
+    .brand img { height: 42px; }
+    .cta { padding: 0 12px; font-size: 14px; }
+    .actions { gap: 8px; }
+  }
 </style>

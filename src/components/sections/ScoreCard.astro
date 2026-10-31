@@ -1,0 +1,52 @@
+---
+// Example Score card (no real business). Used in the home hero and on the Score page.
+import { content, type Lang } from '../../i18n/home';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+const scoreValues = [52, 18, 35, 60];
+const scoreTotal = 41;
+---
+<div class="score-card card" aria-hidden="true" data-score>
+  <div class="score-top">
+    <span class="mono label">{t.hero.card.label}</span>
+    <img src="/brand/icon.svg" alt="" width="14" height="28" />
+  </div>
+  <div class="score-value"><span data-count={scoreTotal}>{scoreTotal}</span><span class="out">/ 100</span></div>
+  <div class="bars">
+    {t.hero.card.metrics.map((m, i) => (
+      <div class="bar">
+        <div class="bar-row"><span>{m}</span><span class="mono" data-count={scoreValues[i]}>{scoreValues[i]}</span></div>
+        <div class="track"><div class="fill" style={`--w:${scoreValues[i]}%`}></div></div>
+      </div>
+    ))}
+  </div>
+  <div class="score-foot">
+    <span>{t.hero.card.lost}</span>
+    <span class="lost">$•,•••</span>
+  </div>
+</div>
+
+<style>
+  .label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--steel); }
+  .score-card { padding: 28px; display: flex; flex-direction: column; gap: 22px; justify-self: end; width: 100%; max-width: 440px; }
+  .score-top { display: flex; justify-content: space-between; align-items: center; }
+  .score-top img { height: 28px; width: auto; }
+  .score-value { font-family: var(--font-display); font-weight: 700; font-size: 84px; line-height: 1; display: flex; align-items: baseline; gap: 10px; font-variant-numeric: tabular-nums; }
+  .out { font-size: 28px; font-weight: 500; color: var(--steel); }
+  .bars { display: flex; flex-direction: column; gap: 14px; }
+  .bar-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
+  .bar-row .mono { color: var(--steel); }
+  .track { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+  .fill { height: 8px; border-radius: 4px; background: var(--lime); width: var(--w); }
+  :global(.fx) [data-score] .fill { width: 0; transition: width 1.2s cubic-bezier(.2, .7, .2, 1); }
+  :global(.fx) [data-score].in .fill { width: var(--w); }
+  .score-foot { border-top: 1px solid var(--line); padding-top: 18px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; color: var(--body); }
+  .lost { font-family: var(--font-display); font-weight: 700; font-size: 28px; color: var(--lime); }
+  @media (max-width: 1000px) {
+    .score-card { justify-self: start; }
+  }
+  @media (max-width: 640px) {
+    .score-value { font-size: 64px; }
+  }
+</style>

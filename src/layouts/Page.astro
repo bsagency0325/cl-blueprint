@@ -1,0 +1,16 @@
+---
+// Wraps every main page: head tags (with hreflang to the same page in the other language), menu and footer.
+import Base from './Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { routes, type Page } from '../i18n/routes';
+import type { Lang } from '../i18n/home';
+
+interface Props { lang: Lang; page: Page; title: string; description: string; schema?: object[] }
+const { lang, page, title, description, schema } = Astro.props;
+---
+<Base title={title} description={description} lang={lang} alternate={routes[page]} schema={schema}>
+  <Nav lang={lang} page={page} />
+  <slot />
+  <Footer lang={lang} page={page} />
+</Base>

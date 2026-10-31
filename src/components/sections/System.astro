@@ -1,0 +1,238 @@
+---
+// The full system: foundation + Get Found + Get Booked + Full Blueprint, with the example screens.
+// Lives on the Services page. Each block has an id so other pages can link straight to it.
+import { Image } from 'astro:assets';
+import { content, type Lang } from '../../i18n/home';
+import { routes, pathIds } from '../../i18n/routes';
+import answerImg from '../../assets/illustrations/answer.jpg';
+import foundImg from '../../assets/illustrations/found.jpg';
+import bookedImg from '../../assets/illustrations/booked.jpg';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+const ids = t.ids;
+const pid = pathIds[lang];
+
+const images = { found: foundImg, booked: bookedImg } as const;
+const imgWidths = [480, 720, 1024];
+const imgSizes = '(max-width: 1000px) calc(100vw - 48px), 560px';
+const illustrated = t.system.paths.filter((p) => p.image);
+const fullPath = t.system.paths.find((p) => !p.image)!;
+---
+<!-- THE SYSTEM -->
+<section class="section grid-bg spot" id={ids.system}>
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">{t.system.eyebrow}</p>
+      <h2>{t.system.title}</h2>
+      <p>{t.system.sub}</p>
+    </div>
+
+    <!-- Foundation (full width): illustration + what's included + live AI call / text-back example -->
+    <div class="foundation card sys" id={pid.foundation}>
+      <figure class="illo" data-reveal>
+        <Image src={answerImg} alt={t.system.foundation.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+      </figure>
+      <div class="foundation-copy">
+        <span class="mono tag">{t.system.foundation.label}</span>
+        <h3>{t.system.foundation.title}</h3>
+        <p class="foundation-body">{t.system.foundation.body}</p>
+        <ul class="ticks">
+          {t.system.foundation.items.map((it) => <li>{it}</li>)}
+        </ul>
+        <div class="demo" data-demo data-tabs>
+          <div class="demo-top">
+            <p class="mono demo-label">{t.system.foundation.demoLabel}</p>
+            <div class="tabs" role="tablist">
+              <button type="button" role="tab" class="tab" aria-selected="true" data-tab="call">{t.system.foundation.call.tabCall}</button>
+              <button type="button" role="tab" class="tab" aria-selected="false" data-tab="text">{t.system.foundation.call.tabText}</button>
+            </div>
+          </div>
+          <div class="pane" data-pane="call" role="tabpanel">
+            <div class="msg call-in mono"><span class="ring" aria-hidden="true"></span>{t.system.foundation.call.incoming}</div>
+            <div class="msg call-live">
+              <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+              <span>{t.system.foundation.call.answered}</span>
+            </div>
+            {t.system.foundation.call.lines.map((l) => (
+              <div class={`msg line line-${l.who}`}>
+                <span class="mono who">{l.who === 'ai' ? t.system.foundation.call.aiLabel : t.system.foundation.call.callerLabel}</span>
+                <span>{l.text}</span>
+              </div>
+            ))}
+            <div class="msg msg-booked">{t.system.foundation.call.booked}</div>
+          </div>
+          <div class="pane" data-pane="text" role="tabpanel">
+            {t.system.foundation.demo.map((m) => (
+              <div class={`msg msg-${m.from}`}>{m.text}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Get Found + Get Booked, side by side under the foundation -->
+    <div class="paths">
+      {illustrated.map((p) => (
+        <div class="path card sys" id={pid[p.image as 'found' | 'booked']}>
+          <figure class="illo" data-reveal>
+            <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+          </figure>
+          <div class="path-copy">
+            <span class="mono tag">{p.tag}</span>
+            <h3>{p.name}</h3>
+            <p class="for">{p.for}</p>
+            <ul class="ticks">
+              {p.items.map((it) => <li>{it}</li>)}
+            </ul>
+          </div>
+          {p.demo?.kind === 'maps' && (
+            <div class="demo" data-demo>
+              <p class="mono demo-label">{p.demo.label}</p>
+              <div class="msg search mono"><span aria-hidden="true">⌕</span>{p.demo.search}</div>
+              {p.demo.results.map((r, i) => (
+                <div class={`msg result${i === 0 ? ' top' : ''}`}>
+                  <span class="pin" aria-hidden="true"></span>
+                  <span class="r-name">{r.name}</span>
+                  <span class="stars" aria-label={`${r.stars}/5`}>{'★'.repeat(r.stars)}<span class="off">{'★'.repeat(5 - r.stars)}</span></span>
+                  {r.tag && <span class="mono r-tag">{r.tag}</span>}
+                </div>
+              ))}
+              <div class="msg ask">{p.demo.ask}</div>
+              <div class="msg answer"><span class="mono who">AI</span>{p.demo.answer}</div>
+            </div>
+          )}
+          {p.demo?.kind === 'booked' && (
+            <div class="demo" data-demo>
+              <p class="mono demo-label">{p.demo.label}</p>
+              <div class="msg post">
+                <div class="post-head">
+                  <span class="avatar" aria-hidden="true"><img src="/brand/icon.svg" alt="" width="8" height="16" /></span>
+                  <span class="post-who"><strong>{p.demo.page}</strong><span class="mono">{p.demo.where}</span></span>
+                </div>
+                <p class="post-text">{p.demo.ad}</p>
+                <div class="post-media" aria-hidden="true">
+                  <svg viewBox="0 0 120 60" width="120" height="60" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="38" y="10" width="44" height="40" rx="3"/><circle cx="60" cy="30" r="13"/><circle cx="60" cy="30" r="8"/><circle cx="60" cy="30" r="3"/><path d="M42 50h36M30 30h4M86 30h4M60 4v3"/></svg>
+                </div>
+              </div>
+              <div class="msg flow-arrow" aria-hidden="true">↓</div>
+              <div class="msg lead-msg mono">{p.demo.lead}</div>
+              <div class="msg flow-arrow" aria-hidden="true">↓</div>
+              <div class="msg msg-booked">{p.demo.booked}</div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <!-- Full Blueprint -->
+    <div class="full card sys" id={pid.full} data-reveal>
+      <div>
+        <span class="mono tag">{fullPath.tag}</span>
+        <h3>{fullPath.name}</h3>
+        <p class="for">{fullPath.for}</p>
+      </div>
+      <p class="path-body">{fullPath.body}</p>
+    </div>
+
+    <div class="system-close" data-reveal>
+      <p class="closing">{t.system.closing}</p>
+      <a class="btn btn-primary" href={routes.score[lang]}>{t.system.cta}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .for { color: var(--chalk); }
+  .foundation { padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; margin-bottom: 16px; align-items: center; }
+  .foundation-copy { display: flex; flex-direction: column; gap: 14px; }
+  .foundation h3, .path h3 { font-size: clamp(28px, 3.4vw, 38px); }
+  .foundation-body { color: var(--chalk); font-size: 19px; }
+
+  /* Example screens */
+  .demo { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; background: var(--navy); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+  .demo-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .demo-label { color: var(--steel); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; }
+  .tab { border: 0; background: transparent; color: var(--steel); font: 500 13px var(--font-body); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+  .tab[aria-selected='true'] { background: var(--lime); color: var(--navy); }
+  .tabs { display: none; }
+  :global(.js-tabs) .tabs { display: inline-flex; }
+  .pane { display: flex; flex-direction: column; gap: 8px; }
+  .pane[hidden] { display: none; }
+  .msg { max-width: 85%; padding: 9px 13px; border-radius: 14px; font-size: 15px; line-height: 1.4; }
+  .msg-note, .flow-arrow { align-self: center; max-width: none; padding: 2px 0 6px; font: 500 12px var(--font-mono); color: var(--steel); }
+  .flow-arrow { padding: 0; color: var(--lime); font-size: 14px; }
+  .msg-in { align-self: flex-start; background: var(--line); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .msg-out { align-self: flex-end; background: var(--lime); color: var(--navy); border-bottom-right-radius: 4px; }
+  .msg-booked { align-self: stretch; max-width: none; text-align: center; border: 1px dashed var(--lime); color: var(--lime); font: 500 13px var(--font-mono); border-radius: 8px; margin-top: 4px; }
+  :global(.fx) [data-demo] .msg { opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease; }
+  :global(.fx) [data-demo] .msg.shown { opacity: 1; transform: none; }
+
+  /* AI receptionist call */
+  .call-in { align-self: stretch; max-width: none; display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--steel); padding: 4px 2px; }
+  .ring { width: 10px; height: 10px; border-radius: 50%; background: var(--lime); position: relative; flex-shrink: 0; }
+  .ring::after { content: ''; position: absolute; inset: -5px; border: 1px solid var(--lime); border-radius: 50%; animation: ring 1.4s ease-out infinite; }
+  @keyframes ring { from { transform: scale(.6); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
+  .call-live { align-self: stretch; max-width: none; display: flex; align-items: center; gap: 12px; background: rgba(156, 226, 74, 0.08); border: 1px solid rgba(156, 226, 74, 0.35); color: var(--chalk); font-size: 14px; border-radius: 10px; }
+  .wave { display: inline-flex; align-items: center; gap: 3px; height: 20px; flex-shrink: 0; }
+  .wave i { width: 3px; height: 30%; background: var(--lime); border-radius: 2px; animation: wave 1s ease-in-out infinite; }
+  .wave i:nth-child(2) { animation-delay: -.8s; } .wave i:nth-child(3) { animation-delay: -.6s; } .wave i:nth-child(4) { animation-delay: -.4s; }
+  .wave i:nth-child(5) { animation-delay: -.2s; } .wave i:nth-child(6) { animation-delay: -.7s; } .wave i:nth-child(7) { animation-delay: -.3s; }
+  @keyframes wave { 0%, 100% { height: 25%; } 50% { height: 100%; } }
+  .line { display: flex; flex-direction: column; gap: 2px; border-radius: 12px; }
+  .line .who { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .line-caller { align-self: flex-start; background: var(--line); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .line-caller .who { color: var(--steel); }
+  .line-ai { align-self: flex-end; background: var(--panel); border: 1px solid var(--lime); color: var(--chalk); border-bottom-right-radius: 4px; }
+  .line-ai .who, .answer .who { color: var(--lime); }
+
+  /* Get Found + Get Booked side by side */
+  .paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .path { padding: 24px; display: flex; flex-direction: column; gap: 22px; }
+  .path-copy { display: flex; flex-direction: column; gap: 14px; padding: 0 8px; }
+  .path .demo { margin-top: auto; }
+
+  /* Maps example */
+  .search { max-width: none; align-self: stretch; display: flex; gap: 10px; align-items: center; background: var(--chalk); color: var(--navy); border-radius: 999px; font-size: 13px; padding: 9px 16px; }
+  .search span { font-size: 16px; line-height: 1; }
+  .result { max-width: none; align-self: stretch; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; border: 1px solid var(--line); border-radius: 10px; color: #d5dde4; }
+  .result .pin { width: 10px; height: 10px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--steel); }
+  .result.top { border-color: var(--lime); color: var(--chalk); }
+  .result.top .pin { background: var(--lime); }
+  .stars { color: var(--lime); letter-spacing: 1px; font-size: 13px; }
+  .stars .off { color: var(--line); }
+  .r-tag { grid-column: 2 / -1; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); }
+  .ask { align-self: flex-end; background: var(--line); color: var(--chalk); border-bottom-right-radius: 4px; margin-top: 6px; }
+  .answer { align-self: flex-start; display: flex; flex-direction: column; gap: 2px; background: var(--panel); border: 1px solid var(--lime); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .answer .who { font-size: 11px; letter-spacing: 0.08em; }
+
+  /* Facebook / Instagram style ad */
+  .post { max-width: none; align-self: stretch; padding: 0; background: var(--navy); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .post-head { display: flex; align-items: center; gap: 10px; padding: 12px 12px 6px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--panel); border: 1px solid var(--line); display: grid; place-items: center; flex-shrink: 0; }
+  .avatar img { height: 16px; width: auto; }
+  .post-who { display: flex; flex-direction: column; line-height: 1.3; }
+  .post-who strong { font-size: 14px; color: var(--chalk); }
+  .post-who .mono { font-size: 11px; color: var(--steel); letter-spacing: 0.04em; }
+  .post-text { padding: 0 12px 10px; color: var(--chalk); font-size: 14px; }
+  .post-media { color: var(--lime); display: grid; place-items: center; padding: 18px 0; border-top: 1px solid var(--line); background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 16px 16px; }
+  .lead-msg { max-width: none; align-self: stretch; text-align: center; background: var(--line); color: var(--chalk); font-size: 13px; border-radius: 8px; }
+
+  .full { margin-top: 16px; padding: 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+  .full h3 { font-size: 30px; }
+  .full > div { display: flex; flex-direction: column; gap: 10px; }
+  .path-body { color: var(--body); }
+  .system-close { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 40px; }
+  .system-close .closing { margin-top: 0; }
+  .foundation, .path, .full { scroll-margin-top: 108px; }
+
+  @media (max-width: 1000px) {
+    .foundation, .paths, .full { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .foundation, .full { padding: 22px; }
+    .path { padding: 14px; }
+  }
+</style>

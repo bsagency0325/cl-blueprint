@@ -1,0 +1,52 @@
+---
+import { content, type Lang } from '../../i18n/home';
+import { site } from '../../config';
+import ScoreForm from '../ScoreForm.astro';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+const ids = t.ids;
+---
+<!-- FINAL: the Score form again, with Piero's calendar beside it -->
+<section class="section grid-bg spot final" id={ids.contact}>
+  <div class="wrap final-grid">
+    <div class="final-score" data-reveal>
+      <span class="mono tag">{t.final.scoreTitle}</span>
+      <h2>{t.final.title}</h2>
+      <p class="lead">{t.final.scoreBody}</p>
+      <ScoreForm lang={lang} uid={`${lang}-end`} />
+    </div>
+    <div class="final-book card" data-reveal>
+      <span class="mono tag">15 min</span>
+      <h3>{t.final.bookTitle}</h3>
+      <p>{t.final.bookBody}</p>
+      {site.calendarUrl
+        ? <iframe class="calendar" src={site.calendarUrl} title={t.final.bookTitle} loading="lazy"></iframe>
+        : <a class="btn btn-ghost" href={`mailto:${site.email}`}>{t.final.bookFallback}</a>}
+      {(site.phone || site.whatsapp) && (
+        <div class="contact">
+          {site.phone && <a href={`sms:${site.phone}`}>{t.final.phone}</a>}
+          {site.whatsapp && <a href={`https://wa.me/${site.whatsapp}`} rel="noopener">{t.final.whatsapp}</a>}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Final */
+  .final-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: start; }
+  .final-score { display: flex; flex-direction: column; gap: 20px; }
+  .final h2 { font-size: clamp(36px, 5vw, 56px); }
+  .final-book { padding: 32px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .final-book h3 { font-size: 26px; }
+  .final-book p { color: var(--body); }
+  .calendar { width: 100%; min-height: 620px; border: 0; border-radius: 10px; background: var(--chalk); }
+  .contact { display: flex; gap: 16px; flex-wrap: wrap; font-size: 15px; }
+  @media (max-width: 1000px) {
+    .final-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .final-book { padding: 22px; }
+  }
+</style>

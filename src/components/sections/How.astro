@@ -1,0 +1,46 @@
+---
+import { content, type Lang } from '../../i18n/home';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+const ids = t.ids;
+---
+<!-- HOW IT WORKS: a 4-step timeline -->
+<section class="section" id={ids.how}>
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">{t.how.eyebrow}</p>
+      <h2>{t.how.title}</h2>
+    </div>
+    <ol class="timeline" data-reveal>
+      {t.how.steps.map((s, i) => (
+        <li>
+          <span class="node mono" aria-hidden="true">0{i + 1}</span>
+          <h3>{s.title}</h3>
+          <p>{s.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  /* How it works: timeline */
+  .timeline { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 24px; right: calc(25% - 8px); top: 24px; border-top: 1px dashed #2a3b4c; }
+  .timeline li { position: relative; display: flex; flex-direction: column; gap: 12px; }
+  .node {
+    width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 8px;
+    background: var(--navy); border: 1px solid var(--lime); color: var(--lime); font-size: 14px;
+  }
+  .timeline li:last-child .node { background: var(--lime); color: var(--navy); }
+  .timeline h3 { font-size: 22px; }
+  .timeline p { color: var(--body); font-size: 16px; }
+  @media (max-width: 1000px) {
+    .timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .timeline::before { display: none; }
+  }
+  @media (max-width: 640px) {
+    .timeline { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
