@@ -40,6 +40,7 @@ const leakIcons = [
         <p class="lead">{t.hero.sub}</p>
         <ScoreForm lang={lang} id={ids.score} uid={`${lang}-top`} />
         <p class="trust"><span class="dot" aria-hidden="true"></span>{t.hero.trust}</p>
+        <p class="trust risk">{t.hero.risk}</p>
       </div>
 
       <div class="score-card card" aria-hidden="true" data-score>
@@ -280,6 +281,12 @@ const leakIcons = [
   </section>
 
   <!-- FAQ -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: lang,
+    mainEntity: t.faq.items.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  })} />
   <section class="section" id={ids.faq}>
     <div class="wrap faq-wrap">
       <div class="section-head" data-reveal>
@@ -490,6 +497,7 @@ const leakIcons = [
   .hero-copy { display: flex; flex-direction: column; gap: 24px; }
   .hero h1 { font-size: clamp(40px, 6vw, 72px); line-height: 1.0; }
   .trust { display: flex; align-items: center; gap: 12px; color: #d5dde4; font-size: 16px; }
+  .trust.risk { margin-top: -14px; padding-left: 22px; color: var(--steel); font-size: 14px; }
   .dot { width: 10px; height: 10px; background: var(--lime); flex-shrink: 0; }
 
   .score-card { padding: 28px; display: flex; flex-direction: column; gap: 22px; justify-self: end; width: 100%; max-width: 440px; }

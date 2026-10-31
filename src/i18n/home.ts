@@ -20,6 +20,7 @@ const en = {
     title: 'See how many jobs you’re losing every month.',
     sub: 'Your free Blueprint Score shows where customers are finding your competitors instead of you, and exactly how to win them back.',
     trust: 'Built for HVAC, plumbing, roofing, electrical and more.',
+    risk: 'Month-to-month. Every lead answered in under 60 seconds, or that month is free.',
     card: {
       label: 'Blueprint Score · example',
       metrics: ['Google Maps ranking', 'AI search visibility', 'Lead response speed', 'Reviews vs. competitors'],
@@ -200,9 +201,11 @@ const en = {
     title: 'Straight answers.',
     items: [
       { q: 'What’s in the free Blueprint Score?', a: 'Where you rank on Google Maps, whether AI search recommends you, how fast you answer leads, your reviews compared to your competitors, and an estimate of what it’s costing you each month. You get it by text and email within one business day.' },
+      { q: 'Will this work for my trade and my area?', a: 'That’s exactly what the free Score shows. We check how you stack up against the competitors in your city, then tell you on the call whether we can help. If we can’t, we’ll say so.' },
       { q: 'How much does it cost?', a: 'It depends on your trade, your area and which path fits. After your Score, we give you exact numbers on a 15-minute call. Month-to-month, no long contracts.' },
       { q: 'Is ad spend included?', a: 'No. Ad money goes straight to Facebook or Google, in your name, so you see every dollar. We recommend a budget for your trade and area on the call.' },
       { q: 'Do I have to sign a long contract?', a: 'No. Month-to-month with 30 days’ notice. We earn the next month by showing results every week.' },
+      { q: 'I’ve been burned by an agency before. What’s different?', a: 'You don’t have to take our word for it. It’s month-to-month, ad money goes straight to Facebook or Google in your name, and you get a short results report every week. If every lead isn’t answered in under 60 seconds, that month is free.' },
       { q: 'How fast will I see results?', a: 'Every lead gets answered from week one. Ads start booking appointments in weeks two to four. Google Maps and AI visibility build over two to three months.' },
       { q: 'Do I need to be good with technology?', a: 'No. We set everything up and run it. You show up to the appointments and do the work.' },
       { q: 'Will the AI receptionist sound like a robot?', a: 'No. It sounds natural, knows your services and hours, and passes the conversation to you whenever a person is needed.' },
@@ -250,6 +253,7 @@ const es: typeof en = {
     title: 'Descubre cuántos trabajos estás perdiendo cada mes.',
     sub: 'Tu Blueprint Score gratis te muestra dónde tus clientes están encontrando a tu competencia en lugar de a ti, y cómo recuperarlos.',
     trust: 'Hecho para HVAC, plomería, techos, electricidad y más. Te atendemos en español.',
+    risk: 'Mes a mes. Cada cliente contestado en menos de 60 segundos, o ese mes es gratis.',
     card: {
       label: 'Blueprint Score · ejemplo',
       metrics: ['Posición en Google Maps', 'Visibilidad en la IA', 'Velocidad de respuesta', 'Reseñas vs. competencia'],
@@ -430,9 +434,11 @@ const es: typeof en = {
     title: 'Respuestas directas.',
     items: [
       { q: '¿Qué incluye el Blueprint Score gratis?', a: 'Dónde apareces en Google Maps, si la IA te recomienda, qué tan rápido contestas, tus reseñas comparadas con tu competencia, y un estimado de lo que te está costando cada mes. Te llega por mensaje y correo dentro de un día hábil.' },
+      { q: '¿Esto funciona para mi oficio y mi zona?', a: 'Eso es justo lo que te muestra el Score gratis. Vemos cómo estás frente a la competencia de tu ciudad y en la llamada te decimos si te podemos ayudar. Si no, te lo decimos de frente.' },
       { q: '¿Cuánto cuesta?', a: 'Depende de tu oficio, tu zona y el camino que te conviene. Después de tu Score, te damos números exactos en una llamada de 15 minutos. Mes a mes, sin contratos largos.' },
       { q: '¿Los anuncios están incluidos?', a: 'No. El dinero de los anuncios va directo a Facebook o Google, a tu nombre, así ves cada dólar. En la llamada te recomendamos un presupuesto para tu oficio y tu zona.' },
       { q: '¿Tengo que firmar un contrato largo?', a: 'No. Es mes a mes con 30 días de aviso. Nos ganamos el siguiente mes mostrando resultados cada semana.' },
+      { q: 'Ya me quemó una agencia antes. ¿Qué cambia con ustedes?', a: 'No tienes que creernos a ciegas. Es mes a mes, el dinero de los anuncios va directo a Facebook o Google a tu nombre, y cada semana te llega un reporte corto con resultados. Si no contestamos a cada cliente en menos de 60 segundos, ese mes es gratis.' },
       { q: '¿Qué tan rápido veo resultados?', a: 'Cada cliente se atiende desde la primera semana. Los anuncios empiezan a agendar citas entre la semana dos y la cuatro. Tu posición en Google Maps y en la IA se construye en dos a tres meses.' },
       { q: '¿Tengo que saber de tecnología?', a: 'No. Nosotros instalamos y manejamos todo. Tú llegas a las citas y haces el trabajo.' },
       { q: '¿La recepcionista con IA suena como robot?', a: 'No. Suena natural, conoce tus servicios y tu horario, y te pasa la conversación cuando hace falta una persona.' },
