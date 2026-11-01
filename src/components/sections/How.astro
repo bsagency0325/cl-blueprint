@@ -12,7 +12,7 @@ const ids = t.ids;
       <p class="eyebrow">{t.how.eyebrow}</p>
       <h2>{t.how.title}</h2>
     </div>
-    <ol class="timeline" data-reveal>
+    <ol class="timeline" data-reveal="stagger">
       {t.how.steps.map((s, i) => (
         <li>
           <span class="node mono" aria-hidden="true">0{i + 1}</span>

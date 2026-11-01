@@ -55,8 +55,17 @@
       for (const el of els) io.observe(el);
     };
 
-    // Sections fade in as they enter.
-    once(document.querySelectorAll('[data-reveal]'), (el) => el.classList.add('in'), 0.12);
+    // Sections fade in as they enter. Groups bring their cards in one after another,
+    // then hand the cards back their own hover motion.
+    for (const g of document.querySelectorAll<HTMLElement>('[data-reveal="stagger"]')) {
+      [...g.children].forEach((c, i) => (c as HTMLElement).style.setProperty('--i', String(Math.min(i, 6))));
+    }
+    once(document.querySelectorAll('[data-reveal]'), (el) => {
+      el.classList.add('in');
+      if (el.getAttribute('data-reveal') === 'stagger') {
+        setTimeout(() => el.classList.add('done'), 800 + Math.min(el.children.length, 7) * 110);
+      }
+    }, 0.12);
 
     // Drawings print in once, left to right.
     once(document.querySelectorAll('.illo'), (el) => el.classList.add('drawn'), 0.3);
