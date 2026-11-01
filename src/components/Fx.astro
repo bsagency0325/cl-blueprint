@@ -55,7 +55,26 @@
       for (const el of els) io.observe(el);
     };
 
-    // Sections fade in as they enter. Groups bring their cards in one after another,
+    // Split a heading or line into words, each in its own mask, so the words can move on
+    // their own. Only plain-text elements: anything with markup inside is left as is.
+    const splitWords = (el: Element) => {
+      if (el.children.length || !el.textContent?.trim()) return [];
+      const words = el.textContent.trim().split(/\s+/);
+      el.textContent = '';
+      words.forEach((word, i) => {
+        const mask = document.createElement('span');
+        const w = document.createElement('span');
+        mask.className = 'w';
+        w.style.setProperty('--wi', String(i));
+        w.textContent = word;
+        mask.append(w);
+        el.append(mask, i < words.length - 1 ? ' ' : '');
+      });
+      return [...el.querySelectorAll('.w')];
+    };
+    for (const h of document.querySelectorAll('.section-head[data-reveal] > h2')) splitWords(h);
+
+    // Sections come in as they enter. Groups bring their cards in one after another,
     // then hand the cards back their own hover motion.
     for (const g of document.querySelectorAll<HTMLElement>('[data-reveal="stagger"]')) {
       [...g.children].forEach((c, i) => (c as HTMLElement).style.setProperty('--i', String(Math.min(i, 6))));
@@ -63,7 +82,7 @@
     once(document.querySelectorAll('[data-reveal]'), (el) => {
       el.classList.add('in');
       if (el.getAttribute('data-reveal') === 'stagger') {
-        setTimeout(() => el.classList.add('done'), 800 + Math.min(el.children.length, 7) * 110);
+        setTimeout(() => el.classList.add('done'), 1200 + Math.min(el.children.length, 7) * 130);
       }
     }, 0.12);
 
@@ -188,8 +207,20 @@
       }
     };
 
+    // Closing lines: words light up in reading order as the line moves up the screen.
+    const scrubs = [...document.querySelectorAll('[data-scrub]')].map((el) => ({ el, words: splitWords(el) }));
+    const drawScrubs = () => {
+      for (const s of scrubs) {
+        const r = s.el.getBoundingClientRect();
+        // 0 when the line enters at the bottom, 1 when it reaches 40% from the top.
+        const p = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight * 0.6)));
+        const lit = Math.round(p * s.words.length);
+        s.words.forEach((w, i) => w.classList.toggle('lit', i < lit));
+      }
+    };
+
     let queued = false;
-    const onFrame = () => { queued = false; drawStories(); drawDepth(); };
+    const onFrame = () => { queued = false; drawStories(); drawDepth(); drawScrubs(); };
     addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(onFrame); } }, { passive: true });
     addEventListener('resize', onFrame);
     onFrame();
