@@ -22,7 +22,7 @@ const { lang, id, eyebrow, title, items } = Astro.props;
       <p class="eyebrow">{eyebrow}</p>
       <h2>{title}</h2>
     </div>
-    <div class="faq">
+    <div class="faq" data-reveal="stagger">
       {items.map((f) => (
         <details>
           <summary>{f.q}</summary>

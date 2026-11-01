@@ -63,7 +63,7 @@ const leakIcons = [
         <h2>{t.leaks.title}</h2>
         <p>{t.leaks.sub}</p>
       </div>
-      <div class="leaks" data-reveal>
+      <div class="leaks" data-reveal="stagger">
         {t.leaks.items.map((item, i) => (
           <div class="leak card lift">
             <div class="leak-top">
@@ -90,8 +90,8 @@ const leakIcons = [
         <p>{t.system.sub}</p>
       </div>
 
-      <div class="sum">
-        <a class="sum-card sum-wide card sys" href={`${services}#${pid.foundation}`} data-reveal>
+      <div class="sum" data-reveal="stagger">
+        <a class="sum-card sum-wide card sys" href={`${services}#${pid.foundation}`}>
           <figure class="illo">
             <Image src={answerImg} alt={t.system.foundation.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
           </figure>
@@ -103,7 +103,7 @@ const leakIcons = [
           </div>
         </a>
         {illustrated.map((p) => (
-          <a class="sum-card card sys" href={`${services}#${pid[p.image as 'found' | 'booked']}`} data-reveal>
+          <a class="sum-card card sys" href={`${services}#${pid[p.image as 'found' | 'booked']}`}>
             <figure class="illo">
               <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
             </figure>
