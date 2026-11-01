@@ -6,7 +6,7 @@ import { content, type Lang } from '../../i18n/home';
 import { routes, pathIds } from '../../i18n/routes';
 import { tradeLines } from '../../i18n/trades';
 import TradePicker from './TradePicker.astro';
-import SystemMap from './SystemMap.astro';
+import SystemPlan from './SystemPlan.astro';
 import answerImg from '../../assets/illustrations/answer.jpg';
 import foundImg from '../../assets/illustrations/found.jpg';
 import bookedImg from '../../assets/illustrations/booked.jpg';
@@ -35,7 +35,7 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
       {head ? <h1>{head.title}</h1> : <h2>{t.system.title}</h2>}
       <p>{head?.sub ?? t.system.sub}</p>
     </div>
-    {asPageHead && <SystemMap lang={lang} />}
+    {asPageHead && <SystemPlan lang={lang} />}
     <div class="pick" data-reveal><TradePicker lang={lang} /></div>
 
     <!-- Foundation (full width): illustration + what's included + live AI call / text-back example -->

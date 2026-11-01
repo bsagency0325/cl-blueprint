@@ -190,6 +190,15 @@ const en = {
     ],
     // Overview at the top of the Services page: the Foundation underneath, A or B on top, both = Full Blueprint.
     map: { always: 'Always included', or: 'or', eq: 'A + B on the Foundation =' },
+    // Services page "plan": pick your stage and the system builds itself on the drawing.
+    plan: {
+      prompt: 'What does your business need right now?',
+      choices: { a: 'They can’t find me', b: 'I need jobs now', ab: 'Both' },
+      sheet: 'Sheet S-1 · Your system',
+      planned: 'Dashed = on the plan',
+      built: 'Solid = built for you',
+      more: 'See everything included ↓',
+    },
     closing: 'Not sure which one fits your stage? That’s exactly what your free Score tells you.',
     cta: 'Get my free Score',
     more: 'See what’s included',
@@ -450,6 +459,14 @@ const es: typeof en = {
       },
     ],
     map: { always: 'Siempre incluida', or: 'o', eq: 'A + B sobre La Base =' },
+    plan: {
+      prompt: '¿Qué necesita tu negocio hoy?',
+      choices: { a: 'No me encuentran', b: 'Necesito trabajos ya', ab: 'Las dos' },
+      sheet: 'Hoja S-1 · Tu sistema',
+      planned: 'Punteado = en el plano',
+      built: 'Sólido = construido para ti',
+      more: 'Mira todo lo que incluye ↓',
+    },
     closing: '¿No sabes cuál va con tu etapa? Para eso es tu Score gratis.',
     cta: 'Quiero mi Score gratis',
     more: 'Mira qué incluye',
