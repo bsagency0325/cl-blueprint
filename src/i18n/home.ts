@@ -10,9 +10,9 @@ type PathDemo =
 
 const en = {
   meta: {
-    title: 'Blueprint Strategies | AI Growth Systems for Home Service Businesses',
+    title: 'AI Growth for Home Service Businesses | Blueprint Strategies',
     description:
-      'See how many jobs you’re losing every month. Get your free Blueprint Score: Google Maps ranking, AI search visibility, response speed and reviews vs. competitors. Built for HVAC, plumbing, roofing, electrical and more.',
+      'See how many jobs you’re losing every month. Free Blueprint Score for HVAC, plumbing, roofing and more: Google Maps, AI search, response speed and reviews.',
   },
   ids: { system: 'system', how: 'how-it-works', guarantee: 'guarantee', faq: 'faq', score: 'score', contact: 'contact' },
   hero: {
@@ -84,10 +84,11 @@ const en = {
   },
   system: {
     eyebrow: 'The Blueprint system',
-    title: 'One system. Built around what you need most.',
-    sub: 'Every path starts with the same foundation. Then we build around your biggest problem.',
+    title: 'One foundation for everyone. The rest depends on your stage.',
+    sub: 'The Foundation is always included. On top of it we add what your business needs right now: Stand Out, Scale Up, or both.',
     foundation: {
-      label: 'The foundation · in every path',
+      name: 'The Foundation',
+      label: 'The Foundation · always included',
       title: 'Every lead answered in seconds',
       body: 'You stay on the job. Nobody waits.',
       items: [
@@ -124,8 +125,8 @@ const en = {
     },
     paths: [
       {
-        tag: 'Path 1',
-        name: 'Get Found',
+        tag: 'Option A · on top of the Foundation',
+        name: 'Stand Out',
         for: 'For when customers can’t find you.',
         items: [
           'Show up higher on Google Maps in your area',
@@ -152,8 +153,8 @@ const en = {
         } as PathDemo,
       },
       {
-        tag: 'Path 2',
-        name: 'Get Booked',
+        tag: 'Option B · on top of the Foundation',
+        name: 'Scale Up',
         for: 'For when you need jobs now.',
         items: [
           'Facebook and Instagram ads aimed at your best-paying jobs',
@@ -177,17 +178,19 @@ const en = {
         } as PathDemo,
       },
       {
-        tag: 'Path 3',
+        tag: 'A + B · on top of the Foundation',
         name: 'Full Blueprint',
         for: 'For owners ready to grow on every front.',
         items: [] as string[],
-        body: 'Everything in Get Found and Get Booked, working together on one system.',
+        body: 'Stand Out and Scale Up together, on the same Foundation.',
         image: '',
         imageAlt: '',
         demo: null as PathDemo,
       },
     ],
-    closing: 'Not sure which path fits? That’s exactly what your free Score tells you.',
+    // Overview at the top of the Services page: the Foundation underneath, A or B on top, both = Full Blueprint.
+    map: { always: 'Always included', or: 'or', eq: 'A + B on the Foundation =' },
+    closing: 'Not sure which one fits your stage? That’s exactly what your free Score tells you.',
     cta: 'Get my free Score',
     more: 'See what’s included',
   },
@@ -209,7 +212,7 @@ const en = {
     items: [
       { label: 'No long contracts', body: 'Month-to-month. We earn the next month with results you can see every week.' },
       { label: 'Your ads, your money', body: 'Ad spend goes straight to Facebook or Google, in your name. You see every dollar.' },
-      { label: 'Results in writing', body: 'Get Found and Get Booked come with results guarantees, set in writing on your Score call.' },
+      { label: 'Results in writing', body: 'Stand Out and Scale Up come with results guarantees, set in writing on your Score call.' },
     ],
   },
   founder: {
@@ -268,9 +271,9 @@ const en = {
 
 const es: typeof en = {
   meta: {
-    title: 'Blueprint Strategies | Sistemas de crecimiento con IA para negocios del hogar',
+    title: 'Crecimiento con IA para contratistas | Blueprint Strategies',
     description:
-      'Descubre cuántos trabajos estás perdiendo cada mes. Pide tu Blueprint Score gratis: tu posición en Google Maps, tu visibilidad en la IA, tu velocidad de respuesta y tus reseñas vs. la competencia. Te atendemos en español.',
+      'Descubre cuántos trabajos pierdes cada mes. Blueprint Score gratis: Google Maps, búsquedas con IA, velocidad de respuesta y reseñas. Te atendemos en español.',
   },
   ids: { system: 'sistema', how: 'como-funciona', guarantee: 'garantia', faq: 'preguntas', score: 'score', contact: 'contacto' },
   hero: {
@@ -342,10 +345,11 @@ const es: typeof en = {
   },
   system: {
     eyebrow: 'El sistema Blueprint',
-    title: 'Un sistema. Hecho a la medida de lo que más necesitas.',
-    sub: 'Todos los caminos empiezan con la misma base. Luego construimos alrededor de tu problema más grande.',
+    title: 'Una base para todos. Lo demás, según tu etapa.',
+    sub: 'La Base va siempre incluida. Encima construimos lo que tu negocio necesita hoy: Destaca, Acelera o las dos.',
     foundation: {
-      label: 'La base · en todos los caminos',
+      name: 'La Base',
+      label: 'La Base · siempre incluida',
       title: 'Cada cliente atendido en segundos',
       body: 'Tú sigues trabajando. Nadie se queda esperando.',
       items: [
@@ -382,8 +386,8 @@ const es: typeof en = {
     },
     paths: [
       {
-        tag: 'Camino 1',
-        name: 'Que te encuentren',
+        tag: 'Opción A · sobre La Base',
+        name: 'Destaca',
         for: 'Para cuando los clientes no te encuentran.',
         items: [
           'Aparece más arriba en Google Maps',
@@ -410,8 +414,8 @@ const es: typeof en = {
         },
       },
       {
-        tag: 'Camino 2',
-        name: 'Que te contraten',
+        tag: 'Opción B · sobre La Base',
+        name: 'Acelera',
         for: 'Para cuando necesitas trabajos ya.',
         items: [
           'Anuncios en Facebook e Instagram enfocados en tus trabajos que mejor pagan',
@@ -435,17 +439,18 @@ const es: typeof en = {
         },
       },
       {
-        tag: 'Camino 3',
-        name: 'Blueprint completo',
+        tag: 'A + B · sobre La Base',
+        name: 'Blueprint Completo',
         for: 'Para dueños listos para crecer en todo.',
         items: [],
-        body: 'Los dos caminos trabajando juntos en un solo sistema.',
+        body: 'Destaca y Acelera juntos, sobre la misma Base.',
         image: '',
         imageAlt: '',
         demo: null,
       },
     ],
-    closing: '¿No sabes cuál es para ti? Para eso es tu Score gratis.',
+    map: { always: 'Siempre incluida', or: 'o', eq: 'A + B sobre La Base =' },
+    closing: '¿No sabes cuál va con tu etapa? Para eso es tu Score gratis.',
     cta: 'Quiero mi Score gratis',
     more: 'Mira qué incluye',
   },
@@ -467,7 +472,7 @@ const es: typeof en = {
     items: [
       { label: 'Sin contratos largos', body: 'Mes a mes. Nos ganamos el siguiente mes con resultados que ves cada semana.' },
       { label: 'Tus anuncios, tu dinero', body: 'La inversión en anuncios va directo a Facebook o Google, a tu nombre. Ves cada dólar.' },
-      { label: 'Resultados por escrito', body: 'Que te encuentren y Que te contraten vienen con garantías de resultados, que acordamos por escrito en tu llamada del Score.' },
+      { label: 'Resultados por escrito', body: 'Destaca y Acelera vienen con garantías de resultados, que acordamos por escrito en tu llamada del Score.' },
     ],
   },
   founder: {

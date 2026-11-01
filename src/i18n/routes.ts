@@ -20,6 +20,6 @@ export const menu: { page: Page; label: Record<Lang, string> }[] = [
 
 // Anchors for each path on the Services page, so the home page can link straight to one.
 export const pathIds: Record<Lang, Record<'foundation' | 'found' | 'booked' | 'full', string>> = {
-  en: { foundation: 'foundation', found: 'get-found', booked: 'get-booked', full: 'full-blueprint' },
-  es: { foundation: 'la-base', found: 'que-te-encuentren', booked: 'que-te-contraten', full: 'blueprint-completo' },
+  en: { foundation: 'foundation', found: 'stand-out', booked: 'scale-up', full: 'full-blueprint' },
+  es: { foundation: 'la-base', found: 'destaca', booked: 'acelera', full: 'blueprint-completo' },
 };

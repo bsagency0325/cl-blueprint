@@ -134,15 +134,18 @@ const steps = t.ba.steps;
   .today-lost { font-size: 12px; color: var(--steel); text-decoration: line-through; }
 
   /* ---------- Motion: the section pins and the scroll drives the steps ---------- */
-  :global(.fx) .ls { height: calc(var(--n) * 75svh + 100svh); }
+  :global(.fx) .ls { height: calc(var(--n) * 60svh + 100svh); }
   :global(.fx) .ls-pin { position: sticky; top: 84px; height: calc(100svh - 84px); display: flex; align-items: center; overflow: hidden; }
   :global(.fx) .ls-grid { padding-top: 0; padding-bottom: 0; }
   :global(.fx) .ls-track i { transform: scaleY(var(--p, 0)); }
 
-  :global(.fx) .ls-step { opacity: 0.32; transition: opacity .35s ease; }
+  /* Steps not in focus go Steel, not see-through, so they stay readable. */
+  :global(.fx) .ls-step h3 { color: var(--steel); transition: color .35s ease; }
+  :global(.fx) .ls-step p { color: #7d8b99; transition: color .35s ease; }
+  :global(.fx) .ls-step.now h3 { color: var(--chalk); }
+  :global(.fx) .ls-step.now p { color: var(--body); }
   :global(.fx) .ls-step::before { border-color: #2a3b4c; transition: border-color .35s ease, background-color .35s ease; }
   :global(.fx) .ls-step.on::before { border-color: var(--lime); background: var(--lime); }
-  :global(.fx) .ls-step.now { opacity: 1; }
   :global(.fx) .ls-step.now::before { background: var(--navy); }
   :global(.fx) .ls-cta { opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .35s ease, transform .35s ease; }
   :global(.fx) .ls-cta.on { opacity: 1; transform: none; pointer-events: auto; }
