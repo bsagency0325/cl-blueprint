@@ -1,6 +1,6 @@
 ---
 // Motion and example screens for every page: section reveal, Score count-up, demo playback,
-// stopwatch, grid spotlight, drawing crosshair and scroll ruler. Off with reduced motion.
+// stopwatch, grid spotlight, drawing crosshair + depth, the pinned "life of a lead" story and scroll ruler. Off with reduced motion.
 ---
 <script>
   // Foundation example: tabs between the AI receptionist call and the missed-call text-back.
@@ -124,6 +124,66 @@
         fig.addEventListener('pointerleave', () => xh.classList.remove('on'));
       }
     }
+
+    // "Life of a lead": the section pins and the scroll position picks the step.
+    const stories = [...document.querySelectorAll<HTMLElement>('[data-story]')].map((el) => ({
+      el,
+      n: Number(getComputedStyle(el).getPropertyValue('--n')) || 5,
+      atEls: [...el.querySelectorAll<HTMLElement>('[data-at]')],
+      toEls: [...el.querySelectorAll<HTMLElement>('[data-to]')],
+      last: -1,
+    }));
+    const drawStories = () => {
+      for (const s of stories) {
+        const r = s.el.getBoundingClientRect();
+        const run = r.height - innerHeight;
+        const p = run > 0 ? Math.min(1, Math.max(0, -r.top / run)) : 0;
+        s.el.style.setProperty('--p', String(Math.min(1, p * s.n / (s.n - 1))));
+        const step = Math.min(s.n - 1, Math.floor(p * s.n));
+        if (step === s.last) continue;
+        s.last = step;
+        s.el.dataset.step = String(step);
+        for (const e of s.atEls) {
+          const at = Number(e.dataset.at);
+          e.classList.toggle('on', step >= at);
+          e.classList.toggle('now', step === at);
+          // The "today" ending only holds the screen for its own step.
+          if (e.classList.contains('today')) e.classList.toggle('past', step > at);
+        }
+        for (const e of s.toEls) e.classList.toggle('off', step >= Number(e.dataset.to));
+      }
+    };
+
+    // Drawings sit a touch deeper than the page: they drift against the scroll
+    // and lean away from the cursor. A drawing split into layers (.illo-fg on top)
+    // moves its top layer further, for real depth.
+    const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const figs = [...document.querySelectorAll<HTMLElement>('.illo')];
+    for (const fig of figs) {
+      fig.classList.add('depth');
+      if (!fine) continue;
+      fig.addEventListener('pointermove', (e) => {
+        const r = fig.getBoundingClientRect();
+        fig.style.setProperty('--tx', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+        fig.style.setProperty('--ty', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+      });
+      fig.addEventListener('pointerleave', () => { fig.style.setProperty('--tx', '0'); fig.style.setProperty('--ty', '0'); });
+    }
+    const drawDepth = () => {
+      for (const fig of figs) {
+        const r = fig.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) continue;
+        // -1 when the drawing enters at the bottom, 1 when it leaves at the top.
+        const d = ((r.top + r.height / 2) / innerHeight - 0.5) * -2;
+        fig.style.setProperty('--sy', d.toFixed(3));
+      }
+    };
+
+    let queued = false;
+    const onFrame = () => { queued = false; drawStories(); drawDepth(); };
+    addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(onFrame); } }, { passive: true });
+    addEventListener('resize', onFrame);
+    onFrame();
 
     // Scroll ruler along the top edge.
     const ruler = document.createElement('div');

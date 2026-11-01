@@ -1,5 +1,5 @@
 ---
-// Home page: the free Score up top, the four leaks, one missed call before/after (trade chips),
+// Home page: the free Score up top, the four leaks, the life of one missed call (scroll story, trade chips),
 // the system in short (full version on /services),
 // the speed guarantee and the Score form again. How it works and the FAQ moved
 // to the Score, Services and Contact pages to keep this page short.
@@ -9,7 +9,7 @@ import { routes, pathIds } from '../i18n/routes';
 import ScoreForm from './ScoreForm.astro';
 import ScoreCard from './sections/ScoreCard.astro';
 import Guarantee from './sections/Guarantee.astro';
-import BeforeAfter from './sections/BeforeAfter.astro';
+import LeadStory from './sections/LeadStory.astro';
 import Final from './sections/Final.astro';
 import Fx from './Fx.astro';
 import answerImg from '../assets/illustrations/answer.jpg';
@@ -79,7 +79,7 @@ const leakIcons = [
     </div>
   </section>
 
-  <BeforeAfter lang={lang} />
+  <LeadStory lang={lang} />
 
   <!-- THE SYSTEM, in short: each block links to its full version on the Services page -->
   <section class="section grid-bg spot" id={ids.system}>
