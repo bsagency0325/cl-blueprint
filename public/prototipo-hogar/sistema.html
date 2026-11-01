@@ -1,0 +1,123 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=1440"><meta name="robots" content="noindex,nofollow"><title>Blueprint · prototipo Hogar · El Sistema</title><link rel="stylesheet" href="base.css"><style>
+section{padding:110px 0}
+.hero{padding:60px 0 40px}
+.hero h1{font-size:96px;max-width:1100px;margin:18px 0 22px}
+.hero h1 em{font-style:normal;color:var(--lime)}
+.sub{font-size:21px;color:var(--body);max-width:700px}
+.pick{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:50px}
+.choice{padding:26px;border-radius:22px;border:1px solid #2a3b4c;background:var(--panel);display:flex;flex-direction:column;gap:8px}
+.choice small{font:500 12px Mono;letter-spacing:.12em;text-transform:uppercase;color:var(--steel)}
+.choice h3{font-size:30px}
+.choice p{color:var(--body);font-size:16px}
+.choice.on{background:var(--chalk);color:var(--navy);border-color:var(--chalk)}
+.choice.on p,.choice.on small{color:#3d4a56}
+.result{margin-top:18px;border-radius:28px;background:var(--panel);border:1px solid var(--line);display:grid;grid-template-columns:1fr 1.1fr;overflow:hidden}
+.res-l{padding:44px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:12px;justify-content:flex-end;min-height:520px;position:relative}
+.blk{border-radius:18px;padding:22px 24px;display:flex;justify-content:space-between;align-items:center}
+.blk h4{font-size:28px}.blk small{font:500 12px Mono;letter-spacing:.12em;text-transform:uppercase}
+.blk.f{background:var(--lime);color:var(--navy)}
+.blk.a{background:var(--panel2);border:1.5px solid var(--lime)}
+.blk.b{border:1.5px dashed #3a4b5c;color:var(--steel)}
+.blk.r{border:1.5px dashed #3a4b5c;color:var(--steel);margin-bottom:auto}
+.res-r{padding:44px;display:flex;flex-direction:column;gap:18px}
+.res-r h3{font-size:44px}
+.items{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;color:var(--body);font-size:16px}
+.layer-sec{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.layer-sec h2{font-size:64px;margin:14px 0 18px}
+.lime-sec{background:var(--lime);color:var(--navy)}
+.lime-sec .sub,.lime-sec p{color:#24400a}
+.lime-sec .eyebrow{color:var(--navy)}
+.lime-sec .phone{color:var(--chalk)}
+.tagrow{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}
+.tagrow span{padding:8px 14px;border-radius:999px;border:1px solid currentColor;font-size:15px}
+.mapcard{border-radius:24px;background:var(--panel);border:1px solid var(--line);padding:24px;display:flex;flex-direction:column;gap:10px}
+.search{display:flex;gap:10px;align-items:center;padding:14px 18px;border-radius:999px;background:var(--chalk);color:var(--navy);font-size:17px}
+.res{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-radius:16px;border:1px solid var(--line);font-size:17px}
+.res.top{border-color:var(--lime);background:rgba(156,226,74,.07)}
+.stars{color:var(--lime);letter-spacing:2px}
+.feed{display:grid;grid-template-columns:1fr 60px 1fr 60px 1fr;align-items:center}
+.feed .arrow{text-align:center;font:700 34px Ox;color:var(--lime)}
+.mini{border-radius:20px;background:var(--panel);border:1px solid var(--line);padding:20px;min-height:220px;display:flex;flex-direction:column;gap:10px}
+.mini small{font:500 11px Mono;letter-spacing:.12em;color:var(--steel);text-transform:uppercase}
+.cal{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.cal i{height:28px;border-radius:6px;background:var(--line)}
+.cal i.on{background:var(--lime)}
+.more{display:inline-flex;gap:8px;align-items:center;font-weight:500;margin-top:20px}
+.full{border-radius:32px;border:1.5px dashed #3a4b5c;padding:60px;display:flex;justify-content:space-between;align-items:center;gap:40px}
+.full h2{font-size:60px}
+.eq{font:700 40px Ox;color:var(--steel)}.eq b{color:var(--lime)}
+</style></head><body>
+<div class="wrap nav"><a href="index.html"><img class="logo" src="/brand/logo-horizontal.svg"></a><div class="links"><b><a class="nl" href="sistema.html">The System</a></b><a class="nl" href="score.html">Blueprint Score</a><a class="nl" href="piero.html">Talk to Piero</a></div><div class="r"><span class="lang"><b>EN</b>ES</span><a class="btn lime" style="height:46px">Get my free Score</a></div></div>
+
+<div class="hero"><div class="wrap">
+ <p class="eyebrow">The System</p>
+ <h1>Built like a house. <em>Foundation first.</em></h1>
+ <p class="sub">Every business gets the same Foundation: every lead answered in seconds. Then we build what your stage needs. Pick yours:</p>
+ <div class="pick">
+  <div class="choice on"><small>Option A</small><h3>“They can’t find me”</h3><p>Good work, but you’re invisible on Google, Maps and AI search.</p></div>
+  <div class="choice"><small>Option B</small><h3>“I need jobs now”</h3><p>Slow weeks. You need booked jobs this month, not next year.</p></div>
+  <div class="choice"><small>A + B</small><h3>“Both. Let’s grow.”</h3><p>Ready to grow on every front at once.</p></div>
+ </div>
+ <div class="result">
+  <div class="res-l">
+   <div class="blk r"><div><small>Roof · A + B</small><h4>Full Blueprint</h4></div><span class="mono">on the plan</span></div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="blk a"><div><small style="color:var(--lime)">A · built</small><h4>Stand Out</h4></div></div>
+    <div class="blk b"><div><small>B</small><h4>Scale Up</h4></div></div>
+   </div>
+   <div class="blk f"><div><small>Always included</small><h4>The Foundation</h4></div><span class="mono" style="font-size:13px">live from day one</span></div>
+   <div class="annot" style="left:44px;top:-18px">Blocks slide in and stack as you pick. Roof drops on “Both”.</div>
+  </div>
+  <div class="res-r">
+   <span class="pill" style="align-self:flex-start"><i class="live"></i>Your build · Foundation + Stand Out</span>
+   <h3>Be the one they find, and the one who answers.</h3>
+   <div class="items">
+    <span class="tick">AI receptionist, 24/7, EN + ES</span><span class="tick">Higher on Google Maps</span>
+    <span class="tick">Missed call → text in seconds</span><span class="tick">Named when people ask AI</span>
+    <span class="tick">Web chat + booking</span><span class="tick">Steady 5-star reviews</span>
+    <span class="tick">Straight to your calendar</span><span class="tick">Listings right everywhere</span>
+   </div>
+   <div style="display:flex;gap:12px;margin-top:auto"><a class="btn lime">Get my free Score →</a><a class="btn ghost">Explore Stand Out</a></div>
+  </div>
+ </div>
+</div></div>
+
+<section class="lime-sec" style="margin-top:80px"><div class="wrap layer-sec">
+ <div><p class="eyebrow">01 · The Foundation · always included</p><h2>Every lead answered in seconds.</h2><p class="sub">An AI receptionist picks up on the first ring, texts back missed calls, answers your web chat and books the job. In English or Spanish, day or night.</p>
+ <div class="tagrow"><span>AI voice receptionist</span><span>Missed-call text-back</span><span>Web chat</span><span>Booking</span></div>
+ <a class="more">Explore the Foundation →</a></div>
+ <div style="display:flex;justify-content:center"><div class="phone" style="background:var(--navy)"><div class="scr" style="min-height:430px"><div class="notch"></div><div class="sys">MISSED CALL · 7:42 PM</div><div class="bub out">Hi! Sorry we missed your call. What can we help with?</div><div class="bub in">Water heater is leaking. Tomorrow?</div><div class="bub out">Yes. 9:00 or 11:30 tomorrow?</div><div class="bub in">9 works</div><div class="bk">BOOKED · WATER HEATER · TOMORROW 9:00</div></div></div></div>
+</div></section>
+
+<section><div class="wrap layer-sec">
+ <div class="mapcard"><div class="search">⌕ <span>plumber near me</span></div>
+  <div class="res top"><span><b style="color:var(--lime)">●</b>&nbsp; Your business</span><span class="stars">★★★★★</span></div>
+  <div class="res"><span style="color:var(--steel)">● Competitor</span><span class="stars" style="color:var(--steel)">★★★★</span></div>
+  <div class="res"><span style="color:var(--steel)">● Competitor</span><span class="stars" style="color:var(--steel)">★★★</span></div>
+  <div class="bub in" style="max-width:100%;margin-top:6px"><span class="mono" style="color:var(--lime);font-size:11px">ASKED AI · “WHO’S A GOOD PLUMBER NEAR ME?”</span><br>Your business is a top pick: great reviews, and they answer fast.</div></div>
+ <div><p class="eyebrow">02 · Option A · Stand Out</p><h2>Be the one they find first.</h2><p class="sub">For when you do good work but customers can’t find you: Google Maps, AI search, reviews, listings and a website that turns visits into calls.</p>
+ <div class="tagrow" style="color:var(--body)"><span>Google Maps</span><span>AI search</span><span>Reviews</span><span>Listings</span><span>Website</span></div>
+ <a class="more" style="color:var(--lime)">Explore Stand Out →</a></div>
+</div></section>
+
+<section style="padding-top:20px"><div class="wrap">
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:end;margin-bottom:40px"><div><p class="eyebrow">03 · Option B · Scale Up</p><h2 style="font-size:64px;margin-top:14px">Booked jobs this month.</h2></div><p class="sub">For when you need jobs now: your business in their feed and at the top of Google, every lead answered and followed up until it’s booked.</p></div>
+ <div class="feed">
+  <div class="mini"><small>In their feed</small><b style="font-size:17px">Your business</b><p style="color:var(--body);font-size:15px">AC not cooling? We can be there this week.</p><div style="flex:1;border-radius:12px;background:var(--line)"></div></div>
+  <div class="arrow">→</div>
+  <div class="mini"><small>New lead · answered 0:03</small><div class="bub out" style="max-width:100%">Hi Ana! Thanks for reaching out. When works for a quick look?</div><div class="bub in">Thursday morning</div></div>
+  <div class="arrow">→</div>
+  <div class="mini"><small>Your calendar</small><div class="cal"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><b style="color:var(--lime);font:500 13px Mono">+3 BOOKED THIS WEEK · EXAMPLE</b></div>
+ </div>
+ <a class="more" style="color:var(--lime)">Explore Scale Up →</a>
+</div></section>
+
+<section style="padding-top:20px"><div class="wrap"><div class="full">
+ <div><p class="eyebrow">04 · Full Blueprint</p><h2 style="margin-top:12px">Both, on one Foundation.</h2></div>
+ <span class="eq">A + B + <b>Foundation</b></span>
+ <a class="btn lime">Which one is me? Get my Score →</a>
+</div></div></section>
+<footer><div class="wrap foot"><div><img src="/brand/logo-horizontal.svg" style="height:46px"><p style="margin-top:16px">AI growth systems for home service businesses.<br>Las Vegas, NV · Serving the U.S. · Hablamos español</p></div>
+<div class="cols"><div><b>System</b><a class="nl" href="sistema.html">The Foundation</a><a class="nl" href="destaca.html">Stand Out</a><a class="nl" href="sistema.html">Scale Up</a><a class="nl" href="sistema.html">Full Blueprint</a></div><div><b>Company</b><a class="nl" href="score.html">Blueprint Score</a><a class="nl" href="piero.html">Talk to Piero</a><a class="nl" href="es-movil.html">Español</a></div><div><b>Legal</b><span>Privacy</span><span>Terms</span><span>SMS Opt-In</span></div></div></div></footer>
+
+<div class="pbar"><b>HOGAR</b><a href="index.html">Home</a><a href="sistema.html" class=on>El Sistema</a><a href="destaca.html">Destaca</a><a href="score.html">Score</a><a href="piero.html">Piero</a><a href="es-movil.html">Móvil ES</a><button type="button" onclick="document.body.classList.toggle('notes')">Notas</button></div><script>(function(){var q='section .card,section .ind,section .tile,section .ev,section .way,section .st,section .qa,section h2,.night>*,.bento>*,.inds-grid>*,.tiles>*,.expect>*,.ways>*,.final,.end,.ba,.check';var els=[].slice.call(document.querySelectorAll(q));if(!('IntersectionObserver' in window))return;els.forEach(function(e){var r=e.getBoundingClientRect();if(r.top<innerHeight)return;e.classList.add('rv');var i=[].indexOf.call(e.parentNode.children,e);e.style.transitionDelay=Math.min(i,6)*110+'ms'});var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.12});els.forEach(function(e){if(e.classList.contains('rv'))io.observe(e)})})();</script></body></html>

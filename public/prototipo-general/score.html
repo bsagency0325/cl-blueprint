@@ -1,0 +1,128 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=1440"><meta name="robots" content="noindex,nofollow"><title>Blueprint · prototipo General · Score</title><link rel="stylesheet" href="base.css"><style>
+section{padding:100px 0}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:70px;padding:60px 0 40px;align-items:start}
+h1{font-size:78px;line-height:.92;margin:18px 0 22px}h1 em{font-style:normal;color:var(--lime)}
+.sub{font-size:20px;color:var(--body);max-width:560px}
+.form{margin-top:34px;padding:30px;border-radius:26px;background:var(--panel);border:1px solid var(--line);max-width:560px}
+.steps{display:flex;gap:8px;margin-bottom:22px}.steps i{flex:1;height:4px;border-radius:4px;background:var(--line)}.steps i.on{background:var(--lime)}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.in{border:1px solid #2a3b4c;border-radius:14px;padding:12px 14px;background:var(--navy)}
+.in small{display:block;font:500 11px Mono;color:var(--steel);letter-spacing:.12em;text-transform:uppercase}
+.in span{font-size:17px}.in.act{border-color:var(--lime)}
+.in .cur{display:inline-block;width:2px;height:18px;background:var(--lime);vertical-align:-3px;margin-left:2px}
+.trades{display:flex;flex-wrap:wrap;gap:8px;grid-column:1/-1}
+.trades span{padding:8px 14px;border-radius:999px;border:1px solid #2a3b4c;font-size:15px}.trades .on{background:var(--lime);color:var(--navy);border-color:var(--lime)}
+.rep{position:relative;border-radius:30px;background:var(--chalk);color:var(--navy);padding:34px;transform:rotate(1.2deg)}
+.rep .hd{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #d9dcdf;padding-bottom:16px}
+.rep .hd b{font:700 22px Ox}.rep .hd span{font:500 12px Mono;color:#5b6773}
+.big{display:flex;align-items:flex-end;gap:16px;margin:22px 0}
+.big b{font:700 130px Ox;line-height:.8}.big small{font:500 14px Mono;color:#5b6773;padding-bottom:10px}
+.row{display:grid;grid-template-columns:150px 1fr 40px;align-items:center;gap:14px;padding:10px 0;font-size:15px}
+.bar{height:10px;border-radius:6px;background:#e3e6e9;overflow:hidden}.bar i{display:block;height:100%;background:#060F19}
+.bar.lo i{background:#c9463d}
+.blur{margin-top:18px;border-radius:16px;background:#060F19;color:var(--chalk);padding:18px 20px;display:flex;justify-content:space-between;align-items:center}
+.blur b{filter:blur(7px);font:700 30px Ox}
+.typing{position:absolute;top:-16px;left:28px;background:var(--lime);color:var(--navy);font:500 12px Mono;padding:6px 12px;border-radius:999px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+.tile{padding:28px;border-radius:22px;background:var(--panel);border:1px solid var(--line);min-height:210px;display:flex;flex-direction:column;justify-content:space-between}
+.tile h3{font-size:26px;margin-bottom:8px}.tile p{color:var(--body);font-size:16px}
+.tile .n{font:500 12px Mono;color:var(--lime);letter-spacing:.14em}
+.tile.hi{background:var(--lime);color:var(--navy);border-color:var(--lime)}.tile.hi p{color:#22340c}.tile.hi .n{color:var(--navy)}
+h2{font-size:64px;margin-top:14px}
+.how{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:center}
+.tl{margin-top:36px;position:relative;padding-left:40px}
+.tl:before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.st{position:relative;padding-bottom:32px}.st:before{content:'';position:absolute;left:-36px;top:4px;width:16px;height:16px;border-radius:50%;border:2px solid var(--lime);background:var(--navy)}
+.st.on:before{background:var(--lime)}
+.st b{font:700 26px Ox;display:block;margin-bottom:6px}.st p{color:var(--body)}
+.st small{font:500 12px Mono;color:var(--lime);letter-spacing:.14em}
+.faq{max-width:900px}.qa{border-top:1px solid var(--line);padding:24px 0;display:flex;justify-content:space-between;gap:30px}
+.qa b{font:700 22px Ox}.qa p{color:var(--body);margin-top:10px;max-width:700px}.qa+.qa p{display:none}.qa i{font-style:normal;color:var(--lime);font:700 26px Ox}
+.end{border-radius:32px;background:var(--lime);color:var(--navy);padding:64px;display:flex;justify-content:space-between;align-items:center}
+.end h2{font-size:72px;margin:0}.end .btn{background:var(--navy);color:var(--chalk)}
+.light .st b{color:var(--navy)}.light .st small{color:var(--ink)}.light .tl:before{background:#c4ccd3}.light .st:before{background:var(--chalk);border-color:var(--ink)}.light .st.on:before{background:var(--ink)}.light .phone{color:var(--chalk)}.tile:nth-child(4) p{color:#3d4a57}
+</style></head><body>
+<div class="wrap nav"><a href="index.html"><img class="logo" src="/brand/logo-horizontal.svg"></a><div class="links"><a class="nl" href="sistema.html">The System</a><b><a class="nl" href="score.html">Blueprint Score</a></b><a class="nl" href="piero.html">Talk to Piero</a></div><div class="r"><span class="lang"><b>EN</b>ES</span><a class="btn lime" style="height:46px">Get my free Score</a></div></div>
+
+<div class="wrap hero" style="position:relative">
+ <div>
+  <span class="eyebrow">Free · No card · No pitch on the form</span>
+  <h1>Your free Score.<br><em>See where customers leak.</em></h1>
+  <p class="sub">Two quick steps. We check how you show up, how fast you answer and how you follow up, then send you a score out of 100 with what to fix first.</p>
+  <div class="form">
+   <div class="steps"><i class="on"></i><i></i></div>
+   <div class="eyebrow" style="color:var(--steel);margin-bottom:14px">Step 1 of 2 · Your business</div>
+   <div class="f">
+    <div class="in"><small>Business name</small><span>Bright Smile Dental</span></div>
+    <div class="in act"><small>City</small><span>Henderson<i class="cur"></i></span></div>
+    <div class="trades"><span class="on">Dental</span><span>Home services</span><span>Legal</span><span>Auto</span><span>Med spa</span><span>Other</span></div>
+   </div>
+   <a class="btn lime" style="margin-top:20px;width:100%;justify-content:center">Next: where to send it →</a>
+  </div>
+ </div>
+ <div style="padding-top:40px;position:relative">
+  <div class="rep">
+   <span class="typing">● building as you type</span>
+   <div class="hd"><b>Bright Smile Dental</b><span>HENDERSON, NV · DENTAL</span></div>
+   <div class="big"><b>??</b><small>/100 · YOUR SCORE<br>unlocks after step 2</small></div>
+   <div class="row"><span>Found on Google</span><div class="bar"><i style="width:62%"></i></div><span>…</span></div>
+   <div class="row"><span>Named by AI search</span><div class="bar lo"><i style="width:22%"></i></div><span>…</span></div>
+   <div class="row"><span>Answer speed</span><div class="bar lo"><i style="width:30%"></i></div><span>…</span></div>
+   <div class="row"><span>Reviews</span><div class="bar"><i style="width:55%"></i></div><span>…</span></div>
+   <div class="row"><span>Follow-up</span><div class="bar lo"><i style="width:18%"></i></div><span>…</span></div>
+   <div class="blur"><span style="font:500 13px Mono;color:var(--steel)">WHAT THIS COSTS YOU</span><b>$00,000/mo</b></div>
+  </div>
+  <div class="annot" style="right:-10px;bottom:-60px">Live preview: name, city and business type fill the report card as you type. Bars are a sample shape, not real data, until the Score runs.</div>
+ </div>
+</div>
+
+<section><div class="wrap">
+ <span class="eyebrow">What we check</span><h2>Six things decide who gets the customer.</h2>
+ <div class="tiles">
+  <div class="tile hi"><span class="n">01 · SPEED</span><div><h3>How fast you answer</h3><p>We call and text you like a customer would, after hours too.</p></div></div>
+  <div class="tile"><span class="n">02 · MAPS</span><div><h3>Google Maps spot</h3><p>Where you land for what you do in your city.</p></div></div>
+  <div class="tile"><span class="n">03 · AI SEARCH</span><div><h3>What AI says</h3><p>Whether ChatGPT and Google's AI name you when asked.</p></div></div>
+  <div class="tile" style="background:var(--chalk);color:var(--navy);border-color:var(--chalk)"><span class="n" style="color:var(--ink)">04 · REVIEWS</span><div><h3>Reviews vs. competitors</h3><p>How many, how recent, how you reply.</p></div></div>
+  <div class="tile"><span class="n">05 · WEBSITE</span><div><h3>Your website</h3><p>Speed on a phone and how easy it is to call you.</p></div></div>
+  <div class="tile"><span class="n">06 · FOLLOW-UP</span><div><h3>Follow-up</h3><p>What happens to a lead that doesn't book right away.</p></div></div>
+ </div>
+</div></section>
+
+<section class="light"><div class="wrap how">
+ <div>
+  <span class="eyebrow">How it works</span><h2>You do one step.<br>We do the rest.</h2>
+  <div class="tl">
+   <div class="st on"><small>YOU</small><b>Fill the 2-step form</b><p>Business, city, type. Then where to send your Score.</p></div>
+   <div class="st"><small>US</small><b>Our AI calls you</b><p>It says it's AI up front, asks a couple of questions and hangs up. You hear the Foundation working.</p></div>
+   <div class="st"><small>US</small><b>Your Score lands</b><p>By text and email: your number, where you lose customers and what to fix first.</p></div>
+   <div class="st"><small>OPTIONAL</small><b>Walk through it with Piero</b><p>If you want help fixing it, book a call. If not, the Score is yours anyway.</p></div>
+  </div>
+ </div>
+ <div style="display:flex;justify-content:center;position:relative">
+  <div class="phone"><div class="scr"><div class="notch"></div>
+   <div class="sys">Blueprint Strategies · text</div>
+   <div class="bub in">Hi Marco, it's Blueprint. Your Score for Bright Smile Dental is ready 👇</div>
+   <div class="bub in" style="background:var(--chalk);color:var(--navy)"><b style="font:700 44px Ox">47</b><br><span style="font:500 11px Mono">/100 · tap to see your report</span></div>
+   <div class="bub in">Biggest leak: after-hours calls go to voicemail. Want Piero to walk you through it?</div>
+   <div class="bub out">Yes, Thursday works</div>
+   <div class="bk">✓ Call booked · Thu</div>
+  </div></div>
+  <div class="annot" style="left:0;top:40px">Sample text only. Real wording comes from the Score automation.</div>
+ </div>
+</div></section>
+
+<section style="padding-top:20px"><div class="wrap">
+ <span class="eyebrow">Fair questions</span><h2 style="margin-bottom:34px">Before you start.</h2>
+ <div class="faq">
+  <div class="qa"><div><b>Is it really free?</b><p>Yes. No card, no contract. You keep the Score either way.</p></div><i>–</i></div>
+  <div class="qa"><div><b>Will someone hound me after?</b><p>No. You get your Score and one offer to walk through it. That's it.</p></div><i>+</i></div>
+  <div class="qa"><div><b>Why does an AI call me?</b><p>Because it's part of the check: it's the same system that would answer your customers.</p></div><i>+</i></div>
+  <div class="qa"><div><b>Do you work with my business?</b><p>If customers call, text or fill a form to book you, yes: home services, dental, legal, auto, med spas and more.</p></div><i>+</i></div>
+ </div>
+</div></section>
+
+<section style="padding-top:20px"><div class="wrap end"><h2>See your number.</h2><a class="btn">Start my free Score →</a></div></section>
+<footer><div class="wrap foot"><div><img src="/brand/logo-horizontal.svg" style="height:46px"><p style="margin-top:16px">AI growth systems for local service businesses.<br>Las Vegas, NV · Serving the U.S. · Hablamos español</p></div>
+<div class="cols"><div><b>System</b><a class="nl" href="sistema.html">The Foundation</a><a class="nl" href="destaca.html">Stand Out</a><a class="nl" href="sistema.html">Scale Up</a><a class="nl" href="sistema.html">Full Blueprint</a></div><div><b>Company</b><a class="nl" href="score.html">Blueprint Score</a><a class="nl" href="piero.html">Talk to Piero</a><a class="nl" href="es-movil.html">Español</a></div><div><b>Legal</b><span>Privacy</span><span>Terms</span><span>SMS Opt-In</span></div></div></div></footer>
+
+<div class="pbar"><b>GENERAL</b><a href="index.html">Home</a><a href="sistema.html">El Sistema</a><a href="destaca.html">Destaca</a><a href="score.html" class=on>Score</a><a href="piero.html">Piero</a><a href="es-movil.html">Móvil ES</a><button type="button" onclick="document.body.classList.toggle('notes')">Notas</button></div><script>(function(){var q='section .card,section .ind,section .tile,section .ev,section .way,section .st,section .qa,section h2,.night>*,.bento>*,.inds-grid>*,.tiles>*,.expect>*,.ways>*,.final,.end,.ba,.check';var els=[].slice.call(document.querySelectorAll(q));if(!('IntersectionObserver' in window))return;els.forEach(function(e){var r=e.getBoundingClientRect();if(r.top<innerHeight)return;e.classList.add('rv');var i=[].indexOf.call(e.parentNode.children,e);e.style.transitionDelay=Math.min(i,6)*110+'ms'});var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.12});els.forEach(function(e){if(e.classList.contains('rv'))io.observe(e)})})();</script></body></html>
