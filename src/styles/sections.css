@@ -64,4 +64,7 @@
   background: var(--lime); opacity: 0; pointer-events: none; z-index: 1;
 }
 .fx .illo.drawn::after { animation: plot 1.6s cubic-bezier(.6, 0, .2, 1) forwards; }
+/* Depth: the drawing drifts against the scroll and leans away from the cursor (Fx.astro sets the vars). */
+.fx .illo.depth img { transform: translate3d(calc(var(--tx, 0) * -10px), calc(var(--sy, 0) * 14px + var(--ty, 0) * -8px), 0) scale(1.07); transition: clip-path 1.6s cubic-bezier(.6, 0, .2, 1), transform .5s cubic-bezier(.2, .7, .2, 1); will-change: transform; }
+.fx .illo.depth .illo-fg { position: absolute; inset: 0; transform: translate3d(calc(var(--tx, 0) * 14px), calc(var(--sy, 0) * -10px + var(--ty, 0) * 10px), 0) scale(1.07); }
 @keyframes plot { 0% { left: 0; opacity: 1; } 90% { opacity: 1; } 100% { left: calc(100% - 2px); opacity: 0; } }
