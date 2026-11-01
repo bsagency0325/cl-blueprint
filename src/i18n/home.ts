@@ -10,9 +10,9 @@ type PathDemo =
 
 const en = {
   meta: {
-    title: 'Blueprint Strategies | AI Growth Systems for Home Service Businesses',
+    title: 'AI Growth for Home Service Businesses | Blueprint Strategies',
     description:
-      'See how many jobs you’re losing every month. Get your free Blueprint Score: Google Maps ranking, AI search visibility, response speed and reviews vs. competitors. Built for HVAC, plumbing, roofing, electrical and more.',
+      'See how many jobs you’re losing every month. Free Blueprint Score for HVAC, plumbing, roofing and more: Google Maps, AI search, response speed and reviews.',
   },
   ids: { system: 'system', how: 'how-it-works', guarantee: 'guarantee', faq: 'faq', score: 'score', contact: 'contact' },
   hero: {
@@ -268,9 +268,9 @@ const en = {
 
 const es: typeof en = {
   meta: {
-    title: 'Blueprint Strategies | Sistemas de crecimiento con IA para negocios del hogar',
+    title: 'Crecimiento con IA para contratistas | Blueprint Strategies',
     description:
-      'Descubre cuántos trabajos estás perdiendo cada mes. Pide tu Blueprint Score gratis: tu posición en Google Maps, tu visibilidad en la IA, tu velocidad de respuesta y tus reseñas vs. la competencia. Te atendemos en español.',
+      'Descubre cuántos trabajos pierdes cada mes. Blueprint Score gratis: Google Maps, búsquedas con IA, velocidad de respuesta y reseñas. Te atendemos en español.',
   },
   ids: { system: 'sistema', how: 'como-funciona', guarantee: 'garantia', faq: 'preguntas', score: 'score', contact: 'contacto' },
   hero: {

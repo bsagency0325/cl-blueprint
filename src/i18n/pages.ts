@@ -10,9 +10,9 @@ const pick = (items: { q: string; a: string }[], idx: number[]) => idx.map((i) =
 const en = {
   services: {
     meta: {
-      title: 'AI Receptionist, Google Maps & Ads for Contractors | Blueprint Strategies',
+      title: 'AI Receptionist, Google Maps & Ads for Contractors | Blueprint',
       description:
-        'One system for home service businesses: an AI receptionist that answers every call in English and Spanish, Google Maps and AI search visibility, reviews, Facebook ads and Google Local Services Ads.',
+        'One system for home service businesses: an AI receptionist that answers every call in English and Spanish, Google Maps and AI search visibility, reviews and ads.',
     },
     head: {
       eyebrow: 'Services',
@@ -28,9 +28,9 @@ const en = {
   },
   score: {
     meta: {
-      title: 'Free Blueprint Score | Marketing Audit for Contractors | Blueprint Strategies',
+      title: 'Free Blueprint Score | Marketing Audit for Contractors',
       description:
-        'Free audit for home service businesses: where you rank on Google Maps, whether AI search recommends you, how fast you answer leads and your reviews vs. competitors. By text and email within one business day.',
+        'Free audit for home service businesses: your Google Maps rank, AI search visibility, lead response speed and reviews vs. competitors. Sent within one business day.',
     },
     head: {
       eyebrow: 'Free Blueprint Score',
@@ -66,7 +66,7 @@ const en = {
     meta: {
       title: 'Contact Blueprint Strategies | Book a Quick Call',
       description:
-        'Talk to Piero at Blueprint Strategies: book a quick call, in English or Spanish. AI growth systems for home service businesses, based in Las Vegas and working across the U.S.',
+        'Talk to Piero at Blueprint Strategies, in English or Spanish. AI growth systems for home service businesses, based in Las Vegas and working across the U.S.',
     },
     head: {
       eyebrow: 'Contact',
@@ -92,9 +92,9 @@ const en = {
 const es: typeof en = {
   services: {
     meta: {
-      title: 'Recepcionista con IA, Google Maps y anuncios para contratistas | Blueprint',
+      title: 'Recepcionista con IA, Google Maps y anuncios | Blueprint',
       description:
-        'Un solo sistema para negocios de servicios del hogar: una recepcionista con IA que contesta cada llamada en español e inglés, visibilidad en Google Maps y en la IA, reseñas, anuncios en Facebook y Google Local Services Ads.',
+        'Un solo sistema para contratistas: recepcionista con IA que contesta cada llamada en español e inglés, Google Maps, búsquedas con IA, reseñas y anuncios.',
     },
     head: {
       eyebrow: 'Servicios',
@@ -109,9 +109,9 @@ const es: typeof en = {
   },
   score: {
     meta: {
-      title: 'Blueprint Score gratis | Auditoría de marketing para contratistas',
+      title: 'Blueprint Score gratis | Auditoría para contratistas',
       description:
-        'Auditoría gratis para negocios de servicios del hogar: dónde apareces en Google Maps, si la IA te recomienda, qué tan rápido contestas y tus reseñas vs. la competencia. Por mensaje y correo en un día hábil.',
+        'Auditoría gratis para contratistas: tu lugar en Google Maps, si la IA te recomienda, qué tan rápido contestas y tus reseñas. Te llega en un día hábil.',
     },
     head: {
       eyebrow: 'Blueprint Score gratis',
@@ -145,9 +145,9 @@ const es: typeof en = {
   },
   contact: {
     meta: {
-      title: 'Contacto | Agenda una llamada con Blueprint Strategies',
+      title: 'Contacto | Habla con Blueprint Strategies',
       description:
-        'Habla con Piero de Blueprint Strategies: agenda una llamada corta, en español o en inglés. Sistemas de crecimiento con IA para negocios de servicios del hogar, desde Las Vegas para todo EE. UU.',
+        'Habla con Piero de Blueprint Strategies, en español o en inglés. Sistemas de crecimiento con IA para contratistas, desde Las Vegas para todo EE. UU.',
     },
     head: {
       eyebrow: 'Contacto',
