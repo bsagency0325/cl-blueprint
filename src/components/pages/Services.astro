@@ -1,0 +1,49 @@
+---
+// Services: the whole system on one page (foundation + three paths, with the example screens),
+// four questions about the system and a short closing band. No prices. The guarantee and the full
+// form + calendar block live on the home page only, so this page doesn't repeat them.
+import Page from '../../layouts/Page.astro';
+import System from '../sections/System.astro';
+import Faq from '../sections/Faq.astro';
+import CtaBand from '../sections/CtaBand.astro';
+import Fx from '../Fx.astro';
+import { content, type Lang } from '../../i18n/home';
+import { pages } from '../../i18n/pages';
+import { routes, pathIds } from '../../i18n/routes';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const p = pages[lang].services;
+const t = content[lang];
+const site = 'https://blueprintstrategies.us';
+const url = new URL(routes.services[lang], site).href;
+const provider = { '@type': 'ProfessionalService', name: 'Blueprint Strategies', url: site };
+const f = t.system.foundation;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: p.head.eyebrow,
+    itemListElement: [
+      { name: f.title, description: f.items.join('. '), id: pathIds[lang].foundation },
+      ...t.system.paths.map((path, i) => ({
+        name: path.name,
+        description: path.items.length ? path.items.join('. ') : path.body,
+        id: [pathIds[lang].found, pathIds[lang].booked, pathIds[lang].full][i],
+      })),
+    ].map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: { '@type': 'Service', name: s.name, description: s.description, url: `${url}#${s.id}`, provider, areaServed: 'US', availableLanguage: ['en', 'es'] },
+    })),
+  },
+];
+---
+<Page lang={lang} page="services" title={p.meta.title} description={p.meta.description} schema={schema}>
+  <main>
+    <System lang={lang} head={p.head} />
+    <Faq lang={lang} eyebrow={p.faq.eyebrow} title={p.faq.title} items={p.faq.items} />
+    <CtaBand lang={lang} />
+  </main>
+  <Fx />
+</Page>

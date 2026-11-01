@@ -1,6 +1,13 @@
 import type { APIRoute } from 'astro';
+import { routes } from '../i18n/routes';
 
-const pages = ['/', '/es/', '/optin-blueprintstrategies/', '/privacy-policy/', '/terms/'];
+// Every main page in both languages, plus the legal pages.
+const pages = [
+  ...Object.values(routes).flatMap((r) => [r.en, r.es]),
+  '/optin-blueprintstrategies/',
+  '/privacy-policy/',
+  '/terms/',
+];
 
 export const GET: APIRoute = ({ site }) => {
   const base = site ?? new URL('https://blueprintstrategies.us');

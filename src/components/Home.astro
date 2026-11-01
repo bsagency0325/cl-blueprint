@@ -1,321 +1,152 @@
 ---
+// Home page: the free Score up top, the four leaks, the life of one missed call (scroll story, trade chips),
+// the system in short (full version on /services),
+// the speed guarantee and the Score form again. How it works and the FAQ moved
+// to the Score, Services and Contact pages to keep this page short.
+import { Image } from 'astro:assets';
 import { content, type Lang } from '../i18n/home';
-import { site } from '../config';
+import { routes, pathIds } from '../i18n/routes';
+import ScoreForm from './ScoreForm.astro';
+import ScoreCard from './sections/ScoreCard.astro';
+import Guarantee from './sections/Guarantee.astro';
+import LeadStory from './sections/LeadStory.astro';
+import Final from './sections/Final.astro';
+import Fx from './Fx.astro';
+import answerImg from '../assets/illustrations/answer.jpg';
+import foundImg from '../assets/illustrations/found.jpg';
+import bookedImg from '../assets/illustrations/booked.jpg';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = content[lang];
 const ids = t.ids;
-const scoreValues = [52, 18, 35, 60];
-const thanks = lang === 'es' ? '/es/gracias/' : '/thanks/';
-const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.items] : t.guarantee.items;
+const pid = pathIds[lang];
+const services = routes.services[lang];
+
+const images = { found: foundImg, booked: bookedImg } as const;
+const imgWidths = [480, 720, 1024];
+const imgSizes = '(max-width: 1000px) calc(100vw - 48px), 380px';
+const illustrated = t.system.paths.filter((p) => p.image);
+const fullPath = t.system.paths.find((p) => !p.image)!;
+// Line icons for the four leaks, drawn on a 24×24 grid in the blueprint style.
+// Every stroke uses pathLength=100 so all four icons draw in exactly the same time.
+const leakIcons = [
+  '<path d="M12 21s-6-5.3-6-11a6 6 0 1 1 12 0c0 5.7-6 11-6 11z" class="dash" style="--dash:5.6 4.5"/><path d="M10 8.5a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6.9V12M12 14.2v.1"/>',
+  '<path d="M5 4h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.1 6.1l1.4-2.3L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16 16 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z"/><path d="M15 3.5l5.5 5.5M20.5 3.5L15 9"/>',
+  '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" class="dash" style="--dash:4.05 3.24"/>',
+  '<path d="M6 3h8l4 4v6"/><path d="M6 3v18h7"/><path d="M14 3v4h4M9 10h6M9 13.5h4"/><circle cx="17.5" cy="17.5" r="3.5"/><path d="M17.5 15.8v1.9l1.2.8"/>',
+];
 ---
 <main>
-  <!-- HERO + FORM -->
-  <section class="hero grid-bg">
+  <!-- HERO: the free Score is the one goal of the page -->
+  <section class="hero grid-bg spot">
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">{t.hero.eyebrow}</p>
         <h1>{t.hero.title}</h1>
         <p class="lead">{t.hero.sub}</p>
-
-        <form id={ids.score} class="form card" name="blueprint-score" method="POST" action={thanks} data-netlify="true" netlify-honeypot="company-website">
-          <input type="hidden" name="form-name" value="blueprint-score" />
-          <input type="hidden" name="language" value={lang} />
-          <p class="sr-only"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
-
-          <div class="step step1">
-            <div class="row">
-              <label><span>{t.form.step1.business}</span><input name="business" autocomplete="organization" required /></label>
-              <label><span>{t.form.step1.city}</span><input name="city" autocomplete="address-level2" required /></label>
-            </div>
-            <button class="btn btn-primary next" type="button">{t.form.step1.button}</button>
-            <p class="form-note">{t.form.step1.note}</p>
-          </div>
-
-          <div class="step step2">
-            <h2 class="step2-title">{t.form.step2.heading}</h2>
-            <div class="row three">
-              <label><span>{t.form.step2.name}</span><input name="name" autocomplete="name" required /></label>
-              <label><span>{t.form.step2.phone}</span><input name="phone" type="tel" autocomplete="tel" required aria-describedby={`phone-help-${lang}`} /><small id={`phone-help-${lang}`}>{t.form.step2.phoneHelp}</small></label>
-              <label><span>{t.form.step2.email}</span><input name="email" type="email" autocomplete="email" required /></label>
-            </div>
-            <label class="consent">
-              <input type="checkbox" name="sms_consent" value="yes" />
-              <span>
-                {t.form.step2.consent}{' '}
-                <a href="/privacy-policy">{t.form.step2.privacy}</a> · <a href="/terms">{t.form.step2.terms}</a>
-              </span>
-            </label>
-            <button class="btn btn-primary submit" type="submit">{t.form.step2.button}</button>
-            <p class="form-note">{t.form.step2.note}</p>
-          </div>
-        </form>
-
+        <ScoreForm lang={lang} id={ids.score} uid={`${lang}-top`} />
         <p class="trust"><span class="dot" aria-hidden="true"></span>{t.hero.trust}</p>
+        <p class="trust risk">{t.hero.risk}</p>
       </div>
 
-      <div class="score-card card" aria-hidden="true">
-        <div class="score-top">
-          <span class="mono label">{t.hero.card.label}</span>
-          <img src="/brand/icon.svg" alt="" width="14" height="28" />
-        </div>
-        <div class="score-value"><span>41</span><span class="out">/ 100</span></div>
-        <div class="bars">
-          {t.hero.card.metrics.map((m, i) => (
-            <div class="bar">
-              <div class="bar-row"><span>{m}</span><span class="mono">{scoreValues[i]}</span></div>
-              <div class="track"><div class="fill" style={`width:${scoreValues[i]}%`}></div></div>
-            </div>
-          ))}
-        </div>
-        <div class="score-foot">
-          <span>{t.hero.card.lost}</span>
-          <span class="lost">$•,•••</span>
-        </div>
-      </div>
+
+      <ScoreCard lang={lang} />
     </div>
   </section>
 
   <!-- THE PROBLEM -->
   <section class="section">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.leaks.eyebrow}</p>
         <h2>{t.leaks.title}</h2>
         <p>{t.leaks.sub}</p>
       </div>
-      <div class="leaks">
+      <div class="leaks" data-reveal="stagger">
         {t.leaks.items.map((item, i) => (
-          <div class="leak card">
-            <span class="mono num">0{i + 1}</span>
+          <div class="leak card lift">
+            <div class="leak-top">
+              <svg class="icon" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={leakIcons[i].replace(/<(path|circle) /g, '<$1 pathLength="100" ')} />
+              <span class="mono num">0{i + 1}</span>
+            </div>
             <h3>{item.title}</h3>
             <p>{item.body}</p>
           </div>
         ))}
       </div>
+      <p class="closing" data-scrub>{t.leaks.closing}</p>
     </div>
   </section>
 
-  <!-- WHY IT HAPPENS -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">{t.why.eyebrow}</p>
-        <h2>{t.why.title}</h2>
-      </div>
-      <div class="cells two">
-        {t.why.items.map((item) => (
-          <div class="cell">
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </div>
-        ))}
-      </div>
-      {t.why.bonus && (
-        <div class="bonus card">
-          <span class="mono tag">{t.why.bonus.label}</span>
-          <h3>{t.why.bonus.title}</h3>
-          <p>{t.why.bonus.body}</p>
-        </div>
-      )}
-      <p class="closing">{t.why.closing}</p>
-    </div>
-  </section>
+  <LeadStory lang={lang} />
 
-  <!-- THE SYSTEM -->
-  <section class="section grid-bg" id={ids.system}>
+  <!-- THE SYSTEM, in short: each block links to its full version on the Services page -->
+  <section class="section grid-bg spot" id={ids.system}>
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <p class="eyebrow">{t.system.eyebrow}</p>
         <h2>{t.system.title}</h2>
         <p>{t.system.sub}</p>
       </div>
 
-      <div class="foundation card">
-        <span class="mono tag">{t.system.foundation.label}</span>
-        <h3>{t.system.foundation.title}</h3>
-        <p>{t.system.foundation.body}</p>
-      </div>
-
-      <div class="paths">
-        {t.system.paths.map((p) => (
-          <div class="path card">
-            <span class="mono tag">{p.tag}</span>
-            <h3>{p.name}</h3>
-            <p class="for">{p.for}</p>
-            {p.items.length > 0 && (
-              <ul class="ticks">
-                {p.items.map((it) => <li>{it}</li>)}
-              </ul>
-            )}
-            {p.body && <p class="path-body">{p.body}</p>}
-            <p class="promise"><span class="mono">{t.system.promiseLabel}</span>{p.promise}</p>
+      <div class="sum" data-reveal="stagger">
+        <a class="sum-card sum-wide card sys" href={`${services}#${pid.foundation}`}>
+          <figure class="illo">
+            <Image src={answerImg} alt={t.system.foundation.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+          </figure>
+          <div class="sum-copy">
+            <span class="mono tag">{t.system.foundation.label}</span>
+            <h3>{t.system.foundation.title}</h3>
+            <p>{t.system.foundation.body}</p>
+            <span class="more">{t.system.more} →</span>
           </div>
-        ))}
-      </div>
-
-      <div class="system-close">
-        <p class="closing">{t.system.closing}</p>
-        <a class="btn btn-ghost" href={`#${ids.score}`}>{t.system.cta}</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section class="section" id={ids.how}>
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">{t.how.eyebrow}</p>
-        <h2>{t.how.title}</h2>
-      </div>
-      <ol class="steps">
-        {t.how.steps.map((s, i) => (
-          <li class="step card">
-            <span class="mono num">0{i + 1}</span>
-            <h3>{s.title}</h3>
-            <p>{s.body}</p>
-          </li>
-        ))}
-      </ol>
-
-      <div class="expect">
-        <h3>{t.how.expectTitle}</h3>
-        <dl>
-          {t.how.expect.map((e) => (
-            <div class="expect-row">
-              <dt class="mono">{e.when}</dt>
-              <dd>{e.body}{e.path && <span class="mono path-tag">{e.path}</span>}</dd>
+        </a>
+        {illustrated.map((p) => (
+          <a class="sum-card card sys" href={`${services}#${pid[p.image as 'found' | 'booked']}`}>
+            <figure class="illo">
+              <Image src={images[p.image as keyof typeof images]} alt={p.imageAlt} widths={imgWidths} sizes={imgSizes} format="webp" quality={78} loading="lazy" />
+            </figure>
+            <div class="sum-copy">
+              <span class="mono tag">{p.tag}</span>
+              <h3>{p.name}</h3>
+              <p>{p.for}</p>
+              <span class="more">{t.system.more} →</span>
             </div>
-          ))}
-        </dl>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHY IT WORKS -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">{t.works.eyebrow}</p>
-        <h2>{t.works.title}</h2>
-      </div>
-      <div class="cells three">
-        {t.works.items.map((item) => (
-          <div class="cell">
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </div>
+          </a>
         ))}
       </div>
-      <p class="closing">{t.works.closing}</p>
-    </div>
-  </section>
 
-  <!-- GUARANTEES -->
-  <section class="section grid-bg" id={ids.guarantee}>
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">{t.guarantee.eyebrow}</p>
-        <h2>{t.guarantee.title}</h2>
-      </div>
-      <div class="g-box card">
-        <dl>
-          {guarantees.map((g) => (
-            <div class="g-row">
-              <dt class="mono">{g.label}</dt>
-              <dd>{g.body}</dd>
-            </div>
-          ))}
-        </dl>
-        <p class="note">{t.guarantee.note}</p>
+      <a class="sum-full card sys" href={`${services}#${pid.full}`} data-reveal>
+        <span class="mono tag">{fullPath.tag}</span>
+        <strong>{fullPath.name}</strong>
+        <span class="sum-full-body">{fullPath.body}</span>
+        <span class="more">{t.system.more} →</span>
+      </a>
+
+      <div class="system-close" data-reveal>
+        <p class="closing" data-scrub>{t.system.closing}</p>
+        <a class="btn btn-primary" href={`#${ids.score}`} data-focus-form>{t.system.cta}</a>
       </div>
     </div>
   </section>
 
-  <!-- FOUNDER -->
-  <section class="section">
-    <div class="wrap founder">
-      <div class="photo">
-        {site.founderPhoto
-          ? <img src={site.founderPhoto} alt={t.founder.photoAlt} width="480" height="560" loading="lazy" />
-          : <img class="mark" src="/brand/icon.svg" alt="" width="60" height="120" />}
-      </div>
-      <div class="founder-copy">
-        <p class="eyebrow">{t.founder.eyebrow}</p>
-        <h2>{t.founder.title}</h2>
-        <p class="lead">{t.founder.body}</p>
-        <ul class="details mono">
-          {t.founder.details.map((d) => <li>{d}</li>)}
-        </ul>
-      </div>
-    </div>
-  </section>
+  <Guarantee lang={lang} />
 
-  <!-- FAQ -->
-  <section class="section" id={ids.faq}>
-    <div class="wrap faq-wrap">
-      <div class="section-head">
-        <p class="eyebrow">{t.faq.eyebrow}</p>
-        <h2>{t.faq.title}</h2>
-      </div>
-      <div class="faq">
-        {t.faq.items.map((f) => (
-          <details>
-            <summary>{f.q}</summary>
-            <p>{f.a}</p>
-          </details>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FINAL CTA + CONTACT -->
-  <section class="section grid-bg final" id={ids.contact}>
-    <div class="wrap final-inner">
-      <h2>{t.final.title}</h2>
-      <p class="lead">{t.final.sub}</p>
-      <a class="btn btn-primary big" href={`#${ids.score}`} data-focus-form>{t.final.button}</a>
-      <p class="secondary">{t.final.secondary}</p>
-      <div class="contact">
-        <a class="btn btn-ghost" href={`mailto:${site.email}`}>{t.final.email}<span class="mono addr">{site.email}</span></a>
-        {site.phone && <a class="btn btn-ghost" href={`sms:${site.phone}`}>{t.final.phone}</a>}
-        {site.whatsapp && <a class="btn btn-ghost" href={`https://wa.me/${site.whatsapp}`} rel="noopener">{t.final.whatsapp}</a>}
-      </div>
-    </div>
-  </section>
+  <Final lang={lang} />
 </main>
 
-<script>
-  // Two-step Score form: step 2 appears after business name + city are filled in.
-  // Without JavaScript both steps show at once and the form still submits.
-  for (const form of document.querySelectorAll<HTMLFormElement>('form[name="blueprint-score"]')) {
-    form.classList.add('js');
-    const step1 = form.querySelector<HTMLElement>('.step1')!;
-    const next = form.querySelector<HTMLButtonElement>('.next')!;
-    next.addEventListener('click', () => {
-      const fields = [...step1.querySelectorAll('input')];
-      const invalid = fields.find((f) => !f.checkValidity());
-      if (invalid) { invalid.reportValidity(); return; }
-      form.classList.add('on-step2');
-      form.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
-    });
-    step1.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && e.target instanceof HTMLInputElement) { e.preventDefault(); next.click(); }
-    });
-  }
-  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-focus-form]')) {
-    link.addEventListener('click', () => {
-      setTimeout(() => document.querySelector<HTMLInputElement>('form[name="blueprint-score"] input[name="business"]')?.focus({ preventScroll: true }), 400);
-    });
-  }
-</script>
+<Fx />
 
 <style>
-  .lead { color: var(--body); font-size: 20px; line-height: 1.55; }
-  .tag { color: var(--lime); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
-  .num { color: var(--lime); font-size: 13px; }
-  .closing { margin-top: 40px; font-family: var(--font-display); font-weight: 500; font-size: 24px; color: var(--chalk); max-width: 760px; }
+  /* Hover cards lift and flip to Chalk (like the old site) */
+  .lift { transition: transform .2s ease, background-color .2s ease, border-color .2s ease; }
+  @media (hover: hover) {
+    .lift:hover { transform: translateY(-4px); background: var(--chalk); border-color: var(--chalk); }
+    .lift:hover h3 { color: var(--navy); }
+    .lift:hover p { color: #2b3a48; }
+    .lift:hover .num, .lift:hover .icon { color: var(--lime-ink); }
+  }
 
   /* Hero */
   .hero { padding: 88px 0 104px; }
@@ -323,144 +154,49 @@ const guarantees = site.showSpeedGuarantee ? [t.guarantee.speed, ...t.guarantee.
   .hero-copy { display: flex; flex-direction: column; gap: 24px; }
   .hero h1 { font-size: clamp(40px, 6vw, 72px); line-height: 1.0; }
   .trust { display: flex; align-items: center; gap: 12px; color: #d5dde4; font-size: 16px; }
+  .trust.risk { margin-top: -14px; padding-left: 22px; color: var(--steel); font-size: 14px; }
   .dot { width: 10px; height: 10px; background: var(--lime); flex-shrink: 0; }
-
-  .score-card { padding: 28px; display: flex; flex-direction: column; gap: 22px; justify-self: end; width: 100%; max-width: 440px; }
-  .score-top { display: flex; justify-content: space-between; align-items: center; }
-  .score-top img { height: 28px; width: auto; }
-  .label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--steel); }
-  .score-value { font-family: var(--font-display); font-weight: 700; font-size: 84px; line-height: 1; display: flex; align-items: baseline; gap: 10px; }
-  .out { font-size: 28px; font-weight: 500; color: var(--steel); }
-  .bars { display: flex; flex-direction: column; gap: 14px; }
-  .bar-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
-  .bar-row .mono { color: var(--steel); }
-  .track { height: 8px; border-radius: 4px; background: var(--line); }
-  .fill { height: 8px; border-radius: 4px; background: var(--lime); }
-  .score-foot { border-top: 1px solid var(--line); padding-top: 18px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; color: var(--body); }
-  .lost { font-family: var(--font-display); font-weight: 700; font-size: 28px; color: var(--lime); }
-
-  /* Form */
-  .form { padding: 24px; scroll-margin-top: 100px; }
-  .step { display: flex; flex-direction: column; gap: 16px; }
-  .step2 { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
-  .form.js .step2 { display: none; }
-  .form.js.on-step2 .step1 { display: none; }
-  .form.js.on-step2 .step2 { display: flex; margin-top: 0; padding-top: 0; border-top: 0; }
-  .form.js .next { display: inline-flex; }
-  .form:not(.js) .next { display: none; }
-  .step2-title { font-size: 24px; }
-  .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-  .row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .row label { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #d5dde4; }
-  .row small { color: var(--steel); font-size: 13px; }
-  input {
-    font: inherit; font-size: 16px; color: var(--chalk);
-    background: var(--navy); border: 1px solid #2a3b4c; border-radius: 8px;
-    min-height: 50px; padding: 0 14px; width: 100%;
-  }
-  input:focus { border-color: var(--lime); outline: none; }
-  .consent { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: var(--steel); }
-  .consent input { min-height: 0; width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: var(--lime); }
-  .next, .submit { align-self: flex-start; min-height: 56px; padding: 0 32px; font-size: 18px; }
-  .form-note { color: var(--steel); font-size: 14px; }
 
   /* Leaks */
   .leaks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .leak { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .leak { padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .leak-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .icon { color: var(--lime); transition: color .2s ease; }
   .leak h3 { font-size: 22px; }
   .leak p { color: var(--body); font-size: 16px; }
 
-  /* Ruled cells (why it happens / why it works) */
-  .cells { display: grid; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
-  .cells.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cells.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .cell { padding: 32px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
-  .cell h3 { font-size: 24px; }
-  .cell p { color: var(--body); font-size: 16px; }
-  .bonus { margin-top: 16px; padding: 28px 32px; display: flex; flex-direction: column; gap: 10px; border-color: var(--lime); }
-  .bonus h3 { font-size: 24px; }
-  .bonus p { color: var(--body); }
-
-  /* System */
-  .foundation { padding: 32px; display: flex; flex-direction: column; gap: 12px; border-color: var(--lime); margin-bottom: 16px; }
-  .foundation h3 { font-size: clamp(26px, 3.4vw, 34px); }
-  .foundation p { color: var(--body); max-width: 820px; }
-  .paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .path { padding: 32px; display: flex; flex-direction: column; gap: 14px; }
-  .path h3 { font-size: 28px; }
-  .for { color: var(--chalk); }
-  .path-body { color: var(--body); flex: 1; }
-  .ticks { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-  .ticks li { padding-left: 22px; position: relative; color: #d5dde4; font-size: 15px; }
-  .ticks li::before { content: ''; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; background: var(--lime); }
-  .promise { border-top: 1px solid var(--line); padding-top: 16px; color: var(--chalk); font-size: 15px; display: flex; flex-direction: column; gap: 6px; }
-  .promise .mono { color: var(--lime); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+  /* The system, in short */
+  .sum { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .sum-card { display: flex; flex-direction: column; gap: 20px; padding: 20px; color: inherit; text-decoration: none; }
+  .sum-card:hover { color: inherit; }
+  .sum-wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; padding: 28px; }
+  .sum-copy { display: flex; flex-direction: column; gap: 12px; padding: 0 8px 8px; }
+  .sum-copy h3 { font-size: clamp(26px, 3vw, 34px); }
+  .sum-copy p { color: var(--chalk); }
+  .more { color: var(--lime); font-weight: 500; margin-top: 4px; }
+  .sys:hover .more { text-decoration: underline; }
+  .sum-full { margin-top: 16px; padding: 24px 28px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; color: inherit; text-decoration: none; }
+  .sum-full:hover { color: inherit; }
+  .sum-full strong { font-family: var(--font-display); font-size: 26px; }
+  .sum-full-body { color: var(--body); flex: 1 1 280px; }
   .system-close { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 40px; }
   .system-close .closing { margin-top: 0; }
 
-  /* Steps */
-  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .step.card { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
-  .step.card h3 { font-size: 22px; }
-  .step.card p { color: var(--body); font-size: 16px; }
-  .expect { margin-top: 56px; max-width: 880px; }
-  .expect h3 { font-size: 24px; margin-bottom: 20px; }
-  .expect dl, .g-box dl { margin: 0; border-top: 1px solid var(--line); }
-  .expect-row, .g-row { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--line); }
-  dt { color: var(--lime); font-size: 14px; letter-spacing: 0.06em; padding-top: 2px; }
-  dd { margin: 0; color: #d5dde4; }
-  .path-tag { margin-left: 10px; font-size: 12px; color: var(--steel); border: 1px solid var(--line); border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
-
-  /* Guarantee */
-  .g-box { padding: 32px; border-color: var(--lime); max-width: 880px; }
-  .g-row dd { font-size: 18px; color: var(--chalk); }
-  .note { color: var(--steel); font-size: 14px; margin-top: 20px; }
-
-  /* Founder */
-  .founder { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 56px; align-items: center; }
-  .photo { aspect-ratio: 6 / 7; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .photo img { width: 100%; height: 100%; object-fit: cover; }
-  .photo img.mark { width: auto; height: 120px; object-fit: contain; }
-  .founder-copy { display: flex; flex-direction: column; gap: 20px; }
-  .founder-copy h2 { font-size: clamp(34px, 5vw, 52px); }
-  .details { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-  .details li { font-size: 13px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 6px; color: #d5dde4; }
-
-  /* FAQ */
-  .faq { border-top: 1px solid var(--line); max-width: 880px; }
-  details { border-bottom: 1px solid var(--line); }
-  summary {
-    cursor: pointer; list-style: none; padding: 24px 40px 24px 0; position: relative;
-    font-family: var(--font-display); font-weight: 500; font-size: 21px;
+  /* Leak icons draw themselves on hover */
+  @media (hover: hover) {
+    .leak:hover .icon :global(path), .leak:hover .icon :global(circle) { animation: draw 2.2s cubic-bezier(.45, 0, .25, 1); }
   }
-  summary::-webkit-details-marker { display: none; }
-  summary::after { content: '+'; position: absolute; right: 4px; top: 20px; font-size: 26px; color: var(--lime); }
-  details[open] summary::after { content: '–'; }
-  details p { color: var(--body); padding: 0 0 24px; max-width: 720px; }
-
-  /* Final */
-  .final-inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; max-width: 820px; }
-  .final h2 { font-size: clamp(36px, 5.4vw, 60px); }
-  .big { min-height: 58px; padding: 0 34px; font-size: 18px; }
-  .secondary { color: var(--steel); margin-top: 16px; }
-  .contact { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-  .addr { color: var(--steel); font-size: 13px; }
+  .icon :global(.dash) { stroke-dasharray: var(--dash); }
+  @keyframes draw { from { stroke-dasharray: 100; stroke-dashoffset: 100; } to { stroke-dasharray: 100; stroke-dashoffset: 0; } }
 
   @media (max-width: 1000px) {
-    .hero-grid, .founder { grid-template-columns: minmax(0, 1fr); }
-    .score-card { justify-self: start; }
-    .photo { max-width: 360px; }
-    .leaks, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .paths, .cells.three { grid-template-columns: minmax(0, 1fr); }
-    .row.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero-grid, .sum-wide { grid-template-columns: minmax(0, 1fr); }
+    .leaks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 640px) {
     .hero { padding: 56px 0 72px; }
-    .leaks, .steps, .cells.two, .row, .row.three { grid-template-columns: minmax(0, 1fr); }
-    .leak, .cell, .step.card, .path, .foundation, .form, .g-box, .bonus { padding: 22px; }
-    .expect-row, .g-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
-    .score-value { font-size: 64px; }
-    .next, .submit, .big { width: 100%; }
-    .addr { display: none; }
+    .leaks, .sum { grid-template-columns: minmax(0, 1fr); }
+    .leak, .sum-wide { padding: 22px; }
+    .sum-card { padding: 14px; }
   }
 </style>

@@ -1,0 +1,98 @@
+---
+import { content, type Lang } from '../i18n/home';
+
+interface Props { lang: Lang; id?: string; uid: string }
+const { lang, id, uid } = Astro.props;
+const t = content[lang];
+const thanks = lang === 'es' ? '/es/gracias/' : '/thanks/';
+---
+<form id={id} class="form card" name="blueprint-score" method="POST" action={thanks} data-netlify="true" netlify-honeypot="company-website">
+  <input type="hidden" name="form-name" value="blueprint-score" />
+  <input type="hidden" name="language" value={lang} />
+  <p class="sr-only"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
+
+  <div class="fstep step1">
+    <div class="row">
+      <label><span>{t.form.step1.business}</span><input name="business" autocomplete="organization" required /></label>
+      <label><span>{t.form.step1.city}</span><input name="city" autocomplete="address-level2" required /></label>
+    </div>
+    <button class="btn btn-primary next" type="button">{t.form.step1.button}</button>
+    <p class="form-note">{t.form.step1.note}</p>
+  </div>
+
+  <div class="fstep step2">
+    <h2 class="step2-title">{t.form.step2.heading}</h2>
+    <div class="row three">
+      <label><span>{t.form.step2.name}</span><input name="name" autocomplete="name" required /></label>
+      <label><span>{t.form.step2.phone}</span><input name="phone" type="tel" autocomplete="tel" required aria-describedby={`phone-help-${uid}`} /><small id={`phone-help-${uid}`}>{t.form.step2.phoneHelp}</small></label>
+      <label><span>{t.form.step2.email}</span><input name="email" type="email" autocomplete="email" required /></label>
+    </div>
+    <label class="consent">
+      <input type="checkbox" name="sms_consent" value="yes" />
+      <span>
+        {t.form.step2.consent}{' '}
+        <a href="/privacy-policy">{t.form.step2.privacy}</a> · <a href="/terms">{t.form.step2.terms}</a>
+      </span>
+    </label>
+    <button class="btn btn-primary submit" type="submit">{t.form.step2.button}</button>
+    <p class="form-note">{t.form.step2.note}</p>
+  </div>
+</form>
+
+<script>
+  // Two-step Score form: step 2 appears after business name + city are filled in.
+  // Without JavaScript both steps show at once and the form still submits.
+  for (const form of document.querySelectorAll<HTMLFormElement>('form[name="blueprint-score"]')) {
+    form.classList.add('js');
+    const step1 = form.querySelector<HTMLElement>('.step1')!;
+    const next = form.querySelector<HTMLButtonElement>('.next')!;
+    next.addEventListener('click', () => {
+      const fields = [...step1.querySelectorAll('input')];
+      const invalid = fields.find((f) => !f.checkValidity());
+      if (invalid) { invalid.reportValidity(); return; }
+      form.classList.add('on-step2');
+      form.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
+    });
+    step1.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.target instanceof HTMLInputElement) { e.preventDefault(); next.click(); }
+    });
+  }
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-focus-form]')) {
+    link.addEventListener('click', () => {
+      setTimeout(() => document.querySelector<HTMLInputElement>('form[name="blueprint-score"] input[name="business"]')?.focus({ preventScroll: true }), 400);
+    });
+  }
+</script>
+
+<style>
+  /* Form */
+  .form { padding: 24px; scroll-margin-top: 100px; }
+  .fstep { display: flex; flex-direction: column; gap: 16px; }
+  .step2 { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+  .form.js .step2 { display: none; }
+  .form.js.on-step2 .step1 { display: none; }
+  .form.js.on-step2 .step2 { display: flex; margin-top: 0; padding-top: 0; border-top: 0; }
+  .form.js .next { display: inline-flex; }
+  .form:not(.js) .next { display: none; }
+  .step2-title { font-size: 24px; }
+  .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .row label { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #d5dde4; }
+  .row small { color: var(--steel); font-size: 13px; }
+  input {
+    font: inherit; font-size: 16px; color: var(--chalk);
+    background: var(--navy); border: 1px solid #2a3b4c; border-radius: 8px;
+    min-height: 50px; padding: 0 14px; width: 100%;
+  }
+  input:focus { border-color: var(--lime); outline: none; }
+  .consent { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: var(--steel); }
+  .consent input { min-height: 0; width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: var(--lime); }
+  .next, .submit { align-self: flex-start; min-height: 56px; padding: 0 32px; font-size: 18px; }
+  .form-note { color: var(--steel); font-size: 14px; }
+  @media (max-width: 1000px) { .row.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) {
+    .row, .row.three { grid-template-columns: minmax(0, 1fr); }
+    .form { padding: 22px; }
+    .next, .submit { width: 100%; }
+  }
+</style>
