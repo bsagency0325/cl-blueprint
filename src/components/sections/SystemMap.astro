@@ -1,0 +1,73 @@
+---
+// Services page overview: how the offer is built. The Foundation sits underneath and is always
+// included; Stand Out or Scale Up go on top depending on the business's stage; both = Full Blueprint.
+// Every block links down to its full section.
+import { content, type Lang } from '../../i18n/home';
+import { routes, pathIds } from '../../i18n/routes';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang].system;
+const pid = pathIds[lang];
+const [a, b, full] = t.paths;
+---
+<div class="map" data-reveal>
+  <div class="tops">
+    <a class="opt card sys" href={`#${pid.found}`}>
+      <span class="mono tag">A</span>
+      <strong>{a.name}</strong>
+      <span class="for">{a.for}</span>
+    </a>
+    <span class="mono or" aria-hidden="true">{t.map.or}</span>
+    <a class="opt card sys" href={`#${pid.booked}`}>
+      <span class="mono tag">B</span>
+      <strong>{b.name}</strong>
+      <span class="for">{b.for}</span>
+    </a>
+  </div>
+  <div class="plus" aria-hidden="true"><span>+</span><span>+</span></div>
+  <a class="base sys" href={`#${pid.foundation}`}>
+    <span class="mono badge">{t.map.always}</span>
+    <strong>{t.foundation.name}</strong>
+    <span class="for">{t.foundation.title}</span>
+  </a>
+  <div class="slab" aria-hidden="true"></div>
+  <a class="all" href={`#${pid.full}`}>
+    <span class="mono eq">{t.map.eq}</span>
+    <strong>{full.name}</strong>
+  </a>
+</div>
+
+<style>
+  .map { margin: 0 0 48px; }
+  .tops { display: grid; grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr); align-items: stretch; }
+  .opt, .base, .all { text-decoration: none; color: var(--chalk); }
+  .opt { padding: 20px 22px; display: flex; flex-direction: column; gap: 4px; }
+  .tag { font-size: 12px; letter-spacing: 0.12em; color: var(--steel); }
+  strong { font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 2.6vw, 28px); line-height: 1.1; }
+  .for { color: var(--body); font-size: 15px; }
+  .or { display: grid; place-items: center; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--steel); }
+  .plus { display: grid; grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr); height: 40px; }
+  .plus span { display: grid; place-items: center; color: var(--lime); font: 700 24px var(--font-display); }
+  .plus span:last-child { grid-column: 3; }
+  .base {
+    position: relative; display: flex; flex-direction: column; gap: 4px; padding: 26px 24px 22px;
+    background: var(--panel); border: 1.5px solid var(--lime); border-radius: 14px;
+  }
+  .badge {
+    position: absolute; top: -12px; left: 20px; padding: 3px 9px; border-radius: 6px;
+    background: var(--lime); color: var(--navy); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  /* Hatched footing under the Foundation, like a section cut on a plan. */
+  .slab { height: 12px; margin: -1px 10px 0; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 8px 8px;
+    background: repeating-linear-gradient(135deg, var(--line) 0 2px, transparent 2px 10px); }
+  .all { margin-top: 24px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 18px 22px; border: 1px dashed #2a3b4c; border-radius: 14px; transition: border-color .25s ease; }
+  .all:hover { border-color: var(--lime); }
+  .eq { color: var(--steel); font-size: 14px; }
+  .all strong { font-size: clamp(20px, 2.2vw, 24px); }
+  @media (max-width: 640px) {
+    .tops { grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr); }
+    .plus { grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr); }
+    .opt { padding: 16px; }
+    .for { font-size: 14px; }
+  }
+</style>

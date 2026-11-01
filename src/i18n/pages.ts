@@ -17,7 +17,7 @@ const en = {
     head: {
       eyebrow: 'Services',
       title: 'Every lead answered. More jobs on your calendar.',
-      sub: 'One system with the same foundation for every business. Then we build what you need most: getting found, getting booked, or both.',
+      sub: 'Every business gets the same Foundation. Then, depending on your stage, we add Stand Out, Scale Up, or both.',
     },
     faq: {
       eyebrow: 'FAQ',
@@ -99,7 +99,7 @@ const es: typeof en = {
     head: {
       eyebrow: 'Servicios',
       title: 'Cada cliente atendido. Más trabajos en tu agenda.',
-      sub: 'Un solo sistema, con la misma base para todos. Luego armamos lo que más necesitas: que te encuentren, que te contraten, o las dos.',
+      sub: 'Todos los negocios llevan La Base. Luego, según tu etapa, sumamos Destaca, Acelera o las dos.',
     },
     faq: {
       eyebrow: 'Preguntas',

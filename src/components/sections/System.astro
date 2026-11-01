@@ -1,11 +1,12 @@
 ---
-// The full system: foundation + Get Found + Get Booked + Full Blueprint, with the example screens.
+// The full system: the Foundation + Stand Out + Scale Up + Full Blueprint, with the example screens.
 // Lives on the Services page. Each block has an id so other pages can link straight to it.
 import { Image } from 'astro:assets';
 import { content, type Lang } from '../../i18n/home';
 import { routes, pathIds } from '../../i18n/routes';
 import { tradeLines } from '../../i18n/trades';
 import TradePicker from './TradePicker.astro';
+import SystemMap from './SystemMap.astro';
 import answerImg from '../../assets/illustrations/answer.jpg';
 import foundImg from '../../assets/illustrations/found.jpg';
 import bookedImg from '../../assets/illustrations/booked.jpg';
@@ -34,6 +35,7 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
       {head ? <h1>{head.title}</h1> : <h2>{t.system.title}</h2>}
       <p>{head?.sub ?? t.system.sub}</p>
     </div>
+    {asPageHead && <SystemMap lang={lang} />}
     <div class="pick" data-reveal><TradePicker lang={lang} /></div>
 
     <!-- Foundation (full width): illustration + what's included + live AI call / text-back example -->
@@ -79,7 +81,7 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
       </div>
     </div>
 
-    <!-- Get Found + Get Booked, side by side under the foundation -->
+    <!-- Stand Out + Scale Up, side by side under the Foundation -->
     <div class="paths">
       {illustrated.map((p) => (
         <div class="path card sys" id={pid[p.image as 'found' | 'booked']}>
@@ -198,7 +200,7 @@ const fullPath = t.system.paths.find((p) => !p.image)!;
   .line-ai { align-self: flex-end; background: var(--panel); border: 1px solid var(--lime); color: var(--chalk); border-bottom-right-radius: 4px; }
   .line-ai .who, .answer .who { color: var(--lime); }
 
-  /* Get Found + Get Booked side by side */
+  /* Stand Out + Scale Up side by side */
   .paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .path { padding: 24px; display: flex; flex-direction: column; gap: 22px; }
   .path-copy { display: flex; flex-direction: column; gap: 14px; padding: 0 8px; }
