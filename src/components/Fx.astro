@@ -1,0 +1,241 @@
+---
+// Motion and example screens for every page: section reveal, Score count-up, demo playback,
+// stopwatch, grid spotlight, drawing crosshair + depth, the pinned "life of a lead" story and scroll ruler. Off with reduced motion.
+---
+<script>
+  // Foundation example: tabs between the AI receptionist call and the missed-call text-back.
+  const timers = new WeakMap<Element, number[]>();
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motion = !calm && 'IntersectionObserver' in window;
+
+  // Show a demo's messages one by one (or all at once without motion).
+  const play = (root: Element, onDone?: () => void) => {
+    for (const id of timers.get(root) ?? []) clearTimeout(id);
+    const msgs = [...root.querySelectorAll('.msg')];
+    if (!motion) { msgs.forEach((m) => m.classList.add('shown')); return; }
+    msgs.forEach((m) => m.classList.remove('shown'));
+    const ids = msgs.map((m, i) => window.setTimeout(() => m.classList.add('shown'), 250 + i * 750));
+    if (onDone) ids.push(window.setTimeout(onDone, 250 + msgs.length * 750 + 2600));
+    timers.set(root, ids);
+  };
+
+  for (const demo of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
+    document.documentElement.classList.add('js-tabs');
+    const tabs = [...demo.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const panes = [...demo.querySelectorAll<HTMLElement>('[data-pane]')];
+    let touched = false;
+    const show = (name: string) => {
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === name)));
+      panes.forEach((p) => (p.hidden = p.dataset.pane !== name));
+      const pane = panes.find((p) => p.dataset.pane === name)!;
+      // After the call plays, move on to the text-back once, unless the visitor picked a tab.
+      play(pane, name === 'call' ? () => { if (!touched) show('text'); } : undefined);
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => { touched = true; show(t.dataset.tab!); }));
+    demo.addEventListener('demo:start', () => show('call'), { once: true });
+    demo.addEventListener('demo:replay', () => { touched = false; show('call'); });
+    panes.forEach((p) => (p.hidden = p.dataset.pane !== 'call'));
+  }
+
+  // A new trade picked: replay every example screen with the new lines.
+  document.addEventListener('trade:change', () => {
+    for (const demo of document.querySelectorAll('[data-demo]')) {
+      if (demo.hasAttribute('data-tabs')) demo.dispatchEvent(new Event('demo:replay'));
+      else play(demo);
+    }
+  });
+
+  if (motion) {
+    document.documentElement.classList.add('fx');
+
+    const once = (els: Iterable<Element>, fn: (el: Element) => void, threshold = 0.2) => {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { fn(e.target); io.unobserve(e.target); }
+      }, { threshold, rootMargin: '0px 0px -40px 0px' });
+      for (const el of els) io.observe(el);
+    };
+
+    // Split a heading or line into words, each in its own mask, so the words can move on
+    // their own. Only plain-text elements: anything with markup inside is left as is.
+    const splitWords = (el: Element) => {
+      if (el.children.length || !el.textContent?.trim()) return [];
+      const words = el.textContent.trim().split(/\s+/);
+      el.textContent = '';
+      words.forEach((word, i) => {
+        const mask = document.createElement('span');
+        const w = document.createElement('span');
+        mask.className = 'w';
+        w.style.setProperty('--wi', String(i));
+        w.textContent = word;
+        mask.append(w);
+        el.append(mask, i < words.length - 1 ? ' ' : '');
+      });
+      return [...el.querySelectorAll('.w')];
+    };
+    for (const h of document.querySelectorAll('.section-head[data-reveal] > h2')) splitWords(h);
+
+    // Sections come in as they enter. Groups bring their cards in one after another,
+    // then hand the cards back their own hover motion.
+    for (const g of document.querySelectorAll<HTMLElement>('[data-reveal="stagger"]')) {
+      [...g.children].forEach((c, i) => (c as HTMLElement).style.setProperty('--i', String(Math.min(i, 6))));
+    }
+    once(document.querySelectorAll('[data-reveal]'), (el) => {
+      el.classList.add('in');
+      if (el.getAttribute('data-reveal') === 'stagger') {
+        setTimeout(() => el.classList.add('done'), 1200 + Math.min(el.children.length, 7) * 130);
+      }
+    }, 0.12);
+
+    // Drawings print in once, left to right.
+    once(document.querySelectorAll('.illo'), (el) => el.classList.add('drawn'), 0.3);
+
+    // Score card counts up and its bars fill.
+    const countUp = (n: HTMLElement, end: number, ms: number, fmt = (v: number) => String(v)) => {
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - t0) / ms);
+        n.textContent = fmt(Math.round(end * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    once(document.querySelectorAll('[data-score]'), (card) => {
+      card.classList.add('in');
+      for (const n of card.querySelectorAll<HTMLElement>('[data-count]')) countUp(n, Number(n.dataset.count), 1200);
+    }, 0.3);
+
+    // Example screens play when they scroll into view.
+    once(document.querySelectorAll('[data-demo]'), (demo) => {
+      if (demo.hasAttribute('data-tabs')) demo.dispatchEvent(new Event('demo:start'));
+      else play(demo);
+    }, 0.35);
+
+    // Guarantee stopwatch: sweeps, stops well under a minute, gets stamped.
+    once(document.querySelectorAll('[data-clock]'), (clock) => {
+      clock.classList.add('run');
+      const out = clock.querySelector<HTMLElement>('[data-clock-time]')!;
+      countUp(out, 9, 1600, (v) => `0:${String(v).padStart(2, '0')}`);
+      setTimeout(() => clock.classList.add('done'), 1700);
+    }, 0.4);
+
+    // Mouse and trackpad only: the grid lights up around the cursor, and the
+    // drawings get a drafting crosshair that reads coordinates off the drawing.
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      for (const sec of document.querySelectorAll<HTMLElement>('.spot')) {
+        sec.addEventListener('pointermove', (e) => {
+          const r = sec.getBoundingClientRect();
+          sec.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          sec.style.setProperty('--my', `${e.clientY - r.top}px`);
+          sec.classList.add('lit');
+        });
+        sec.addEventListener('pointerleave', () => sec.classList.remove('lit'));
+      }
+      for (const fig of document.querySelectorAll<HTMLElement>('.illo')) {
+        const xh = document.createElement('div');
+        xh.className = 'xhair';
+        xh.setAttribute('aria-hidden', 'true');
+        xh.innerHTML = '<span class="xh"></span><span class="yh"></span><span class="xy"></span>';
+        fig.append(xh);
+        const xy = xh.querySelector<HTMLElement>('.xy')!;
+        fig.addEventListener('pointermove', (e) => {
+          const r = fig.getBoundingClientRect();
+          const x = e.clientX - r.left, y = e.clientY - r.top;
+          xh.style.setProperty('--cx', `${x}px`);
+          xh.style.setProperty('--cy', `${y}px`);
+          xh.classList.toggle('flip', x > r.width - 130);
+          xh.classList.toggle('up', y > r.height - 34);
+          // Read in drawing units (0–1000 across the drawing), like a plan sheet.
+          const ux = Math.round((x / r.width) * 1000), uy = Math.round((y / r.width) * 1000);
+          xy.textContent = `X ${String(ux).padStart(4, '0')} · Y ${String(uy).padStart(4, '0')}`;
+          xh.classList.add('on');
+        });
+        fig.addEventListener('pointerleave', () => xh.classList.remove('on'));
+      }
+    }
+
+    // "Life of a lead": the section pins and the scroll position picks the step.
+    const stories = [...document.querySelectorAll<HTMLElement>('[data-story]')].map((el) => ({
+      el,
+      n: Number(getComputedStyle(el).getPropertyValue('--n')) || 5,
+      atEls: [...el.querySelectorAll<HTMLElement>('[data-at]')],
+      toEls: [...el.querySelectorAll<HTMLElement>('[data-to]')],
+      last: -1,
+    }));
+    const drawStories = () => {
+      for (const s of stories) {
+        const r = s.el.getBoundingClientRect();
+        const run = r.height - innerHeight;
+        const p = run > 0 ? Math.min(1, Math.max(0, -r.top / run)) : 0;
+        s.el.style.setProperty('--p', String(Math.min(1, p * s.n / (s.n - 1))));
+        const step = Math.min(s.n - 1, Math.floor(p * s.n));
+        if (step === s.last) continue;
+        s.last = step;
+        s.el.dataset.step = String(step);
+        for (const e of s.atEls) {
+          const at = Number(e.dataset.at);
+          e.classList.toggle('on', step >= at);
+          e.classList.toggle('now', step === at);
+          // The "today" ending only holds the screen for its own step.
+          if (e.classList.contains('today')) e.classList.toggle('past', step > at);
+        }
+        for (const e of s.toEls) e.classList.toggle('off', step >= Number(e.dataset.to));
+      }
+    };
+
+    // Drawings sit a touch deeper than the page: they drift against the scroll
+    // and lean away from the cursor. A drawing split into layers (.illo-fg on top)
+    // moves its top layer further, for real depth.
+    const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const figs = [...document.querySelectorAll<HTMLElement>('.illo')];
+    for (const fig of figs) {
+      fig.classList.add('depth');
+      if (!fine) continue;
+      fig.addEventListener('pointermove', (e) => {
+        const r = fig.getBoundingClientRect();
+        fig.style.setProperty('--tx', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+        fig.style.setProperty('--ty', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+      });
+      fig.addEventListener('pointerleave', () => { fig.style.setProperty('--tx', '0'); fig.style.setProperty('--ty', '0'); });
+    }
+    const drawDepth = () => {
+      for (const fig of figs) {
+        const r = fig.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) continue;
+        // -1 when the drawing enters at the bottom, 1 when it leaves at the top.
+        const d = ((r.top + r.height / 2) / innerHeight - 0.5) * -2;
+        fig.style.setProperty('--sy', d.toFixed(3));
+      }
+    };
+
+    // Closing lines: words light up in reading order as the line moves up the screen.
+    const scrubs = [...document.querySelectorAll('[data-scrub]')].map((el) => ({ el, words: splitWords(el) }));
+    const drawScrubs = () => {
+      for (const s of scrubs) {
+        const r = s.el.getBoundingClientRect();
+        // 0 when the line enters at the bottom, 1 when it reaches 40% from the top.
+        const p = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight * 0.6)));
+        const lit = Math.round(p * s.words.length);
+        s.words.forEach((w, i) => w.classList.toggle('lit', i < lit));
+      }
+    };
+
+    let queued = false;
+    const onFrame = () => { queued = false; drawStories(); drawDepth(); drawScrubs(); };
+    addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(onFrame); } }, { passive: true });
+    addEventListener('resize', onFrame);
+    onFrame();
+
+    // Scroll ruler along the top edge.
+    const ruler = document.createElement('div');
+    ruler.className = 'ruler';
+    ruler.setAttribute('aria-hidden', 'true');
+    ruler.innerHTML = '<i></i>';
+    document.body.append(ruler);
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      ruler.style.setProperty('--p', String(max > 0 ? scrollY / max : 0));
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+</script>

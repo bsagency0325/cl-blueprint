@@ -1,0 +1,240 @@
+---
+// Services page: the offer as a construction plan. The Foundation is poured first and is always
+// there. Pick your stage and the matching block gets built on top of it (dashed = on the plan,
+// solid = built). Both blocks put the roof on: that's the Full Blueprint.
+// It plays through the three choices by itself until someone picks one. Without JS or with
+// reduced motion, the whole building shows finished and every part is listed.
+import { content, type Lang } from '../../i18n/home';
+import { pathIds } from '../../i18n/routes';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang].system;
+const pid = pathIds[lang];
+const [a, b, full] = t.paths;
+const f = t.foundation;
+const choices = [
+  { key: 'a', label: t.plan.choices.a },
+  { key: 'b', label: t.plan.choices.b },
+  { key: 'ab', label: t.plan.choices.ab },
+];
+// Draws every stroke in the same time: each shape is measured as 100.
+const P = { pathLength: 100 };
+---
+<div class="plan" data-plan data-state="ab">
+  <div class="sheet card">
+    <div class="sheet-top mono">
+      <span>{t.plan.sheet}</span>
+      <span class="legend"><i class="dash"></i>{t.plan.planned}<i class="solid"></i>{t.plan.built}</span>
+    </div>
+    <svg viewBox="0 0 640 420" role="img" aria-label={`${f.name} + ${a.name} / ${b.name} = ${full.name}`}>
+      <defs>
+        <pattern id={`hatch-${lang}`} width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="10" stroke="#1E2E3E" stroke-width="3" />
+        </pattern>
+      </defs>
+
+      <!-- Ground and dimension line -->
+      <line class="ground" x1="20" y1="380" x2="620" y2="380" />
+      <g class="dim">
+        <line x1="70" y1="404" x2="570" y2="404" /><line x1="70" y1="396" x2="70" y2="412" /><line x1="570" y1="396" x2="570" y2="412" />
+      </g>
+
+      <!-- On the plan (dashed): the parts not built yet -->
+      <g class="ghost">
+        <rect x="100" y="190" width="200" height="150" />
+        <rect x="340" y="190" width="200" height="150" />
+        <polyline points="88,190 320,88 552,190" />
+      </g>
+
+      <!-- The Foundation: always built -->
+      <g class="part part-f on">
+        <rect x="70" y="340" width="500" height="40" fill={`url(#hatch-${lang})`} class="fill" />
+        <rect x="70" y="340" width="500" height="40" {...P} />
+        <path d="M90 380v10M550 380v10" {...P} />
+        <text x="320" y="365" class="lbl">{f.name.toUpperCase()}</text>
+      </g>
+
+      <!-- A · Stand Out: windows lit and a pin on top (they find you) -->
+      <g class="part part-a">
+        <rect x="100" y="190" width="200" height="150" {...P} />
+        <path d="M130 220h30v24h-30zM185 220h30v24h-30zM240 220h30v24h-30zM130 262h30v24h-30zM240 262h30v24h-30z" {...P} />
+        <path d="M185 340v-56h30v56" {...P} />
+        <g class="pin">
+          <path class="accent" d="M200 190c-14-16-21-26-21-37a21 21 0 1 1 42 0c0 11-7 21-21 37z" {...P} />
+          <circle class="accent" cx="200" cy="153" r="7" {...P} />
+        </g>
+        <text x="145" y="330" class="lbl sm">A</text>
+      </g>
+
+      <!-- B · Scale Up: a calendar filling up (jobs booked) -->
+      <g class="part part-b">
+        <rect x="340" y="190" width="200" height="150" {...P} />
+        <path d="M372 214h136v92h-136zM372 236h136M406 236v70M440 236v70M474 236v70M372 259h136M372 282h136M392 206v14M488 206v14" {...P} />
+        <rect class="booked" x="441" y="260" width="32" height="21" />
+        <path class="accent" d="M380 318l20-14 18 8 26-20 22 10 28-24" {...P} />
+        <text x="440" y="330" class="lbl sm">B</text>
+      </g>
+
+      <!-- A + B: the roof goes on (Full Blueprint) -->
+      <g class="part part-ab">
+        <polyline points="88,190 320,88 552,190" {...P} />
+        <path d="M320 88v102M320 88L205 190M320 88L435 190M88 190h464" {...P} />
+        <text x="320" y="70" class="lbl">{full.name.toUpperCase()}</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="side">
+    <p class="mono prompt" id={`plan-q-${lang}`}>{t.plan.prompt}</p>
+    <div class="choices" role="radiogroup" aria-labelledby={`plan-q-${lang}`}>
+      {choices.map((c) => (
+        <button type="button" class="choice" role="radio" aria-checked={c.key === 'ab' ? 'true' : 'false'} data-choice={c.key}>{c.label}</button>
+      ))}
+    </div>
+
+    <ol class="spec">
+      <li class="row row-f">
+        <span class="mono badge">{t.map.always}</span>
+        <a href={`#${pid.foundation}`}><strong>{f.name}</strong></a>
+        <p>{f.title}</p>
+      </li>
+      <li class="row row-a">
+        <span class="mono tag">+ A</span>
+        <a href={`#${pid.found}`}><strong>{a.name}</strong></a>
+        <p>{a.items.slice(0, 3).join(' · ')}</p>
+      </li>
+      <li class="row row-b">
+        <span class="mono tag">+ B</span>
+        <a href={`#${pid.booked}`}><strong>{b.name}</strong></a>
+        <p>{b.items.slice(0, 3).join(' · ')}</p>
+      </li>
+      <li class="row row-ab">
+        <span class="mono tag">=</span>
+        <a href={`#${pid.full}`}><strong>{full.name}</strong></a>
+        <p>{full.body}</p>
+      </li>
+    </ol>
+    <a class="mono more" href={`#${pid.foundation}`}>{t.plan.more}</a>
+  </div>
+</div>
+
+<script>
+  // Picking a stage builds that part of the plan. Until someone picks, it plays through A, B, A + B.
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  for (const plan of document.querySelectorAll<HTMLElement>('[data-plan]')) {
+    const btns = [...plan.querySelectorAll<HTMLButtonElement>('[data-choice]')];
+    const set = (state: string) => {
+      plan.dataset.state = state;
+      btns.forEach((b) => b.setAttribute('aria-checked', String(b.dataset.choice === state)));
+    };
+    let timer = 0;
+    const stop = () => { clearInterval(timer); timer = 0; };
+    btns.forEach((b) => b.addEventListener('click', () => { stop(); set(b.dataset.choice!); }));
+    plan.addEventListener('keydown', (e) => {
+      const i = btns.indexOf(e.target as HTMLButtonElement);
+      if (i < 0 || !['ArrowRight', 'ArrowLeft'].includes(e.key)) return;
+      const next = btns[(i + (e.key === 'ArrowRight' ? 1 : btns.length - 1)) % btns.length];
+      next.focus(); next.click();
+    });
+    if (calm || !('IntersectionObserver' in window)) continue;
+
+    // Start empty (only the Foundation), then build when the plan comes into view.
+    plan.classList.add('js');
+    set('none');
+    const order = ['a', 'b', 'ab'];
+    let step = 0;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      setTimeout(() => {
+        if (plan.dataset.state !== 'none') return; // someone already picked
+        set(order[step]);
+        timer = window.setInterval(() => {
+          step++;
+          if (step >= order.length) { stop(); return; } // ends on A + B, the full building
+          set(order[step]);
+        }, 2600);
+      }, 1400);
+    }, { threshold: 0.4 });
+    io.observe(plan);
+  }
+</script>
+
+<style>
+  .plan { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; margin: 0 0 56px; }
+
+  /* Drawing sheet */
+  .sheet { padding: 16px 18px 10px; background-color: var(--navy);
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px; }
+  .sheet-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel); padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .legend { display: inline-flex; align-items: center; gap: 8px; }
+  .legend i { display: inline-block; width: 22px; border-top: 1.5px dashed var(--steel); }
+  .legend i.solid { border-top: 2px solid var(--lime); margin-left: 6px; }
+  svg { width: 100%; height: auto; margin-top: 6px; overflow: visible; }
+  :where(svg *) { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .ground { stroke: var(--steel); stroke-width: 1.5; }
+  .dim line { stroke: var(--steel); stroke-width: 1; }
+  .ghost * { stroke: #3a4b5c; stroke-width: 1.5; stroke-dasharray: 5 6; }
+  .lbl { fill: var(--steel); stroke: none; font: 500 13px var(--font-mono); letter-spacing: 0.14em; text-anchor: middle; }
+  .lbl.sm { font-size: 12px; }
+
+  /* Built parts: solid strokes that draw in. */
+  .part rect:not(.fill):not(.booked), .part path, .part polyline, .part circle {
+    stroke: var(--chalk); stroke-width: 2; stroke-dasharray: 100; stroke-dashoffset: 0;
+  }
+  .part .accent { stroke: var(--lime); }
+  .part-f rect:not(.fill), .part-f path { stroke: var(--lime); }
+  .part .fill { stroke: none; }
+  .part-f .lbl { fill: var(--lime); }
+  .part-ab .lbl { fill: var(--chalk); }
+  .booked { fill: var(--lime); stroke: none; }
+  /* The pin stands on block A; when the roof goes on, it moves up onto the roof. */
+  .pin { transition: transform .8s cubic-bezier(.6, 0, .2, 1); }
+  [data-state="ab"] .pin { transform: translateY(-49px); }
+
+  /* With JS: parts are drawn only when the chosen stage includes them. */
+  :global(.js)[data-plan] .part:not(.part-f) * { transition: stroke-dashoffset 1.1s cubic-bezier(.6, 0, .2, 1), opacity .4s ease; }
+  :global(.js)[data-plan] .part:not(.part-f) :is(rect, path, polyline, circle) { stroke-dashoffset: 100; }
+  :global(.js)[data-plan] .part:not(.part-f) :is(text, .booked) { opacity: 0; }
+  :global(.js)[data-plan]:is([data-state="a"], [data-state="ab"]) .part-a :is(rect, path, circle),
+  :global(.js)[data-plan]:is([data-state="b"], [data-state="ab"]) .part-b :is(rect, path),
+  :global(.js)[data-plan][data-state="ab"] .part-ab :is(path, polyline) { stroke-dashoffset: 0; }
+  :global(.js)[data-plan]:is([data-state="a"], [data-state="ab"]) .part-a.part :is(text),
+  :global(.js)[data-plan]:is([data-state="b"], [data-state="ab"]) .part-b.part :is(text, .booked),
+  :global(.js)[data-plan][data-state="ab"] .part-ab.part :is(text) { opacity: 1; transition-delay: .6s; }
+
+  /* Side: stage picker + spec list */
+  .side { display: flex; flex-direction: column; gap: 14px; }
+  .prompt { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); }
+  .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+  .choice { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid #2a3b4c; background: var(--panel); color: var(--chalk); font: 500 15px var(--font-body); cursor: pointer; transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
+  .choice:hover { border-color: var(--steel); }
+  .choice[aria-checked="true"] { background: var(--lime); border-color: var(--lime); color: var(--navy); }
+  .spec { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .row { position: relative; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 2px 10px; transition: opacity .35s ease, border-color .35s ease; }
+  .row > * { grid-column: 2; }
+  .row > .tag, .row > .badge { grid-column: 1; grid-row: 1 / span 2; align-self: start; margin-top: 3px; }
+  .row a { color: var(--chalk); text-decoration: none; }
+  .row a:hover { color: var(--lime); }
+  .row strong { font-family: var(--font-display); font-size: 20px; }
+  .row p { color: var(--body); font-size: 14px; line-height: 1.45; }
+  .tag { font-size: 13px; color: var(--lime); }
+  .badge { font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.2; color: var(--navy); background: var(--lime); border-radius: 4px; padding: 3px 4px; text-align: center; }
+  .row-f { border-color: var(--lime); }
+  .row-ab { border-style: dashed; border-color: #2a3b4c; }
+  :global(.js)[data-plan] .row:not(.row-f) { opacity: 0.35; }
+  :global(.js)[data-plan]:is([data-state="a"], [data-state="ab"]) .row-a,
+  :global(.js)[data-plan]:is([data-state="b"], [data-state="ab"]) .row-b,
+  :global(.js)[data-plan][data-state="ab"] .row-ab { opacity: 1; border-color: rgba(156, 226, 74, 0.45); }
+  .more { font-size: 13px; color: var(--steel); text-decoration: none; }
+  .more:hover { color: var(--lime); }
+
+  @media (max-width: 900px) {
+    .plan { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .legend { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .part * { transition: none !important; }
+  }
+</style>

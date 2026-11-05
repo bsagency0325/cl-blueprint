@@ -1,7 +1,10 @@
 ---
-interface Props { lang?: 'en' | 'es' }
-const { lang = 'en' } = Astro.props;
+import { routes, menu, type Page } from '../i18n/routes';
+
+interface Props { lang?: 'en' | 'es'; page?: Page }
+const { lang = 'en', page } = Astro.props;
 const es = lang === 'es';
+const other = es ? 'en' : 'es';
 const year = new Date().getFullYear();
 ---
 <footer class="footer">
@@ -15,11 +18,14 @@ const year = new Date().getFullYear();
       </p>
       <p class="mono loc">Las Vegas, NV · {es ? 'Servimos en todo EE. UU.' : 'Serving the U.S.'}</p>
     </div>
+    <nav class="col" aria-label={es ? 'Sitio' : 'Site'}>
+      {menu.map((m) => <a href={routes[m.page][lang]}>{m.label[lang]}</a>)}
+    </nav>
     <nav class="col" aria-label={es ? 'Legal' : 'Legal'}>
       <a href="/privacy-policy">{es ? 'Política de privacidad' : 'Privacy Policy'}</a>
       <a href="/terms">{es ? 'Términos' : 'Terms'}</a>
       <a href="/optin-blueprintstrategies">{es ? 'Suscripción SMS' : 'SMS Opt-In'}</a>
-      <a href={es ? '/' : '/es/'} lang={es ? 'en' : 'es'}>{es ? 'English' : 'Español'}</a>
+      <a href={routes[page ?? 'home'][other]} hreflang={other} lang={other}>{es ? 'English' : 'Español'}</a>
     </nav>
   </div>
   <div class="wrap bottom mono">© {year} Blueprint Strategies</div>
@@ -27,7 +33,8 @@ const year = new Date().getFullYear();
 
 <style>
   .footer { border-top: 1px solid var(--line); padding: 64px 0 32px; }
-  .footer-inner { display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; }
+  .footer-inner { display: flex; gap: 48px 80px; flex-wrap: wrap; }
+  .brand-col { margin-right: auto; }
   .col { display: flex; flex-direction: column; gap: 12px; }
   .brand-col img { height: 40px; width: auto; margin-bottom: 8px; align-self: flex-start; }
   .brand-col p { color: var(--body); max-width: 360px; }

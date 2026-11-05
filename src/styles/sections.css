@@ -1,0 +1,93 @@
+/* Section styles shared by the home page and the inner pages.
+   Moved out of Home.astro unchanged so every page looks the same. */
+
+.lead { color: var(--body); font-size: 20px; line-height: 1.55; }
+.tag { color: var(--lime); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+.num { color: var(--lime); font-size: 13px; }
+.closing { margin-top: 40px; font-family: var(--font-display); font-weight: 500; font-size: 24px; color: var(--chalk); max-width: 760px; }
+
+/* Blueprint grid spotlight */
+.spot { position: relative; }
+.spot > .wrap { position: relative; z-index: 1; }
+.spot::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background-image:
+    linear-gradient(rgba(156, 226, 74, 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(156, 226, 74, 0.28) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), #000, transparent 70%);
+  mask-image: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), #000, transparent 70%);
+  transition: opacity .35s ease;
+}
+.spot.lit::after { opacity: 1; }
+
+/* Scroll reveal (only when the script turns motion on). Bold and quick: pieces travel
+   a long way and land hard, once, on the way down. */
+.fx [data-reveal] { opacity: 0; transform: translateY(90px) scale(.94); transition: opacity .45s ease, transform 1s cubic-bezier(.16, 1, .3, 1); }
+.fx [data-reveal].in { opacity: 1; transform: none; }
+
+/* Section titles: each word pops up from behind its own line, one after another. */
+.fx .section-head[data-reveal] { opacity: 1; transform: none; }
+.fx .section-head[data-reveal] > :not(h2) { opacity: 0; transform: translateY(30px); transition: opacity .45s ease .3s, transform .9s cubic-bezier(.16, 1, .3, 1) .3s; }
+.fx .section-head[data-reveal] > .eyebrow { transition-delay: 0s; }
+.fx .section-head[data-reveal].in > * { opacity: 1; transform: none; }
+.fx .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .04em .1em; margin: 0 -.04em -.1em; }
+.fx .w > span { display: inline-block; transform: translateY(115%) rotate(6deg); transform-origin: 0 100%; transition: transform .9s cubic-bezier(.16, 1, .3, 1); transition-delay: calc(var(--wi, 0) * 60ms + .05s); }
+.fx .in .w > span { transform: none; }
+
+/* Groups of cards or steps: they fly in one after another, tilted, and snap flat.
+   Once in, the cards get their own hover transitions back. */
+.fx [data-reveal="stagger"] { opacity: 1; transform: none; }
+.fx [data-reveal="stagger"]:not(.done) > * { transition: opacity .4s ease, transform 1.1s cubic-bezier(.16, 1, .3, 1); transition-delay: calc(var(--i, 0) * 130ms); }
+.fx [data-reveal="stagger"]:not(.in) > * { opacity: 0; transform: translateY(140px) rotate(3deg) scale(.92); }
+
+/* Cards fly in tilted: never let that open a sideways scroll on phones. */
+.fx body { overflow-x: clip; }
+
+/* Closing lines light up word by word as you scroll past them. */
+.fx [data-scrub] .w > span { transform: none; transition: color .25s ease; color: #7d8b99; }
+.fx [data-scrub] .w.lit > span { color: var(--chalk); }
+
+/* Illustrations: framed, no text on the drawing */
+.illo { position: relative; margin: 0; background: var(--panel); border-radius: 10px; overflow: hidden; }
+.fx .illo { cursor: crosshair; }
+.illo img { width: 100%; height: auto; -webkit-mask-image: radial-gradient(closest-side, #000 82%, transparent); mask-image: radial-gradient(closest-side, #000 82%, transparent); }
+
+/* System cards: lime outline + drafting corner marks on hover */
+.sys { position: relative; transition: border-color .25s ease, box-shadow .25s ease; }
+.sys::before, .sys::after {
+  content: ''; position: absolute; width: 18px; height: 18px; pointer-events: none;
+  border: 0 solid var(--lime); opacity: 0; transition: opacity .25s ease, transform .25s ease;
+}
+.sys::before { top: -7px; left: -7px; border-top-width: 2px; border-left-width: 2px; transform: translate(4px, 4px); }
+.sys::after { bottom: -7px; right: -7px; border-bottom-width: 2px; border-right-width: 2px; transform: translate(-4px, -4px); }
+.sys:hover { border-color: var(--lime); box-shadow: 0 0 0 1px rgba(156, 226, 74, 0.25); }
+.sys:hover::before, .sys:hover::after { opacity: 1; transform: none; }
+.ticks { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.ticks li { padding-left: 22px; position: relative; color: #d5dde4; font-size: 16px; }
+.ticks li::before { content: ''; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; background: var(--lime); }
+
+/* Blueprint crosshair + scroll ruler (desktop, motion on) */
+.xhair { position: absolute; inset: 0; pointer-events: none; z-index: 2; opacity: 0; transition: opacity .2s ease; }
+.xhair.on { opacity: 1; }
+.xhair .xh, .xhair .yh { position: absolute; background: rgba(156, 226, 74, 0.35); }
+.xhair .xh { left: 0; right: 0; height: 1px; top: var(--cy); }
+.xhair .yh { top: 0; bottom: 0; width: 1px; left: var(--cx); }
+.xhair .xy { position: absolute; left: calc(var(--cx) + 12px); top: calc(var(--cy) + 12px); font: 500 11px var(--font-mono); color: var(--lime); letter-spacing: 0.06em; white-space: nowrap; }
+.xhair.up .xy { top: auto; bottom: calc(100% - var(--cy) + 10px); }
+.xhair.flip .xy { left: auto; right: calc(100% - var(--cx) + 12px); }
+.ruler { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; pointer-events: none; }
+.ruler i { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: var(--lime); }
+
+/* Drawings print in from left to right, like a plan coming out of the plotter (motion on only) */
+.fx .illo img { clip-path: inset(0 100% 0 0); transition: clip-path 1.6s cubic-bezier(.6, 0, .2, 1); }
+.fx .illo.drawn img { clip-path: inset(0 0 0 0); }
+.fx .illo::after {
+  content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 2px;
+  background: var(--lime); opacity: 0; pointer-events: none; z-index: 1;
+}
+.fx .illo.drawn::after { animation: plot 1.6s cubic-bezier(.6, 0, .2, 1) forwards; }
+/* Depth: the drawing drifts against the scroll and leans away from the cursor (Fx.astro sets the vars). */
+.fx .illo.depth img { transform: translate3d(calc(var(--tx, 0) * -10px), calc(var(--sy, 0) * 14px + var(--ty, 0) * -8px), 0) scale(1.07); transition: clip-path 1.6s cubic-bezier(.6, 0, .2, 1), transform .5s cubic-bezier(.2, .7, .2, 1); will-change: transform; }
+.fx .illo.depth .illo-fg { position: absolute; inset: 0; transform: translate3d(calc(var(--tx, 0) * 14px), calc(var(--sy, 0) * -10px + var(--ty, 0) * 10px), 0) scale(1.07); }
+@keyframes plot { 0% { left: 0; opacity: 1; } 90% { opacity: 1; } 100% { left: calc(100% - 2px); opacity: 0; } }

@@ -1,0 +1,66 @@
+---
+// Home: the same missed call, without and with the system. The trade chips change the job and
+// the customer's text; both sides replay step by step.
+import { content, type Lang } from '../../i18n/home';
+import { tradeLines } from '../../i18n/trades';
+import TradePicker from './TradePicker.astro';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+const tl = tradeLines(lang, 'hvac');
+const reply = t.system.foundation.demo[1].text;
+---
+<section class="section ba-sec">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">{t.ba.eyebrow}</p>
+      <h2>{t.ba.title}</h2>
+      <p>{t.ba.sub}</p>
+    </div>
+    <div class="pick" data-reveal><TradePicker lang={lang} /></div>
+
+    <div class="ba" data-reveal>
+      <div class="col before card" data-demo>
+        <p class="mono col-tag">{t.ba.before}</p>
+        <div class="msg note">{t.ba.missed}</div>
+        <div class="msg step"><span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6.5" cy="12" r="3.5"/><circle cx="17.5" cy="12" r="3.5"/><path d="M6.5 15.5h11"/></svg>
+        </span>{t.ba.voicemail}</div>
+        <div class="msg step"><span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>{t.ba.next}</div>
+        <div class="msg end lost" data-tk="lost">{tl.lost}</div>
+      </div>
+
+      <div class="col after card" data-demo>
+        <p class="mono col-tag">{t.ba.after}</p>
+        <div class="msg note">{t.ba.missed}</div>
+        <div class="msg m-out">{reply}</div>
+        <div class="msg m-in" data-tk="text">{tl.text}</div>
+        <div class="msg end won" data-tk="textBooked">{tl.textBooked}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pick { margin: -24px 0 32px; }
+  .ba { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .col { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+  .col-tag { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--steel); margin-bottom: 4px; }
+  .after { border-color: rgba(156, 226, 74, 0.45); }
+  .after .col-tag { color: var(--lime); }
+  .msg { padding: 10px 14px; border-radius: 14px; font-size: 16px; line-height: 1.45; max-width: 88%; }
+  .note { max-width: none; padding: 2px 0 4px; font: 500 12px var(--font-mono); color: var(--steel); }
+  .step { max-width: none; display: flex; gap: 12px; align-items: center; color: var(--body); background: var(--navy); border: 1px solid var(--line); border-radius: 10px; }
+  .ic { color: var(--steel); flex-shrink: 0; display: grid; }
+  .m-out { align-self: flex-end; background: var(--lime); color: var(--navy); border-bottom-right-radius: 4px; }
+  .m-in { align-self: flex-start; background: var(--line); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .end { max-width: none; align-self: stretch; text-align: center; font: 500 14px var(--font-mono); border-radius: 8px; margin-top: auto; }
+  .lost { color: var(--steel); border: 1px dashed #2a3b4c; text-decoration: line-through; text-decoration-color: var(--steel); }
+  .won { color: var(--lime); border: 1px dashed var(--lime); }
+  :global(.fx) [data-demo] .msg { opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease; }
+  :global(.fx) [data-demo] .msg.shown { opacity: 1; transform: none; }
+  @media (max-width: 800px) { .ba { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 640px) { .col { padding: 22px; } }
+</style>

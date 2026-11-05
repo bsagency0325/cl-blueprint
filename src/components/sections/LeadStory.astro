@@ -1,0 +1,225 @@
+---
+// Home: "the life of a lead". One missed call told as a story that moves with the scroll:
+// the call comes in, it's missed, today it dies in voicemail, with Blueprint a text goes out
+// in seconds and the job gets booked. The trade chips swap the job lines ([data-tk]).
+// The section pins while you scroll through its five steps; Fx.astro sets data-step.
+// Without motion (reduced motion or no JS) it shows as one static screen with every step listed.
+import { content, type Lang } from '../../i18n/home';
+import { tradeLines } from '../../i18n/trades';
+import TradePicker from './TradePicker.astro';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+const tl = tradeLines(lang, 'hvac');
+const demo = t.system.foundation.demo;
+const steps = t.ba.steps;
+---
+<section class="section ls-sec" aria-labelledby={`ls-title-${lang}`}>
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">{t.ba.eyebrow}</p>
+      <h2 id={`ls-title-${lang}`}>{t.ba.title}</h2>
+      <p>{t.ba.sub}</p>
+    </div>
+    <div class="pick" data-reveal><TradePicker lang={lang} /></div>
+  </div>
+
+  <div class="ls" data-story style={`--n:${steps.length}`} data-step="0">
+    <div class="ls-pin">
+      <div class="wrap ls-grid">
+        <!-- The five steps, like a plan's revision list. The active one is lit. -->
+        <div class="ls-rail">
+          <div class="ls-track" aria-hidden="true"><i></i></div>
+          <ol class="ls-steps">
+            {steps.map((s, i) => (
+              <li class="ls-step" data-at={i}>
+                <span class="mono ls-num">0{i + 1} · {s.time}</span>
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+              </li>
+            ))}
+          </ol>
+          <a class="btn btn-primary ls-cta" data-at="4" href={`#${t.ids.score}`}>{t.ba.cta}</a>
+        </div>
+
+        <!-- The customer's side of it, on a phone. -->
+        <div class="ls-stage">
+          <p class="mono ls-ex">{t.ba.example}</p>
+          <div class="phone" aria-hidden="true">
+            <div class="ph-bar mono"><span>7:42</span><span class="ph-dots"><i></i><i></i><i></i></span></div>
+
+            <div class="ph-call" data-to="2">
+              <div class="ring">
+                <span class="arc a1"></span><span class="arc a2"></span>
+                <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.1 6.1l1.4-2.3L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16 16 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z"/></svg>
+              </div>
+              <p class="mono call-state"><span class="st-in">{t.ba.incoming}</span><span class="st-miss">{t.ba.missed}</span></p>
+              <p class="call-who">{t.ba.caller}</p>
+            </div>
+
+            <div class="ph-chat">
+              <div class="msg note" data-at="2">{t.ba.missed}</div>
+              <div class="msg timer mono" data-at="2">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M10 2h4"/></svg>
+                {t.ba.textedIn}
+              </div>
+              <div class="msg m-out" data-at="2">{demo[1].text}</div>
+              <div class="msg m-in" data-at="3" data-tk="text">{tl.text}</div>
+              <div class="msg m-out" data-at="3">{demo[3].text}</div>
+              <div class="msg m-in" data-at="4">{demo[4].text}</div>
+              <div class="msg won mono" data-at="4" data-tk="textBooked">{tl.textBooked}</div>
+            </div>
+
+            <!-- How it ends today, without a system. Shown on step 2, struck out after. -->
+            <div class="today" data-at="1">
+              <p class="mono today-tag">{t.ba.before}</p>
+              <p class="today-row">{t.ba.voicemail}</p>
+              <p class="today-row">{t.ba.next}</p>
+              <p class="mono today-lost" data-tk="lost">{tl.lost}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ls-sec { padding-bottom: 0; }
+  .pick { margin: -24px 0 8px; }
+
+  .ls-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); gap: 64px; align-items: center; padding-top: 32px; padding-bottom: 96px; }
+
+  /* Rail: numbered steps with a measuring line that fills as you go. */
+  .ls-rail { position: relative; padding-left: 28px; display: flex; flex-direction: column; gap: 28px; }
+  .ls-track { position: absolute; left: 0; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
+  .ls-track i { position: absolute; inset: 0 0 auto 0; height: 100%; background: var(--lime); transform-origin: top; }
+  .ls-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 22px; }
+  .ls-step { position: relative; }
+  .ls-step::before {
+    content: ''; position: absolute; left: -33px; top: 6px; width: 12px; height: 12px; border-radius: 50%;
+    background: var(--navy); border: 2px solid var(--lime);
+  }
+  .ls-num { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--steel); }
+  .ls-step h3 { font-size: clamp(22px, 2.4vw, 28px); margin: 6px 0 6px; }
+  .ls-step p { color: var(--body); max-width: 440px; }
+  .ls-cta { align-self: flex-start; }
+
+  /* Phone */
+  .ls-stage { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .ls-ex { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--steel); }
+  .phone {
+    position: relative; width: 100%; max-width: 340px; min-height: 560px; padding: 14px 16px 18px;
+    background: var(--panel); border: 1px solid #2a3b4c; border-radius: 36px; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .phone::before { content: ''; position: absolute; top: 10px; left: 50%; width: 84px; height: 6px; margin-left: -42px; border-radius: 6px; background: var(--line); }
+  .ph-bar { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--steel); padding: 8px 8px 0; }
+  .ph-dots { display: flex; gap: 3px; }
+  .ph-dots i { width: 4px; height: 4px; border-radius: 50%; background: var(--steel); }
+
+  .ph-call { display: none; }
+  .ph-chat { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .msg { padding: 9px 13px; border-radius: 14px; font-size: 15px; line-height: 1.4; max-width: 86%; }
+  .note { max-width: none; padding: 0 2px; font: 500 11px var(--font-mono); color: var(--steel); }
+  .timer { align-self: flex-end; display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; font-size: 11px; color: var(--lime); border: 1px solid rgba(156, 226, 74, 0.45); border-radius: 999px; }
+  .m-out { align-self: flex-end; background: var(--lime); color: var(--navy); border-bottom-right-radius: 4px; }
+  .m-in { align-self: flex-start; background: var(--line); color: var(--chalk); border-bottom-left-radius: 4px; }
+  .won { max-width: none; text-align: center; font-size: 13px; color: var(--lime); border: 1px dashed var(--lime); border-radius: 8px; }
+
+  /* Static version: the "today" ending sits under the chat as a crossed-out note. */
+  .today { margin-top: auto; padding: 14px; border: 1px dashed #2a3b4c; border-radius: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .today-tag { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--steel); }
+  .today-row { font-size: 14px; color: var(--body); }
+  .today-lost { font-size: 12px; color: var(--steel); text-decoration: line-through; }
+
+  /* ---------- Motion: the section pins and the scroll drives the steps ---------- */
+  :global(.fx) .ls { height: calc(var(--n) * 60svh + 100svh); }
+  :global(.fx) .ls-pin { position: sticky; top: 84px; height: calc(100svh - 84px); display: flex; align-items: center; overflow: hidden; }
+  :global(.fx) .ls-grid { padding-top: 0; padding-bottom: 0; }
+  :global(.fx) .ls-track i { transform: scaleY(var(--p, 0)); }
+
+  /* Steps not in focus go Steel, not see-through, so they stay readable. */
+  :global(.fx) .ls-step h3 { color: var(--steel); transition: color .35s ease; }
+  :global(.fx) .ls-step p { color: #7d8b99; transition: color .35s ease; }
+  :global(.fx) .ls-step.now h3 { color: var(--chalk); }
+  :global(.fx) .ls-step.now p { color: var(--body); }
+  :global(.fx) .ls-step::before { border-color: #2a3b4c; transition: border-color .35s ease, background-color .35s ease; }
+  :global(.fx) .ls-step.on::before { border-color: var(--lime); background: var(--lime); }
+  :global(.fx) .ls-step.now::before { background: var(--navy); }
+  :global(.fx) .ls-cta { opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .35s ease, transform .35s ease; }
+  :global(.fx) .ls-cta.on { opacity: 1; transform: none; pointer-events: auto; }
+
+  :global(.fx) .ph-chat .msg { opacity: 0; transform: translateY(10px); transition: opacity .4s ease, transform .4s ease; }
+  :global(.fx) .ph-chat .msg.on { opacity: 1; transform: none; }
+  :global(.fx) .phone { height: 560px; }
+  :global(.fx) .ph-chat { position: absolute; left: 16px; right: 16px; top: 42px; }
+  /* On a phone the screen is short: unsent messages take no room and the chat grows from
+     the bottom, so the newest message is always in view and older ones slide off the top. */
+  @media (max-width: 900px) {
+    :global(.fx) .ph-chat { bottom: 18px; overflow: hidden; justify-content: flex-end; }
+    :global(.fx) .ph-chat .msg { flex-shrink: 0; }
+    :global(.fx) .ph-chat .msg:not(.on) { display: none; }
+  }
+  @media (max-width: 900px) and (max-height: 760px) {
+    :global(.fx) .ph-call { margin-top: 12px; }
+    .ring { width: 64px; height: 64px; }
+  }
+
+  /* Call screen: rings on step 1, turns into a missed call on step 2, gives way to the chat. */
+  :global(.fx) .ph-call {
+    display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 84px;
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  :global(.fx) .ph-call.off { opacity: 0; transform: translateY(-16px); }
+  .ring { position: relative; width: 84px; height: 84px; display: grid; place-items: center; color: var(--lime); border: 1px solid var(--lime); border-radius: 50%; margin-bottom: 8px; }
+  .arc { position: absolute; inset: -1px; border: 1px solid var(--lime); border-radius: 50%; opacity: 0; }
+  :global(.fx) [data-step="0"] .arc { animation: ring 1.8s ease-out infinite; }
+  :global(.fx) [data-step="0"] .a2 { animation-delay: .9s; }
+  :global(.fx) [data-step="0"] .ring svg { animation: shake 1.8s ease-in-out infinite; }
+  @keyframes ring { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.8); opacity: 0; } }
+  @keyframes shake { 0%, 30%, 100% { transform: rotate(0); } 5%, 15%, 25% { transform: rotate(-12deg); } 10%, 20% { transform: rotate(12deg); } }
+  .call-state { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); text-align: center; }
+  .st-miss { display: none; }
+  :global(.fx) [data-step="1"] .st-in { display: none; }
+  :global(.fx) [data-step="1"] .st-miss { display: inline; color: var(--steel); }
+  :global(.fx) [data-step="1"] .ring { color: var(--steel); border-color: var(--steel); }
+  .call-who { font-family: var(--font-display); font-weight: 700; font-size: 24px; }
+
+  /* "Today" card slides up over the phone on step 2, then gets struck out and drops away. */
+  :global(.fx) .today {
+    position: absolute; left: 16px; right: 16px; bottom: 18px; background: var(--navy);
+    opacity: 0; transform: translateY(24px); transition: opacity .4s ease, transform .4s ease;
+  }
+  :global(.fx) .today.on { opacity: 1; transform: none; }
+  :global(.fx) .today.past { opacity: 0; transform: translateY(40px); }
+
+  @media (max-width: 900px) {
+    .ls-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .ls-stage { order: -1; }
+    /* Pinned on a phone: only the current step's text shows, above the phone. */
+    :global(.fx) .ls-grid { gap: 16px; align-content: center; height: 100%; }
+    :global(.fx) .ls-rail { padding-left: 0; gap: 12px; min-height: 150px; order: -2; }
+    :global(.fx) .ls-track { left: 0; right: 0; top: 0; bottom: auto; width: auto; height: 2px; }
+    :global(.fx) .ls-track i { transform: scaleX(var(--p, 0)); transform-origin: left; }
+    :global(.fx) .ls-steps { display: grid; padding-top: 14px; }
+    :global(.fx) .ls-step { grid-area: 1 / 1; opacity: 0; }
+    :global(.fx) .ls-step.now { opacity: 1; }
+    :global(.fx) .ls-step::before { display: none; }
+    :global(.fx) .ls-step h3 { font-size: 22px; margin: 4px 0; }
+    :global(.fx) .ls-step p { font-size: 15px; }
+    /* Last step: the button takes the place of the step's body text. */
+    :global(.fx) .ls-cta { position: absolute; left: 0; right: 0; bottom: 0; }
+    :global(.fx) .ls-step[data-at="4"] p { display: none; }
+    :global(.fx) .ls-stage { order: 0; }
+    :global(.fx) .ls-ex { display: none; }
+    .phone { max-width: 320px; }
+    :global(.fx) .phone { height: min(440px, calc(100svh - 84px - 220px)); min-height: 0; }
+    .msg { font-size: 14px; }
+    :global(.fx) .ph-call { margin-top: 40px; }
+  }
+  @media (max-width: 900px) and (max-height: 700px) {
+    :global(.fx) .ls-step p { display: none; }
+    :global(.fx) .ls-rail { min-height: 96px; }
+  }
+</style>

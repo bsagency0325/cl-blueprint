@@ -1,0 +1,20 @@
+---
+// Short closing band for inner pages: one line and the Score button.
+// The full form + calendar block stays on the home page only, so pages don't repeat it.
+import { content, type Lang } from '../../i18n/home';
+import { routes } from '../../i18n/routes';
+interface Props { lang: Lang; title?: string; href?: string }
+const { lang, title, href } = Astro.props;
+const t = content[lang];
+---
+<section class="section grid-bg spot band">
+  <div class="wrap band-inner" data-reveal>
+    <h2>{title ?? t.final.title}</h2>
+    <a class="btn btn-primary" href={href ?? routes.score[lang]}>{t.system.cta}</a>
+  </div>
+</section>
+
+<style>
+  .band-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .band h2 { font-size: clamp(30px, 4vw, 44px); max-width: 720px; }
+</style>
