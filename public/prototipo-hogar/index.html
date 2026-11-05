@@ -67,6 +67,14 @@ section{padding:120px 0}
 .ring{width:300px;height:300px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;position:relative}
 .ring:after{content:'';position:absolute;inset:-2px;border-radius:50%;border:6px solid transparent;border-top-color:var(--lime);border-right-color:var(--lime);transform:rotate(-20deg)}
 .ring b{font:700 96px Ox}
+.light .ev .time{background:var(--chalk)}.light .night:before{border-color:#c4ccd3}.light .ev .res{border-color:#e3e7ea}.light .ev .res b{color:var(--ink)}.lime-bg .bento .card{border-color:#0b1a28;color:var(--chalk)}
+.trades-wrap{position:relative;display:grid;grid-template-columns:1fr 1.25fr;gap:70px;align-items:start}
+.trades{border-top:1px solid var(--line)}
+.tr{display:grid;grid-template-columns:56px 260px 1fr;align-items:center;gap:18px;padding:24px 22px;border-bottom:1px solid var(--line);border-radius:0}
+.tr .n{font:500 12px Mono;color:var(--steel);letter-spacing:.12em}.tr b{font:700 40px/1 Ox;letter-spacing:-.02em}.tr p{color:var(--body);font-size:16px;margin:0}
+.tr.on{background:var(--lime);color:var(--navy);border-radius:18px;border-color:var(--lime)}.tr.on .n{color:var(--navy)}.tr.on p{color:#22340c}
+.gband{background:var(--panel);border-block:1px solid var(--line);padding-block:90px;margin-top:40px}
+.light .ev .card p{color:#4d5966!important}
 </style></head><body>
 <div class="wrap nav"><a href="index.html"><img class="logo" src="/brand/logo-horizontal.svg"></a>
 <div class="links"><a class="nl" href="sistema.html">The System</a><a class="nl" href="score.html">Blueprint Score</a><a class="nl" href="piero.html">Talk to Piero</a></div>
@@ -78,11 +86,11 @@ section{padding:120px 0}
   <h1>Your phone rings. <em>Who answers?</em></h1>
   <p class="lead">Every call, text and web form answered in seconds, in English or Spanish, even when you’re on a roof. See how many jobs are slipping away with your free Blueprint Score.</p>
   <div class="scoreform"><div class="f"><label>Business name</label><span>Mike’s Heating &amp; Air</span></div><div class="f"><label>City</label><span>Henderson, NV</span></div><a class="btn lime">Get my free Score →</a></div>
-  <div class="trust"><span>✓ Free</span><span>✓ 30 seconds</span><span>✓ By text + email</span><span>✓ Hablamos español</span></div>
+  <div class="inds"><span class="lbl2">Your trade:</span><span class="on">HVAC</span><span>Plumbing</span><span>Roofing</span><span>Electrical</span><span>+ more</span></div><div class="trust"><span>✓ Free</span><span>✓ 30 seconds</span><span>✓ By text + email</span><span>✓ Hablamos español</span></div>
  </div>
  <div class="stage">
   <div class="phone"><div class="scr"><div class="notch"></div>
-   <div class="callhead"><span class="sys">INCOMING CALL · AI RECEPTIONIST</span><div class="av">JR</div><b style="font:700 20px Ox">New customer</b><div class="wave"><i style="height:8px"></i><i style="height:14px"></i><i style="height:22px"></i><i style="height:12px"></i><i style="height:26px"></i><i style="height:18px"></i><i style="height:10px"></i><i style="height:20px"></i><i style="height:24px"></i><i style="height:12px"></i><i style="height:8px"></i><i style="height:16px"></i><i style="height:22px"></i><i style="height:10px"></i></div><span class="sys" style="color:var(--lime)">00:41 · LIVE</span></div>
+   <div class="callhead"><span class="sys">INCOMING CALL · AI RECEPTIONIST</span><div class="av">JR</div><b style="font:700 20px Ox">New caller</b><div class="wave"><i style="height:8px"></i><i style="height:14px"></i><i style="height:22px"></i><i style="height:12px"></i><i style="height:26px"></i><i style="height:18px"></i><i style="height:10px"></i><i style="height:20px"></i><i style="height:24px"></i><i style="height:12px"></i><i style="height:8px"></i><i style="height:16px"></i><i style="height:22px"></i><i style="height:10px"></i></div><span class="sys" style="color:var(--lime)">00:41 · LIVE</span></div>
    <div class="bub in">Hi, my AC stopped cooling. Can someone come today?</div>
    <div class="bub out">So sorry, that’s no fun in this heat. I have 2:30 or 4:00 today. Which works?</div>
    <div class="bub in">4:00, please.</div>
@@ -90,21 +98,35 @@ section{padding:120px 0}
    <div class="bk">BOOKED · AC REPAIR · TODAY 4:00 PM</div>
   </div></div>
   <div class="float" style="left:0;top:110px"><span class="ic">0:04</span><div>Answered in 4 seconds<small>WHILE YOU WERE ON A ROOF</small></div></div>
-  <div class="float" style="left:-20px;bottom:90px"><span class="ic">✓</span><div>New job on your calendar<small>TODAY · 4:00 PM · $ JOB</small></div></div>
-  <div class="annot" style="right:0;top:-6px">LIVE: the call plays in real time. Trade chips (HVAC, Plumbing…) swap the conversation.</div>
+  <div class="float" style="left:-20px;bottom:10px"><span class="ic">✓</span><div>New job on your calendar<small>TODAY · 4:00 PM</small></div></div>
+  <div class="annot" style="left:-560px;top:-70px;max-width:380px">NAV: going down, the menu hides. Going up, it comes back as a floating island pill.</div><div class="annot" style="right:0;top:-6px">LIVE: the call plays in real time. Trade chips (HVAC, Plumbing, Roofing…) swap the call, the names and every example on the page.</div>
  </div>
 </div></div>
 
-<div class="band"><span>HVAC</span><span class="o">PLUMBING</span><span>ROOFING</span><span class="o">ELECTRICAL</span><span>LANDSCAPING</span><span class="o">PRESSURE WASHING</span><span>HVAC</span><span class="o">PLUMBING</span><span>ROOFING</span><span class="o">ELECTRICAL</span><span>LANDSCAPING</span><span class="o">PRESSURE WASHING</span></div>
+<div class="band"><span>HVAC</span><span class="o">PLUMBING</span><span>ROOFING</span><span class="o">ELECTRICAL</span><span>LANDSCAPING</span><span class="o">PRESSURE WASHING</span><span>GARAGE DOORS</span><span class="o">REMODELING</span><span>HVAC</span><span class="o">PLUMBING</span><span>ROOFING</span><span class="o">ELECTRICAL</span><span>LANDSCAPING</span><span class="o">PRESSURE WASHING</span><span>GARAGE DOORS</span><span class="o">REMODELING</span></div>
 
-<section><div class="wrap">
+<section><div class="wrap trades-wrap">
+ <div><p class="eyebrow">Built for your trade</p>
+ <h2 class="h2">Different trade. Same leak.</h2>
+ <p class="sub">The homeowner calls two or three companies. The first one to answer gets the job.</p>
+ <a class="btn ghost" style="margin-top:28px">Do you work with my trade? →</a></div>
+ <div class="trades">
+  <div class="tr on"><span class="n">01</span><b>HVAC</b><p>AC out in July. They call until someone picks up.</p></div>
+  <div class="tr"><span class="n">02</span><b>Plumbing</b><p>A leak at 2 AM can’t wait for a callback.</p></div>
+  <div class="tr"><span class="n">03</span><b>Roofing</b><p>After a storm, everyone calls at once.</p></div>
+  <div class="tr"><span class="n">04</span><b>Electrical</b><p>Estimates followed up until they book.</p></div>
+  <div class="tr"><span class="n">+</span><b>Your trade</b><p>If homeowners call, text or fill a form to hire you, it fits.</p></div>
+ </div>
+ <div class="annot" style="right:0;bottom:-70px">SCROLL: each row slides in from the right. Hover or tap a trade: it fills lime and the hero call switches to that trade.</div>
+</div></section>
+<section class="light"><div class="wrap">
  <p class="eyebrow">A night with Blueprint · example</p>
  <h2 class="h2">You clock out. The system doesn’t.</h2>
  <p class="sub">When nobody picks up, the job goes to whoever does. Here’s one night, start to finish.</p>
  <div class="night">
-  <div class="ev"><span class="time"><i></i>7:42 PM</span><div class="card"><span class="k">Missed call</span><h4>Texted back in 5 seconds</h4><p style="color:var(--body)">“AC stopped cooling. Can someone come tomorrow?”</p><div class="res"><span>RESULT</span><b>Booked · Thu 9:00 AM</b></div></div></div>
-  <div class="ev"><span class="time"><i></i>10:15 PM</span><div class="card"><span class="k">Web form · Spanish</span><h4>Answered en español</h4><p style="color:var(--body)">“¿Hacen estimados para techo el sábado?”</p><div class="res"><span>RESULT</span><b>Estimate · Sat 10:00 AM</b></div></div></div>
-  <div class="ev"><span class="time"><i></i>6:03 AM</span><div class="card"><span class="k">Google search</span><h4>“Plumber near me”</h4><p style="color:var(--body)">Your business shows up top 3, with fresh 5-star reviews.</p><div class="res"><span>RESULT</span><b>Call in · answered 0:03</b></div></div></div>
+  <div class="ev"><span class="time"><i></i>7:42 PM</span><div class="card"><span class="k">Missed call</span><h4>Texted back in 5 seconds</h4><p style="color:var(--body)">“Water heater’s leaking. Can someone come first thing?” · Plumbing</p><div class="res"><span>RESULT</span><b>Booked · Thu 8:00 AM</b></div></div></div>
+  <div class="ev"><span class="time"><i></i>10:15 PM</span><div class="card"><span class="k">Web form · Spanish</span><h4>Answered en español</h4><p style="color:var(--body)">“¿Hacen estimados para techo el sábado?” · Roofing</p><div class="res"><span>RESULT</span><b>Estimate · Sat 10:00 AM</b></div></div></div>
+  <div class="ev"><span class="time"><i></i>6:03 AM</span><div class="card"><span class="k">Google search</span><h4>“Electrician near me”</h4><p style="color:var(--body)">Your business shows up top 3, with fresh 5-star reviews.</p><div class="res"><span>RESULT</span><b>Call in · answered 0:03</b></div></div></div>
  </div>
  <div class="annot" style="position:relative;margin-top:22px">SCROLL: the dashed line fills with lime as you scroll, each event pops in with its sound-free “ding”.</div>
 </div></section>
@@ -127,7 +149,7 @@ section{padding:120px 0}
  </div>
 </div></section>
 
-<section style="background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
+<section class="lime-bg"><div class="wrap">
  <p class="eyebrow">The free Blueprint Score</p>
  <h2 class="h2">Find out exactly where your next jobs are going.</h2>
  <div class="bento">
@@ -135,12 +157,12 @@ section{padding:120px 0}
    <div><div class="bar"><div class="r"><span>Google Maps ranking</span><span class="mono">52</span></div><div class="t"><i style="width:52%"></i></div></div><div class="bar"><div class="r"><span>AI search visibility</span><span class="mono">18</span></div><div class="t"><i style="width:18%"></i></div></div><div class="bar"><div class="r"><span>Lead response speed</span><span class="mono">35</span></div><div class="t"><i style="width:35%"></i></div></div><div class="bar"><div class="r"><span>Reviews vs. competitors</span><span class="mono">60</span></div><div class="t"><i style="width:60%"></i></div></div></div></div>
   <div class="card"><span class="mono" style="color:var(--steel);font-size:13px">WHO GOT THE CALL INSTEAD</span><div style="margin-top:18px;display:flex;flex-direction:column;gap:10px"><div class="pill" style="justify-content:space-between;display:flex">Competitor A <b style="color:var(--chalk)">#1</b></div><div class="pill" style="justify-content:space-between;display:flex">Competitor B <b style="color:var(--chalk)">#2</b></div><div class="pill" style="justify-content:space-between;display:flex;border-color:var(--lime)">You <b style="color:var(--lime)">#7</b></div></div></div>
   <div class="card"><span class="mono" style="color:var(--steel);font-size:13px">EST. JOBS SLIPPING AWAY</span><div class="lost" style="margin-top:14px;filter:blur(7px)">$12,400</div><p style="color:var(--body);font-size:15px">Your real number, worked out from your calls, rankings and reviews. Unlocks in your Score.</p></div>
-  <div class="card" style="grid-column:span 2;display:flex;align-items:center;justify-content:space-between;gap:20px"><div><h4 style="font-size:30px">Two fields. 30 seconds.</h4><p style="color:var(--body)">Your Score arrives by text and email within one business day.</p></div><a class="btn lime">Get my free Score →</a></div>
+  <div class="card" style="grid-column:span 2;display:flex;align-items:center;justify-content:space-between;gap:20px"><div><h4 style="font-size:30px">Two fields. 30 seconds.</h4><p style="color:var(--body)">Your Score arrives by text and email.</p></div><a class="btn lime">Get my free Score →</a></div>
  </div>
 </div></section>
 
 <section><div class="wrap piero">
- <div class="photo" style="height:620px"><span class="pill" style="position:absolute;top:22px;left:22px;background:var(--lime);color:var(--navy);border:0">Hablo español 🇺🇸🇵🇪</span><svg viewBox="0 0 200 200" style="position:absolute;left:50%;top:44%;width:240px;transform:translate(-50%,-50%);opacity:.18" fill="none" stroke="#93A1AF" stroke-width="3"><circle cx="100" cy="70" r="34"/><path d="M30 190c4-46 34-72 70-72s66 26 70 72"/></svg><span class="cap"><i></i>REAL PHOTO · Piero on a job walk (to shoot)</span></div>
+ <div class="photo" style="height:620px"><span class="pill" style="position:absolute;top:22px;left:22px;background:var(--lime);color:var(--navy);border:0">Hablo español 🇺🇸🇵🇪</span><svg viewBox="0 0 200 200" style="position:absolute;left:50%;top:44%;width:240px;transform:translate(-50%,-50%);opacity:.18" fill="none" stroke="#93A1AF" stroke-width="3"><circle cx="100" cy="70" r="34"/><path d="M30 190c4-46 34-72 70-72s66 26 70 72"/></svg><span class="cap"><i></i>REAL PHOTO · Piero at work (to shoot)</span></div>
  <div>
   <p class="eyebrow">Who’s behind it</p>
   <p class="quote" style="margin:18px 0 26px">“I sold HVAC and plumbing. I know what a <em>missed call</em> costs.”</p>
@@ -149,12 +171,12 @@ section{padding:120px 0}
  </div>
 </div></section>
 
-<section style="padding-top:20px"><div class="wrap watch">
+<section class="gband"><div class="wrap watch">
  <div class="ring"><b>0:60</b></div>
  <div><p class="eyebrow">Our guarantee</p><h2 class="h2" style="font-size:64px">Every lead answered in under 60 seconds. Or that month is free.</h2><p class="sub">Month-to-month. Your ad money goes straight to Google and Facebook, in your name.</p></div>
 </div></section>
 
-<section style="padding-top:20px"><div class="wrap"><div class="final">
+<section style="padding-top:90px"><div class="wrap"><div class="final">
  <h2>Find out what you’re losing. It’s free.</h2>
  <div><div class="scoreform" style="max-width:none"><div class="f"><label>Business name</label><span>Your business</span></div><div class="f"><label>City</label><span>Your city</span></div><a class="btn lime">Get my Score →</a></div><p style="margin-top:16px;font-size:16px">Prefer to talk? <b>Book a quick call with Piero →</b></p></div>
 </div></div></section>

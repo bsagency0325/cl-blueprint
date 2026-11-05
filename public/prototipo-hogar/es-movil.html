@@ -45,6 +45,12 @@ h2{font-size:38px;margin:12px 0 14px}
 .mfoot{border-top:1px solid var(--line);padding:36px 0 90px;color:var(--steel);font-size:14px}
 .mfoot .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px}.mfoot .cols div{display:flex;flex-direction:column;gap:8px}
 .mfoot b{color:var(--chalk);font:500 11px Mono;letter-spacing:.14em;text-transform:uppercase}
+.light .tl .time{color:var(--navy)}.light .tl:before{border-color:#c4ccd3}.light .tl .res{border-color:#e3e7ea}.light .tl .res b{color:var(--ink)}.lime-bg .sc{color:var(--chalk)}.lime-bg h2{color:var(--navy)}
+.trades{margin-top:22px;border-top:1px solid var(--line)}
+.tr{padding:16px 14px;border-bottom:1px solid var(--line)}.tr b{font:700 26px/1 Ox;display:block;margin-bottom:6px}.tr p{font-size:14px;color:var(--body);margin:0}
+.tr.on{background:var(--lime);color:var(--navy);border-radius:14px;border-color:var(--lime)}.tr.on p{color:#22340c}
+.gband{background:var(--panel);border-block:1px solid var(--line);padding-block:44px;margin-top:20px}
+.light .ev .card p{color:#4d5966!important}
 </style></head><body class="m">
 <div class="wrap mnav"><img src="/brand/logo-horizontal.svg"><div class="r"><span class="lang">EN<b style="margin:0 0 0 4px">ES</b></span><span class="burger"><i></i></span></div></div>
 <div class="wrap" style="padding-top:14px">
@@ -52,7 +58,7 @@ h2{font-size:38px;margin:12px 0 14px}
  <h1>Suena tu teléfono. <em>¿Quién contesta?</em></h1>
  <p class="lead">Cada llamada, mensaje y formulario contestado en segundos, en español o inglés, aunque estés arriba de un techo. Descubre cuántos trabajos se te escapan con tu Blueprint Score gratis.</p>
  <div class="sf"><div class="f"><label>Tu negocio</label><span>Plomería Hernández</span></div><div class="f"><label>Ciudad</label><span>Las Vegas, NV</span></div><a class="btn lime">Quiero mi Score gratis →</a></div>
- <div class="trust"><span>✓ Gratis</span><span>✓ Por texto y email</span><span>✓ Hablamos español</span></div>
+ <div class="inds"><span class="on">Plomería</span><span>HVAC</span><span>Techos</span><span>Electricidad</span><span>+ más</span></div><div class="trust"><span>✓ Gratis</span><span>✓ Por texto y email</span><span>✓ Hablamos español</span></div>
  <div class="pstage">
   <div class="phone"><div class="scr"><div class="notch"></div>
    <div class="sys">LLAMADA ENTRANTE · RECEPCIONISTA IA</div>
@@ -69,13 +75,25 @@ h2{font-size:38px;margin:12px 0 14px}
 <div class="band"><span>HVAC</span><span class="o">PLOMERÍA</span><span>TECHOS</span><span class="o">ELECTRICIDAD</span><span>JARDINERÍA</span></div>
 
 <section><div class="wrap">
+ <p class="eyebrow">Hecho para tu oficio</p>
+ <h2>Otro oficio. <em>La misma fuga.</em></h2>
+ <p class="lead">El cliente llama a dos o tres compañías. Se queda con la primera que contesta.</p>
+ <div class="trades">
+  <div class="tr on"><b>Plomería</b><p>Una fuga a las 2 AM no espera que le devuelvas la llamada.</p></div>
+  <div class="tr"><b>HVAC</b><p>Se apaga el aire en julio y llaman hasta que alguien conteste.</p></div>
+  <div class="tr"><b>Techos</b><p>Después de una tormenta, todos llaman a la vez.</p></div>
+  <div class="tr"><b>Electricidad</b><p>Cada estimado con seguimiento hasta que se agenda.</p></div>
+  <div class="tr"><b>Tu oficio</b><p>Si te contratan por llamada, mensaje o formulario, encaja.</p></div>
+ </div>
+</div></section>
+<section class="light"><div class="wrap">
  <p class="eyebrow">Una noche con Blueprint · ejemplo</p>
  <h2>Tú terminas tu turno. <em>El sistema no.</em></h2>
  <p class="lead">Si nadie contesta, el trabajo se lo lleva quien sí lo hace.</p>
  <div class="tl">
-  <div class="ev"><span class="time">7:42 PM</span><div class="card"><span class="k">LLAMADA PERDIDA</span><h4>Le escribió en segundos</h4><p>"Se apagó el aire. ¿Pueden venir mañana?"</p><div class="res"><span>RESULTADO</span><b>AGENDADO 9:00 AM</b></div></div></div>
-  <div class="ev"><span class="time">10:15 PM</span><div class="card"><span class="k">FORMULARIO WEB</span><h4>Contestado al instante</h4><p>"¿Hacen estimados de techo el sábado?"</p><div class="res"><span>RESULTADO</span><b>ESTIMADO SÁB</b></div></div></div>
-  <div class="ev"><span class="time">6:03 AM</span><div class="card"><span class="k">BÚSQUEDA EN GOOGLE</span><h4>"Plomero cerca de mí"</h4><p>Apareces arriba, con reseñas frescas.</p><div class="res"><span>RESULTADO</span><b>TE LLAMAN A TI</b></div></div></div>
+  <div class="ev"><span class="time">7:42 PM</span><div class="card"><span class="k">LLAMADA PERDIDA</span><h4>Le escribió en segundos</h4><p>"Se apagó el aire. ¿Pueden venir mañana?" · HVAC</p><div class="res"><span>RESULTADO</span><b>AGENDADO 9:00 AM</b></div></div></div>
+  <div class="ev"><span class="time">10:15 PM</span><div class="card"><span class="k">FORMULARIO WEB</span><h4>Contestado al instante</h4><p>"¿Hacen estimados de techo el sábado?" · Techos</p><div class="res"><span>RESULTADO</span><b>ESTIMADO SÁB</b></div></div></div>
+  <div class="ev"><span class="time">6:03 AM</span><div class="card"><span class="k">BÚSQUEDA EN GOOGLE</span><h4>"Electricista cerca de mí"</h4><p>Apareces arriba, con reseñas frescas.</p><div class="res"><span>RESULTADO</span><b>TE LLAMAN A TI</b></div></div></div>
  </div>
 </div></section>
 
@@ -91,7 +109,7 @@ h2{font-size:38px;margin:12px 0 14px}
  <a class="btn ghost" style="margin-top:18px;width:100%;justify-content:center">Ver cómo se arma →</a>
 </div></section>
 
-<section style="background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
+<section class="lime-bg"><div class="wrap">
  <p class="eyebrow">Tu Blueprint Score gratis</p>
  <h2>Mira a dónde se van tus próximos trabajos.</h2>
  <div class="card sc" style="background:var(--navy)"><span class="mono" style="color:var(--steel);font-size:11px">EJEMPLO · PLOMERÍA HERNÁNDEZ</span>
@@ -109,7 +127,7 @@ h2{font-size:38px;margin:12px 0 14px}
  <p class="lead" style="margin-top:14px">Piero Quino · Fundador · Hablo español</p>
 </div></section>
 
-<section style="padding-top:10px"><div class="wrap" style="text-align:center">
+<section class="gband"><div class="wrap" style="text-align:center">
  <p class="eyebrow">Nuestra garantía</p>
  <h2>Cada lead contestado en menos de 60 segundos.</h2>
  <div class="ring"><b>0:09</b></div>

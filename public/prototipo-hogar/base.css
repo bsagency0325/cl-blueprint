@@ -48,6 +48,28 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;margin-top:0}
 .foot b{color:var(--chalk);font:500 12px Mono;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
 .annot{position:absolute;font:500 12px Mono;color:var(--navy);background:#FFD84D;padding:6px 10px;border-radius:8px;max-width:260px;line-height:1.35;z-index:9}
 
+.inds{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:22px}.inds span{padding:7px 14px;border-radius:999px;border:1px solid #2a3b4c;font-size:14px;color:var(--body)}.inds .on{background:var(--chalk);color:var(--navy);border-color:var(--chalk);font-weight:500}.inds .lbl2{border:0;padding:0 4px 0 0;font:500 12px Mono;letter-spacing:.12em;text-transform:uppercase;color:var(--steel)}
+.m .inds span{font-size:12px;padding:6px 10px}
+
+/* color pass */
+.light{background:var(--chalk);color:var(--navy)}
+.light .sub,.light .lead,.light p{color:#3d4a57}
+.light .eyebrow{color:var(--ink)}
+.light .card{background:#fff;border-color:#dde2e6;box-shadow:0 20px 40px rgba(6,15,25,.08)}
+.light .card h4,.light h2,.light h3{color:var(--navy)}
+.light .k,.light .lbl{color:#5b6773}
+.lime-bg{background:var(--lime);color:var(--navy)}
+.lime-bg .eyebrow{color:var(--navy)}
+.lime-bg>.wrap>.sub,.lime-bg .lead{color:#22340c}
+.inds-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px}
+.ind{border-radius:22px;padding:26px;min-height:200px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line);background:var(--panel)}
+.ind h4{font-size:26px;margin-bottom:8px}.ind p{font-size:15px;color:var(--body)}
+.ind .tg{font:500 11px Mono;letter-spacing:.14em;color:var(--steel)}
+.ind.l{background:var(--lime);border-color:var(--lime);color:var(--navy)}.ind.l p{color:#22340c}.ind.l .tg{color:var(--navy)}
+.ind.c{background:var(--chalk);border-color:var(--chalk);color:var(--navy)}.ind.c p{color:#3d4a57}.ind.c .tg{color:#5b6773}
+.ind.d{border:1.5px dashed #3a4b5c;background:transparent}
+.m .inds-grid{grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}.m .ind{min-height:150px;padding:16px;border-radius:16px}.m .ind h4{font-size:18px}.m .ind p{font-size:13px}
+
 .annot{display:none}
 .notes .annot{display:block}
 a.nl{color:inherit;text-decoration:none}
